@@ -1,0 +1,11 @@
+{
+  "email": "E-mail",
+  "password": "Senha",
+  "login": "Entrar",
+  "forgotPassword": "Esqueci minha senha",
+  "sale_plural": "Vendas",
+  "client_plural": "Clientes",
+  "property_plural": "Propriedades",
+  "user_plural": "Usuários",
+  "dashboard": "Área de Trabalho"
+}
