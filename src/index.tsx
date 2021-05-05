@@ -1,24 +1,36 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import reportWebVitals from './reportWebVitals'
-import { BrowserRouter as Router } from 'react-router-dom'
 import Dialogs from 'components/Dialogs'
 import AppProviders from 'contexts/AppProviders'
 import './i18n'
-import { AppBarDrawerGrid } from 'components/GridLayout'
+import { AppBarDrawerGrid, PageContentGridArea } from 'components/GridLayout'
 import AppBar from 'components/AppBar'
 import AppDrawer from 'components/AppDrawer'
+import PageLoading from 'components/PageLoading'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import routes from 'routes'
+import PageNotFoundPlaceholder from 'components/PageNotFoundPlaceholder'
+
+const Users = React.lazy(() => import('screens/Users'))
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <Dialogs />
       <AppBarDrawerGrid>
         <AppBar />
         <AppDrawer />
-        <h1>hallo</h1>
+        <PageContentGridArea>
+          <React.Suspense fallback={<PageLoading />}>
+            <Switch>
+              <Route path={routes.users} component={Users} />
+              <Route component={PageNotFoundPlaceholder} />
+            </Switch>
+          </React.Suspense>
+        </PageContentGridArea>
       </AppBarDrawerGrid>
-    </Router>
+    </BrowserRouter>
   )
 }
 

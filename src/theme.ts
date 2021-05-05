@@ -6,6 +6,9 @@ const breakpoints = createBreakpoints({})
 const muiTheme = createMuiTheme({
   palette: {
     type: 'light',
+    text: {
+      primary: '#2E2E2E'
+    },
     background: {
       default: '#fff',
       paper: '#fff'
@@ -139,14 +142,6 @@ const muiTheme = createMuiTheme({
     MuiTooltip: {
       tooltip: {
         whiteSpace: 'pre-wrap'
-      }
-    },
-    MuiToolbar: {
-      dense: {
-        minHeight: '38px'
-      },
-      regular: {
-        minHeight: '56px !important'
       }
     },
     MuiTab: {

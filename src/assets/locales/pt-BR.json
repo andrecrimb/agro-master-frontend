@@ -7,5 +7,7 @@
   "client_plural": "Clientes",
   "property_plural": "Propriedades",
   "user_plural": "Usuários",
-  "dashboard": "Área de Trabalho"
+  "dashboard": "Área de Trabalho",
+  "notFound": "Não encontrado",
+  "pageDoesNotExist": "Essa página não existe"
 }
