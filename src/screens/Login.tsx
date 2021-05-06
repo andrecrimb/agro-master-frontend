@@ -9,6 +9,7 @@ import { LoginGrid, LoginFormGridArea, LoginInfoGridArea } from 'components/Grid
 const FormWrapper = styled.div`
   text-align: center;
   max-width: 300px;
+  margin-top: -10%;
   #app-logo {
     margin-bottom: 26px;
     height: 46px;
