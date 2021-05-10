@@ -10,7 +10,11 @@ export interface Props extends TabsProps {
 }
 
 const StyledTabs = styled(Tabs)``
-const StyledTab = styled(Tab)``
+const StyledTab = styled(Tab)`
+  &.MuiTab-root {
+    min-height: 44px;
+  }
+`
 
 const HeaderTabs: React.FC<Props> = ({ tabs, onChange, ...otherProps }) => {
   if (!tabs.length) {

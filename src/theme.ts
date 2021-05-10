@@ -228,19 +228,19 @@ const muiTheme = createMuiTheme({
     },
     MuiTableRow: {
       head: {
-        height: '34px'
+        height: '38px'
       },
       root: {
         height: '38px'
       },
       footer: {
-        height: '34px'
+        height: '38px'
       }
     },
     MuiTableCell: {
       root: {
         padding: '2px 14px 2px 14px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+        borderBottom: '1px solid rgb(219 219 219)'
       },
       body: {
         fontSize: '0.7rem'
@@ -250,11 +250,11 @@ const muiTheme = createMuiTheme({
         padding: '0px 14px 0px 14px !important',
         fontSize: '0.62rem',
         borderBottom: 'none',
-        color: 'rgba(255, 255, 255, 0.3)',
+        color: '#757575',
         whiteSpace: 'nowrap'
       },
       stickyHeader: {
-        // backgroundColor: dark.tableHeader
+        backgroundColor: 'whitesmoke'
       }
     },
     MuiSvgIcon: {

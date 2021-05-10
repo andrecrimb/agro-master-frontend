@@ -5,6 +5,7 @@ import PageHeader from 'components/PageHeader'
 import { useTranslation } from 'react-i18next'
 import HeaderTabs from 'components/HeaderTabs'
 import { AddRounded as AddIcon } from '@material-ui/icons'
+import UsersTable from 'screens/Users/UsersTable'
 
 const Users: React.FC = () => {
   const { t } = useTranslation()
@@ -29,7 +30,7 @@ const Users: React.FC = () => {
           </IconButton>
         </PageHeader>
         <MainContentGridArea>
-          <h1>Loading ....</h1>
+          <UsersTable />
         </MainContentGridArea>
       </PageHeaderAndContentGrid>
     </Fade>

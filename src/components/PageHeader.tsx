@@ -11,6 +11,7 @@ const StyledToolbar = styled(Toolbar)`
   &.MuiToolbar-root {
     justify-content: space-between;
     min-height: 44px;
+    border-bottom: 1px solid rgb(219 219 219);
   }
   h5 {
     font-size: 1.15rem;

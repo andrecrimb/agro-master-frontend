@@ -72,7 +72,7 @@ export const PageHeaderAndContentGrid = styled.div`
   bottom: 0;
   right: 0;
 
-  height: calc(100vh - 54px);
+  height: calc(100vh - 65px);
 
   display: grid;
   align-items: stretch;
@@ -92,5 +92,6 @@ export const PageHeaderGridArea = styled.header`
 export const MainContentGridArea = styled.div`
   grid-area: main-content;
   position: relative;
+  overflow: auto;
 `
 //#endregion
