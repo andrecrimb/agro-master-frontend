@@ -9,5 +9,7 @@
   "user_plural": "Usuários",
   "dashboard": "Área de Trabalho",
   "notFound": "Não encontrado",
-  "pageDoesNotExist": "Essa página não existe"
+  "pageDoesNotExist": "Essa página não existe",
+  "welcomeUser": "Bem-vindo {{user}}!",
+  "invalidUser": "Usuário ou senha inválida"
 }

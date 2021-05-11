@@ -1,7 +1,6 @@
 import React from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import Axios from 'axios'
 import { SnackbarProvider } from 'notistack'
 import { MuiThemeProvider } from '@material-ui/core'
 import { ThemeProvider } from 'styledComponents'

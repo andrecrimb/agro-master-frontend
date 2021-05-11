@@ -1,3 +1,8 @@
+export type Login = {
+  email: string
+  password: string
+}
+
 export type User = {
   id: number
   createdAt: string
