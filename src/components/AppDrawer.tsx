@@ -48,7 +48,7 @@ const StyledDrawer = styled(Drawer)`
     white-space: nowrap;
     border: none !important;
     background-color: transparent;
-    padding-top: 10px;
+    padding-top: 14px;
   }
 `
 

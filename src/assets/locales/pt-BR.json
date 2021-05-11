@@ -11,5 +11,6 @@
   "notFound": "Não encontrado",
   "pageDoesNotExist": "Essa página não existe",
   "welcomeUser": "Bem-vindo {{user}}!",
-  "invalidUser": "Usuário ou senha inválida"
+  "invalidUser": "Usuário ou senha inválida",
+  "logout": "Sair"
 }
