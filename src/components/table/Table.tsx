@@ -72,6 +72,7 @@ interface Props<D extends object = any> {
   plugins?: Array<PluginHook<D>>
   renderRowSubComponent?: (row: any) => React.ReactNode
   globalFilter?: string
+  onRowSelect?: (selectedRowId, row?) => void
   testid?: string
 }
 
@@ -86,6 +87,7 @@ export function Table<T extends object>(props: Props<T>): React.ReactElement {
     options = {},
     plugins = [],
     renderRowSubComponent,
+    onRowSelect,
     globalFilter,
     testid = 'agroMaster-table'
   } = props
@@ -103,6 +105,12 @@ export function Table<T extends object>(props: Props<T>): React.ReactElement {
   )
 
   React.useEffect(() => table['setGlobalFilter']?.(globalFilter), [globalFilter])
+
+  React.useEffect(() => {
+    if (onRowSelect) {
+      onRowSelect(table.state['selectedRowId'], table.state['selectedRow'])
+    }
+  }, [table.state['selectedRowId'], table.state['selectedRow']])
 
   const rows = table['page'] || table.rows
 

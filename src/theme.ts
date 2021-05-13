@@ -195,7 +195,7 @@ const muiTheme = createMuiTheme({
         lineHeight: '1.1'
       },
       h6: {
-        fontSize: '0.9rem'
+        fontSize: '1rem'
       }
     },
     MuiTable: {
@@ -315,16 +315,11 @@ const muiTheme = createMuiTheme({
       }
     },
     MuiDialogTitle: {
-      root: {
-        padding: '14px 20px 12px'
-      }
+      root: {}
     },
     MuiDialogContent: {
       root: {
-        padding: '0 20px 10px',
-        '&:first-child': {
-          paddingTop: '20px'
-        }
+        '&:first-child': {}
       }
     },
     MuiDialogContentText: {

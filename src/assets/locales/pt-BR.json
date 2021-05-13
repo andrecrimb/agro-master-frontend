@@ -1,6 +1,7 @@
 {
   "email": "E-mail",
   "password": "Senha",
+  "passwordRepeat": "Repetir Senha",
   "login": "Entrar",
   "forgotPassword": "Esqueci minha senha",
   "sale_plural": "Vendas",
@@ -12,5 +13,22 @@
   "pageDoesNotExist": "Essa página não existe",
   "welcomeUser": "Bem-vindo {{user}}!",
   "invalidUser": "Usuário ou senha inválida",
-  "logout": "Sair"
+  "logout": "Sair",
+  "name": "Nome",
+  "created": "Criado em",
+  "superUser": "Administrador",
+  "active": "Ativo",
+  "activeUser": "Usuário ativo",
+  "createNewUser": "Criar novo Usuário",
+  "cancel": "Cancelar",
+  "save": "Salvar",
+  "firstName": "Nome",
+  "lastName": "Sobrenome",
+  "nickname": "Apelido",
+  "generalData": "Dados gerais",
+  "contact": "Contato",
+  "newPhoneNumber": "Novo telefone",
+  "phoneNumber": "Telefone",
+  "label": "Título",
+  "labelExample": "Ex: Telefone pessoal"
 }

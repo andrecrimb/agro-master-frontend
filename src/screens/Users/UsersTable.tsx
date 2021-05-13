@@ -1,28 +1,15 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { usePagination, useSortBy } from 'react-table'
 import Table from 'components/table/Table'
 import { LinearProgress } from '@material-ui/core'
+import useUsers from 'hooks/useUsers'
+import { usersName, usersEmail, usersActive, usersSuperUser } from 'components/table/cells'
+import { useSingleSelect } from 'utils/useSingleSelect'
 
 const UsersTable: React.FC = () => {
-  const { t } = useTranslation()
+  const { data = [] } = useUsers()
 
-  const data = React.useMemo(
-    () =>
-      Array(80)
-        .fill(' ')
-        .map((_, index) => ({ c1: 'Test column ' + index, c2: 'Essa é a column ' + index })),
-    []
-  )
-
-  const columns = React.useMemo(
-    () => [
-      { Header: 'Column 1', accessor: 'c1' },
-      { Header: 'Column 2', accessor: 'c2' }
-    ],
-    []
-  )
-
+  const columns = React.useMemo(() => [usersName, usersEmail, usersActive, usersSuperUser], [])
   const isFetching = false
 
   return (
@@ -35,7 +22,8 @@ const UsersTable: React.FC = () => {
       <Table
         columns={columns}
         data={data}
-        plugins={[useSortBy, usePagination]}
+        plugins={[useSortBy, useSingleSelect, usePagination]}
+        onRowSelect={(...aa) => console.log(aa)}
         options={{
           disableSortRemove: true,
           autoResetSortBy: false
