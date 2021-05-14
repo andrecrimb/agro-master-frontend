@@ -30,5 +30,11 @@
   "newPhoneNumber": "Novo telefone",
   "phoneNumber": "Telefone",
   "label": "Título",
-  "labelExample": "Ex: Telefone pessoal"
+  "labelExample": "Ex: Telefone pessoal",
+  "newUserAdded": "Novo usuário adicionado",
+  "newUserError": "Erro ao adicionar o usuário",
+  "email_duplicated": "Este e-mail já existe",
+  "password_short": "Essa senha é muito curta",
+  "passwords_dont_match": "As senhas estão diferentes",
+  "short_password": "Esta senha é muito curta"
 }

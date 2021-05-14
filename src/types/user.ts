@@ -15,4 +15,9 @@ export type User = {
   isSuperuser: boolean
   isEmployee: boolean
   active: boolean
+
+  phoneNumbers?: {
+    label: string
+    number: string
+  }
 }

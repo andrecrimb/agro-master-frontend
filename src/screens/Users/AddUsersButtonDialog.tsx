@@ -21,25 +21,27 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
+import useAddUser from 'hooks/useAddUser'
+
+const FORM_DEFAULT_VALUES = {
+  firstName: '',
+  lastName: '',
+  nickname: '',
+  email: '',
+  password: '',
+  passwordRepeat: '',
+  active: true,
+  isSuperuser: true,
+  phoneNumbers: [{ label: '', number: '' }]
+}
 
 const AddUsersButtonDialog: React.FC = () => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
+  const addNewUser = useAddUser()
 
-  const editGroup = { isLoading: false }
-
-  const { handleSubmit, control, formState } = useForm({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      nickname: '',
-      email: '',
-      password: '',
-      passwordRepeat: '',
-      active: false,
-      isSuperuser: false,
-      phoneNumbers: [{ label: '', number: '' }]
-    }
+  const { handleSubmit, control, register, formState, setError, reset } = useForm({
+    defaultValues: FORM_DEFAULT_VALUES
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -47,267 +49,275 @@ const AddUsersButtonDialog: React.FC = () => {
     control
   })
 
+  React.useEffect(() => {
+    reset(FORM_DEFAULT_VALUES)
+  }, [open === false])
+
+  const { ref: firstNameRef, ...firstName } = register('firstName')
+  const { ref: lastNameRef, ...lastName } = register('lastName')
+  const { ref: nicknameRef, ...nickname } = register('nickname')
+  const { ref: emailRef, ...email } = register('email')
+  const { ref: passwordRef, ...password } = register('password')
+  const { ref: passwordRepeatRef, ...passwordRepeat } = register('passwordRepeat')
+
   return (
     <>
       <IconButton color="inherit" onClick={() => setOpen(true)}>
         <AddIcon />
       </IconButton>
-      <Dialog
-        open={open}
-        fullWidth
-        maxWidth="sm"
-        onClose={() => setOpen(false)}
-        aria-labelledby="dialog-title"
-      >
-        <DialogTitle id="dialog-title">{t('createNewUser')}</DialogTitle>
-        <form onSubmit={handleSubmit(values => console.log(values))}>
-          <DialogContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography color="textSecondary" display="block" variant="subtitle1">
-                  {t('generalData')}
-                </Typography>
-                <Divider />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  control={control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <TextField
-                      id="firstName"
-                      type="text"
-                      size="small"
-                      fullWidth
-                      required
-                      variant="outlined"
-                      label={t('firstName')}
-                      {...field}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  control={control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <TextField
-                      id="lastName"
-                      type="text"
-                      size="small"
-                      fullWidth
-                      variant="outlined"
-                      label={t('lastName')}
-                      {...field}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  control={control}
-                  name="nickname"
-                  render={({ field }) => (
-                    <TextField
-                      id="nickname"
-                      type="text"
-                      size="small"
-                      fullWidth
-                      variant="outlined"
-                      label={t('nickname')}
-                      {...field}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  control={control}
-                  name="email"
-                  render={({ field }) => (
-                    <TextField
-                      id="email"
-                      type="email"
-                      size="small"
-                      fullWidth
-                      required
-                      variant="outlined"
-                      label={t('email')}
-                      {...field}
-                    />
-                  )}
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <Controller
-                  control={control}
-                  name="password"
-                  render={({ field }) => (
-                    <TextField
-                      id="password"
-                      type="password"
-                      size="small"
-                      fullWidth
-                      required
-                      variant="outlined"
-                      label={t('password')}
-                      {...field}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  control={control}
-                  name="passwordRepeat"
-                  render={({ field }) => (
-                    <TextField
-                      id="passwordRepeat"
-                      type="password"
-                      size="small"
-                      fullWidth
-                      required
-                      variant="outlined"
-                      label={t('passwordRepeat')}
-                      {...field}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography color="textSecondary" display="block" variant="subtitle1">
-                  {t('contact')}
-                </Typography>
-                <Divider />
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2} alignItems="center">
-                  {fields.map((field, index) => (
-                    <React.Fragment key={field.id}>
-                      <Grid item xs={5}>
-                        <Controller
-                          control={control}
-                          name={`phoneNumbers.${index}.label` as const}
-                          defaultValue={field.label}
-                          render={({ field }) => (
-                            <TextField
-                              id={`phoneNumbers.${index}.label`}
-                              type="text"
-                              size="small"
-                              fullWidth
-                              required
-                              placeholder={t('labelExample')}
-                              variant="outlined"
-                              label={t('label')}
-                              {...field}
-                            />
-                          )}
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Controller
-                          control={control}
-                          name={`phoneNumbers.${index}.number` as const}
-                          defaultValue={field.number}
-                          render={({ field }) => (
-                            <TextField
-                              id={`phoneNumbers.${index}.number`}
-                              type="text"
-                              size="small"
-                              fullWidth
-                              required
-                              variant="outlined"
-                              label={t('phoneNumber')}
-                              {...field}
-                            />
-                          )}
-                        />
-                      </Grid>
-                      <Grid item xs={1}>
-                        <IconButton color="inherit" size="small" onClick={() => remove(index)}>
-                          <ClearIcon />
-                        </IconButton>
-                      </Grid>
-                    </React.Fragment>
-                  ))}
-                  <Grid item xs={12}>
-                    <Button
-                      variant="outlined"
-                      startIcon={<PhoneIcon />}
-                      onClick={() => append({ label: '', number: '' })}
-                    >
-                      {t('newPhoneNumber')}
-                    </Button>
+      {open ? (
+        <Dialog
+          open={open}
+          fullWidth
+          maxWidth="sm"
+          onClose={() => setOpen(false)}
+          aria-labelledby="dialog-title"
+        >
+          <DialogTitle id="dialog-title">{t('createNewUser')}</DialogTitle>
+          <form
+            onSubmit={handleSubmit(({ passwordRepeat, ...newUserData }) => {
+              if (passwordRepeat !== newUserData.password) {
+                setError('password', { message: 'passwords_dont_match' })
+                return setError('passwordRepeat', { message: 'passwords_dont_match' })
+              }
+              return addNewUser.mutate(newUserData, {
+                onSuccess: () => {
+                  setOpen(false)
+                },
+                onError: e => {
+                  const apiErrors = e?.response?.data.errors || []
+                  for (const apiError of apiErrors) {
+                    setError(apiError.param, { message: apiError.msg })
+                  }
+                }
+              })
+            })}
+          >
+            <DialogContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography color="textSecondary" display="block" variant="subtitle1">
+                    {t('generalData')}
+                  </Typography>
+                  <Divider />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="firstName"
+                    type="text"
+                    size="small"
+                    fullWidth
+                    required
+                    variant="filled"
+                    label={t('firstName')}
+                    inputRef={firstNameRef}
+                    {...firstName}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="lastName"
+                    type="text"
+                    size="small"
+                    fullWidth
+                    variant="filled"
+                    label={t('lastName')}
+                    inputRef={lastNameRef}
+                    {...lastName}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="nickname"
+                    type="text"
+                    size="small"
+                    fullWidth
+                    variant="filled"
+                    label={t('nickname')}
+                    inputRef={nicknameRef}
+                    {...nickname}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="email"
+                    type="email"
+                    size="small"
+                    fullWidth
+                    required
+                    error={!!formState.errors.email}
+                    helperText={t(formState.errors.email?.message || '')}
+                    variant="filled"
+                    label={t('email')}
+                    inputRef={emailRef}
+                    {...email}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="password"
+                    type="password"
+                    size="small"
+                    fullWidth
+                    required
+                    error={!!formState.errors.password}
+                    helperText={t(formState.errors.password?.message || '')}
+                    variant="filled"
+                    label={t('password')}
+                    inputRef={passwordRef}
+                    {...password}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    id="passwordRepeat"
+                    type="password"
+                    size="small"
+                    fullWidth
+                    required
+                    error={!!formState.errors.passwordRepeat}
+                    helperText={t(formState.errors.passwordRepeat?.message || '')}
+                    variant="filled"
+                    label={t('passwordRepeat')}
+                    inputRef={passwordRepeatRef}
+                    {...passwordRepeat}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography color="textSecondary" display="block" variant="subtitle1">
+                    {t('contact')}
+                  </Typography>
+                  <Divider />
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid container spacing={2} alignItems="center">
+                    {fields.map((field, index) => (
+                      <React.Fragment key={field.id}>
+                        <Grid item xs={6}>
+                          <Controller
+                            control={control}
+                            name={`phoneNumbers.${index}.label` as const}
+                            defaultValue={field.label}
+                            render={({ field }) => (
+                              <TextField
+                                id={`phoneNumbers.${index}.label`}
+                                type="text"
+                                size="small"
+                                fullWidth
+                                required
+                                placeholder={t('labelExample')}
+                                variant="filled"
+                                label={t('label')}
+                                {...field}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={5}>
+                          <Controller
+                            control={control}
+                            name={`phoneNumbers.${index}.number` as const}
+                            defaultValue={field.number}
+                            render={({ field }) => (
+                              <TextField
+                                id={`phoneNumbers.${index}.number`}
+                                type="text"
+                                size="small"
+                                fullWidth
+                                required
+                                variant="filled"
+                                label={t('phoneNumber')}
+                                {...field}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={1}>
+                          <IconButton color="inherit" size="small" onClick={() => remove(index)}>
+                            <ClearIcon />
+                          </IconButton>
+                        </Grid>
+                      </React.Fragment>
+                    ))}
+                    <Grid item xs={12}>
+                      <Button
+                        variant="outlined"
+                        startIcon={<PhoneIcon />}
+                        onClick={() => append({ label: '', number: '' })}
+                      >
+                        {t('newPhoneNumber')}
+                      </Button>
+                    </Grid>
                   </Grid>
                 </Grid>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+                <Grid item xs={4}>
+                  <Controller
+                    control={control}
+                    name="active"
+                    render={({ field }) => (
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={field.value}
+                            onChange={ev => field.onChange(ev.target.checked)}
+                            color="secondary"
+                          />
+                        }
+                        label={t('activeUser')}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <Controller
+                    control={control}
+                    name="isSuperuser"
+                    render={({ field }) => (
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={field.value}
+                            onChange={ev => field.onChange(ev.target.checked)}
+                            color="secondary"
+                          />
+                        }
+                        label={t('superUser')}
+                      />
+                    )}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item xs={4}>
-                <Controller
-                  control={control}
-                  name="active"
-                  render={({ field }) => (
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={field.value}
-                          onChange={ev => field.onChange(ev.target.checked)}
-                          color="secondary"
-                        />
-                      }
-                      label={t('activeUser')}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Controller
-                  control={control}
-                  name="isSuperuser"
-                  render={({ field }) => (
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={field.value}
-                          onChange={ev => field.onChange(ev.target.checked)}
-                          color="secondary"
-                        />
-                      }
-                      label={t('superUser')}
-                    />
-                  )}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant="outlined"
-              color="primary"
-              data-testid="button_cancel"
-              onClick={() => setOpen(false)}
-            >
-              {t('cancel')}
-            </Button>
-            <LoadingButton
-              color="primary"
-              variant="contained"
-              data-testid="button_save"
-              disabled={
-                !formState.isDirty || !!Object.keys(formState.errors).length || editGroup.isLoading
-              }
-              type="submit"
-              isLoading={editGroup.isLoading}
-            >
-              {t('save')}
-            </LoadingButton>
-          </DialogActions>
-        </form>
-      </Dialog>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="outlined"
+                color="primary"
+                data-testid="button_cancel"
+                onClick={() => setOpen(false)}
+              >
+                {t('cancel')}
+              </Button>
+              <LoadingButton
+                color="primary"
+                variant="contained"
+                data-testid="button_save"
+                disabled={
+                  !formState.isDirty ||
+                  !!Object.keys(formState.errors).length ||
+                  addNewUser.isLoading
+                }
+                type="submit"
+                isLoading={addNewUser.isLoading}
+              >
+                {t('save')}
+              </LoadingButton>
+            </DialogActions>
+          </form>
+        </Dialog>
+      ) : null}
     </>
   )
 }
