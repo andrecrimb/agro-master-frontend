@@ -13,6 +13,11 @@ export type AuthUser = {
   isSuperuser: boolean
   isEmployee: boolean
   active: boolean
+  phoneNumbers?: {
+    id: number
+    number: string
+    label: string
+  }[]
 }
 
 export type User = AuthUser
