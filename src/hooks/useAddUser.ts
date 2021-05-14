@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query'
-import { User } from 'types/user'
+import { AddUserRequest } from 'types/user'
 import authAxios from 'utils/authAxios'
 import { useTranslation } from 'react-i18next'
 import { useSnackbar } from 'notistack'
@@ -11,7 +11,7 @@ const useAddUser = () => {
   const client = useQueryClient()
 
   return useMutation<any, AxiosError, any>(
-    async (reqBody: any) => {
+    async (reqBody: AddUserRequest) => {
       const { data } = await authAxios.post('/api/user', reqBody)
       return data
     },

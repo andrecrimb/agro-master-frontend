@@ -3,10 +3,8 @@ export type Login = {
   password: string
 }
 
-export type User = {
+export type AuthUser = {
   id: number
-  createdAt: string
-  updatedAt: string
   firstName: string
   lastName: string
   nickname: string
@@ -15,9 +13,21 @@ export type User = {
   isSuperuser: boolean
   isEmployee: boolean
   active: boolean
+}
 
+export type User = AuthUser
+
+export type AddUserRequest = {
+  firstName: string
+  lastName: string
+  nickname: string
+  email: string
+  password: string
+  isSuperuser: boolean
+  isEmployee: boolean
+  active: boolean
   phoneNumbers?: {
     label: string
     number: string
-  }
+  }[]
 }
