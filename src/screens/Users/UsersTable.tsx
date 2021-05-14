@@ -5,8 +5,10 @@ import { LinearProgress } from '@material-ui/core'
 import useUsers from 'hooks/useUsers'
 import { usersName, usersEmail, usersActive, usersSuperUser } from 'components/table/cells'
 import { useSingleSelect } from 'utils/useSingleSelect'
+import { useHistory } from 'react-router-dom'
 
 const UsersTable: React.FC = () => {
+  const history = useHistory()
   const { data = [] } = useUsers()
 
   const columns = React.useMemo(() => [usersName, usersEmail, usersActive, usersSuperUser], [])
@@ -23,7 +25,7 @@ const UsersTable: React.FC = () => {
         columns={columns}
         data={data}
         plugins={[useSortBy, useSingleSelect, usePagination]}
-        onRowSelect={(...aa) => console.log(aa)}
+        onRowSelect={rowId => rowId > 0 && history.push('/users/' + rowId)}
         options={{
           disableSortRemove: true,
           autoResetSortBy: false

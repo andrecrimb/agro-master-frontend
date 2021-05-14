@@ -35,7 +35,7 @@ const FORM_DEFAULT_VALUES = {
   phoneNumbers: [{ label: '', number: '' }]
 }
 
-const AddUsersButtonDialog: React.FC = () => {
+const AddUserButtonDialog: React.FC = () => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const addNewUser = useAddUser()
@@ -322,4 +322,4 @@ const AddUsersButtonDialog: React.FC = () => {
   )
 }
 
-export default AddUsersButtonDialog
+export default AddUserButtonDialog

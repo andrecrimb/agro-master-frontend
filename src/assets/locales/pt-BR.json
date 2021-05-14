@@ -36,5 +36,9 @@
   "email_duplicated": "Este e-mail já existe",
   "password_short": "Essa senha é muito curta",
   "passwords_dont_match": "As senhas estão diferentes",
-  "short_password": "Esta senha é muito curta"
+  "short_password": "Esta senha é muito curta",
+  "edit_user": "Editar Usuário",
+  "user_edit_success": "Usuário editado com sucesso",
+  "user_edit_error": "Erro ao editar o usuário",
+  "change_password": "Alterar senha"
 }
