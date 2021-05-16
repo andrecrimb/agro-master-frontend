@@ -20,6 +20,7 @@ import LoadingButton from 'components/LoadingButton'
 import useEditUser from 'hooks/useEditUser'
 import { useHistory } from 'react-router-dom'
 import useUsers from 'hooks/useUsers'
+import { muiTheme } from 'theme'
 
 const FORM_DEFAULT_VALUES = {
   firstName: '',
@@ -67,7 +68,10 @@ const EditUserDialog: React.FC = () => {
 
   return (
     <Dialog open fullWidth maxWidth="sm" onClose={onClose} aria-labelledby="dialog-title">
-      <DialogTitle id="dialog-title">{t('edit_user')}</DialogTitle>
+      <DialogTitle id="dialog-title">
+        {t('edit_user')} |{' '}
+        <span style={{ color: muiTheme.palette.primary.main }}>{userSelected?.firstName}</span>
+      </DialogTitle>
       {userSelected ? (
         <form
           onSubmit={handleSubmit(({ passwordRepeat, ...formValues }) => {

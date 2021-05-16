@@ -21,6 +21,7 @@
   "activeUser": "Usuário ativo",
   "createNewUser": "Criar novo Usuário",
   "cancel": "Cancelar",
+  "close": "Fechar",
   "save": "Salvar",
   "firstName": "Nome",
   "lastName": "Sobrenome",
@@ -40,5 +41,6 @@
   "edit_user": "Editar Usuário",
   "user_edit_success": "Usuário editado com sucesso",
   "user_edit_error": "Erro ao editar o usuário",
-  "change_password": "Alterar senha"
+  "change_password": "Alterar senha",
+  "edit": "Editar"
 }
