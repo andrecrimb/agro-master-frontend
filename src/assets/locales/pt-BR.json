@@ -47,6 +47,7 @@
   "producerName": "Nome do produtor",
   "propertyName": "Nome da propriedade",
   "new_owner_property": "Adicionar nova propriedade",
+  "edit_owner_property": "Editar propriedade",
   "cnpj": "CNPJ",
   "cpf": "CPF",
   "zip": "CEP",
@@ -57,5 +58,6 @@
   "add_property_success": "Nova propriedade adicionada com sucesso",
   "add_property_error": "Erro ao adicionar a propriedade",
   "edit_property_success": "Propriedade editada com sucesso",
-  "cnpj_duplicated": "Já existe uma propriedade com esse CNPJ"
+  "edit_property_error": "Erro ao editar a propriedade",
+  "cnpj_duplicated": "Já existe outra propriedade com esse CNPJ"
 }

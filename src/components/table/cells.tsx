@@ -48,14 +48,32 @@ export const usersSuperUser: Column<User> = {
 //#region Owner Properties
 export const ownerPropertyName: Column<OwnerProperty> = {
   Header: i18n.t('name'),
-  accessor: (r: OwnerProperty) => r.property.name
+  accessor: (r: OwnerProperty) => r.property.name,
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => <CellLink to={`${routes.properties}/${original.id}`}>{value}</CellLink>
 }
 export const ownerPropertyAddress: Column<OwnerProperty> = {
   Header: i18n.t('address'),
-  accessor: (r: OwnerProperty) => `${r.property.address}, ${r.property.city} - ${r.property.state}`
+  accessor: (r: OwnerProperty) => `${r.property.address}, ${r.property.city} - ${r.property.state}`,
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => <CellLink to={`${routes.properties}/${original.id}`}>{value}</CellLink>
 }
 export const ownerPropertyProducerName: Column<OwnerProperty> = {
   Header: i18n.t('producerName'),
-  accessor: (r: OwnerProperty) => r.property.producerName
+  accessor: (r: OwnerProperty) => r.property.producerName,
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => <CellLink to={`${routes.properties}/${original.id}`}>{value}</CellLink>
 }
 //#endregion

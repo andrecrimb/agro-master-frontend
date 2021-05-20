@@ -5,7 +5,7 @@ import PageHeader from 'components/PageHeader'
 import { useTranslation } from 'react-i18next'
 import PropertiesTable from 'screens/OwnerProperties/PropertiesTable'
 import AddPropertyButtonDialog from './AddPropertyButtonDialog'
-// import EditUserDialog from './EditUserDialog'
+import EditPropertyDialog from './EditPropertyDialog'
 import { Route } from 'react-router-dom'
 
 const Properties: React.FC = () => {
@@ -22,8 +22,7 @@ const Properties: React.FC = () => {
         </PageHeaderAndContentGrid>
       </Fade>
       <Route exact path="/properties/:propertyid">
-        <h1>lksdjflskd</h1>
-        {/* <EditUserDialog /> */}
+        <EditPropertyDialog />
       </Route>
     </>
   )
