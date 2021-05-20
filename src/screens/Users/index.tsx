@@ -7,6 +7,7 @@ import UsersTable from 'screens/Users/UsersTable'
 import AddUserButtonDialog from './AddUserButtonDialog'
 import EditUserDialog from './EditUserDialog'
 import { Route } from 'react-router-dom'
+import routes from 'routes'
 
 const Users: React.FC = () => {
   const { t } = useTranslation()
@@ -23,7 +24,7 @@ const Users: React.FC = () => {
           </MainContentGridArea>
         </PageHeaderAndContentGrid>
       </Fade>
-      <Route exact path="/users/:userid">
+      <Route exact path={`${routes.users}/:userid`}>
         <EditUserDialog />
       </Route>
     </>

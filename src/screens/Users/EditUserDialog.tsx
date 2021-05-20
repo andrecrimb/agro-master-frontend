@@ -21,6 +21,7 @@ import useEditUser from 'hooks/useEditUser'
 import { useHistory } from 'react-router-dom'
 import useUsers from 'hooks/useUsers'
 import { muiTheme } from 'theme'
+import routes from 'routes'
 
 const FORM_DEFAULT_VALUES = {
   firstName: '',
@@ -37,7 +38,7 @@ const FORM_DEFAULT_VALUES = {
 const EditUserDialog: React.FC = () => {
   const { t } = useTranslation()
   const history = useHistory()
-  const userId = +history.location.pathname.replace('/users/', '')
+  const userId = +history.location.pathname.replace(`${routes.users}/`, '')
   const { data: userSelected } = useUsers({ select: d => d.find(user => user.id === userId) })
 
   const editUser = useEditUser()
@@ -58,7 +59,7 @@ const EditUserDialog: React.FC = () => {
   const { ref: passwordRef, ...password } = register('password')
   const { ref: passwordRepeatRef, ...passwordRepeat } = register('passwordRepeat')
 
-  const onClose = () => history.push('/users/')
+  const onClose = () => history.push(routes.users)
 
   React.useEffect(() => {
     if (userSelected) {

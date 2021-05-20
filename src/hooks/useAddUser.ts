@@ -3,6 +3,7 @@ import authAxios from 'utils/authAxios'
 import { useTranslation } from 'react-i18next'
 import { useSnackbar } from 'notistack'
 import { AxiosError } from 'axios'
+import { User } from 'types/user'
 
 export type AddUserRequest = {
   firstName: string
@@ -23,7 +24,7 @@ const useAddUser = () => {
   const { enqueueSnackbar } = useSnackbar()
   const client = useQueryClient()
 
-  return useMutation<any, AxiosError, AddUserRequest>(
+  return useMutation<User[], AxiosError, AddUserRequest>(
     async (reqBody: AddUserRequest) => {
       const { data } = await authAxios.post('/api/user', reqBody)
       return data
