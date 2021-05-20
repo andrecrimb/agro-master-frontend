@@ -324,7 +324,9 @@ const muiTheme = createMuiTheme({
     },
     MuiDialogContentText: {
       root: {
-        whiteSpace: 'pre-line'
+        whiteSpace: 'pre-line',
+        marginBottom: '16px',
+        fontWeight: 500
       }
     }
   }

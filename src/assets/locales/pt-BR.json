@@ -59,5 +59,11 @@
   "add_property_error": "Erro ao adicionar a propriedade",
   "edit_property_success": "Propriedade editada com sucesso",
   "edit_property_error": "Erro ao editar a propriedade",
-  "cnpj_duplicated": "Já existe outra propriedade com esse CNPJ"
+  "delete_property_success": "Propriedade deletada com sucesso",
+  "delete_property_error": "Erro ao deletar a propriedade",
+  "cnpj_duplicated": "Já existe outra propriedade com esse CNPJ",
+  "deletePropertyQuestion": "Tem certeza que deseja excluir {{item}}? Esse processo é irreversivel.",
+  "delete": "Deletar",
+  "warning": "Atenção",
+  "deleteProperty": "Deletar propriedade"
 }

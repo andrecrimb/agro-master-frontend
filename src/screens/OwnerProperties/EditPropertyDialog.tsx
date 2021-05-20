@@ -7,9 +7,12 @@ import {
   Button,
   Grid,
   Typography,
+  Tooltip,
   TextField,
-  Divider
+  Divider,
+  IconButton
 } from '@material-ui/core'
+import { Delete as DeleteIcon } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
 import LoadingButton from 'components/LoadingButton'
 import { useForm } from 'react-hook-form'
@@ -19,6 +22,8 @@ import routes from 'routes'
 import useOwnerProperties from 'hooks/useOwnerProperties'
 import { muiTheme } from 'theme'
 import useEditOwnerProperty from 'hooks/useEditOwnerProperty'
+import useDeleteOwnerProperty from 'hooks/useDeleteOwnerProperty'
+import useDialog from 'hooks/useDialog'
 
 const FORM_DEFAULT_VALUES = {
   producerName: '',
@@ -35,6 +40,8 @@ const FORM_DEFAULT_VALUES = {
 const EditPropertyDialog: React.FC = () => {
   const { t } = useTranslation()
   const history = useHistory()
+  const { newDialog } = useDialog()
+
   const ownerPropertyId = +history.location.pathname.replace(`${routes.properties}/`, '')
   const { data: propertySelected } = useOwnerProperties({
     select: d => d.find(property => property.id === ownerPropertyId)
@@ -42,6 +49,7 @@ const EditPropertyDialog: React.FC = () => {
 
   const editProperty = useEditOwnerProperty()
   const searchZip = useZipSearch()
+  const deleteProperty = useDeleteOwnerProperty()
 
   const { handleSubmit, setValue, register, formState, reset, clearErrors, setError } = useForm<
     typeof FORM_DEFAULT_VALUES
@@ -268,6 +276,28 @@ const EditPropertyDialog: React.FC = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
+            <Tooltip title={t('deleteProperty') + ''} arrow placement="left">
+              <IconButton
+                onClick={() =>
+                  newDialog({
+                    title: t('warning') + '!',
+                    message: t('deletePropertyQuestion', {
+                      item: propertySelected.property.name
+                    }),
+                    confirmationButton: {
+                      text: t('delete'),
+                      onClick: () =>
+                        deleteProperty.mutateAsync(
+                          { ownerPropertyId: propertySelected.id },
+                          { onSuccess: () => onClose() }
+                        )
+                    }
+                  })
+                }
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
             <Button
               variant="outlined"
               color="primary"
