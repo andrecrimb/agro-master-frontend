@@ -42,5 +42,20 @@
   "user_edit_success": "Usuário editado com sucesso",
   "user_edit_error": "Erro ao editar o usuário",
   "change_password": "Alterar senha",
-  "edit": "Editar"
+  "edit": "Editar",
+  "address": "Endereço",
+  "producerName": "Nome do produtor",
+  "propertyName": "Nome da propriedade",
+  "new_owner_property": "Adicionar nova propriedade",
+  "cnpj": "CNPJ",
+  "cpf": "CPF",
+  "zip": "CEP",
+  "ie": "Inscrição Estadual",
+  "city": "Cidade",
+  "state": "Estado",
+  "invalid_zip": "CEP inválido",
+  "add_property_success": "Nova propriedade adicionada com sucesso",
+  "add_property_error": "Erro ao adicionar a propriedade",
+  "edit_property_success": "Propriedade editada com sucesso",
+  "cnpj_duplicated": "Já existe uma propriedade com esse CNPJ"
 }

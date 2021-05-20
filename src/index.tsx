@@ -13,6 +13,7 @@ import routes from 'routes'
 import PageNotFoundPlaceholder from 'components/PageNotFoundPlaceholder'
 
 const Users = React.lazy(() => import('screens/Users'))
+const Properties = React.lazy(() => import('screens/OwnerProperties'))
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
           <React.Suspense fallback={<PageLoading />}>
             <Switch>
               <Route path={routes.users} component={Users} />
+              <Route path={routes.properties} component={Properties} />
               <Route component={PageNotFoundPlaceholder} />
             </Switch>
           </React.Suspense>

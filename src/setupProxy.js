@@ -11,4 +11,12 @@ module.exports = function (app) {
       preserveHeaderKeyCase: true
     })
   )
+  app.use(
+    createProxyMiddleware('/ws', {
+      target: 'https://viacep.com.br/',
+      changeOrigin: true,
+      cookieDomainRewrite: 'localhost',
+      preserveHeaderKeyCase: true
+    })
+  )
 }

@@ -4,6 +4,8 @@ import i18n from 'i18n'
 import { User } from 'types/user'
 import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
 import CellLink from 'components/table/CellLink'
+import routes from 'routes'
+import { OwnerProperty } from 'types/property'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -16,7 +18,7 @@ export const usersName: Column<User> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={`/users/${original.id}`}>{value}</CellLink>
+    return <CellLink to={`${routes.users}/${original.id}`}>{value}</CellLink>
   }
 }
 export const usersEmail: Column<User> = {
@@ -28,7 +30,7 @@ export const usersEmail: Column<User> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={`/users/${original.id}`}>{value}</CellLink>
+    return <CellLink to={`${routes.users}/${original.id}`}>{value}</CellLink>
   }
 }
 export const usersActive: Column<User> = {
@@ -40,5 +42,20 @@ export const usersSuperUser: Column<User> = {
   Header: i18n.t('superUser'),
   accessor: 'isSuperuser',
   Cell: ({ value }) => (value ? <CheckIcon color="primary" /> : <CloseIcon color="error" />)
+}
+//#endregion
+
+//#region Owner Properties
+export const ownerPropertyName: Column<OwnerProperty> = {
+  Header: i18n.t('name'),
+  accessor: (r: OwnerProperty) => r.property.name
+}
+export const ownerPropertyAddress: Column<OwnerProperty> = {
+  Header: i18n.t('address'),
+  accessor: (r: OwnerProperty) => `${r.property.address}, ${r.property.city} - ${r.property.state}`
+}
+export const ownerPropertyProducerName: Column<OwnerProperty> = {
+  Header: i18n.t('producerName'),
+  accessor: (r: OwnerProperty) => r.property.producerName
 }
 //#endregion
