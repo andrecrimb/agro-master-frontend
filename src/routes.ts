@@ -3,6 +3,7 @@ const routes = {
   customers: '/customers',
   properties: '/properties',
   users: '/users',
-  sales: '/sales'
+  sales: '/sales',
+  rootstocks: '/rootstocks'
 }
 export default routes

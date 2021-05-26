@@ -114,6 +114,7 @@ const AddCustomerButtonDialog: React.FC = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    autoFocus
                     id="firstName"
                     type="text"
                     size="small"

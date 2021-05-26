@@ -16,7 +16,8 @@ import {
   SupervisedUserCircleRounded as UsersIcon,
   PinDropRounded as PropertiesIcon,
   MonetizationOnRounded as SalesIcon,
-  DashboardRounded as DashboardIcon
+  DashboardRounded as DashboardIcon,
+  MergeTypeRounded as RootstocksIcon
 } from '@material-ui/icons'
 import { DrawerGridArea } from 'components/GridLayout'
 import { muiTheme } from 'theme'
@@ -127,6 +128,11 @@ export const drawerList: DrawerItem[] = [
     path: routes.users,
     title: 'user_plural',
     icon: UsersIcon
+  },
+  {
+    path: routes.rootstocks,
+    title: 'rootstock_plural',
+    icon: RootstocksIcon
   }
 ]
 

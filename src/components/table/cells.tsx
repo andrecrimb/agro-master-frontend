@@ -67,6 +67,21 @@ export const customersActive: Column<Customer> = {
 }
 //#endregion
 
+//#region Rootstocks
+export const rootstocksName: Column<Customer> = {
+  Header: i18n.t('name'),
+  accessor: 'name',
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => {
+    return <CellLink to={`${routes.rootstocks}/${original.id}`}>{value}</CellLink>
+  }
+}
+//#endregion
+
 //#region Owner Properties
 export const ownerPropertyName: Column<OwnerProperty> = {
   Header: i18n.t('name'),

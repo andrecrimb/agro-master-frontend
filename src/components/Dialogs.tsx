@@ -71,6 +71,7 @@ const Dialogs: React.FC = () => {
               isLoading={loading && index === dialogs.length - 1}
               variant="contained"
               color="primary"
+              autoFocus
             >
               {d.confirmationButton?.text}
             </LoadingButton>

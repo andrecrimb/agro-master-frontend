@@ -15,6 +15,7 @@ import PageNotFoundPlaceholder from 'components/PageNotFoundPlaceholder'
 const Users = React.lazy(() => import('screens/Users'))
 const Properties = React.lazy(() => import('screens/OwnerProperties'))
 const Customers = React.lazy(() => import('screens/Customers'))
+const Rootstocks = React.lazy(() => import('screens/Rootstocks'))
 
 const App: React.FC = () => {
   return (
@@ -29,6 +30,7 @@ const App: React.FC = () => {
               <Route path={routes.users} component={Users} />
               <Route path={routes.properties} component={Properties} />
               <Route path={routes.customers} component={Customers} />
+              <Route path={routes.rootstocks} component={Rootstocks} />
               <Route component={PageNotFoundPlaceholder} />
             </Switch>
           </React.Suspense>
