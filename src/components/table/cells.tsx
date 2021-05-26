@@ -6,6 +6,7 @@ import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
 import CellLink from 'components/table/CellLink'
 import routes from 'routes'
 import { OwnerProperty } from 'types/property'
+import { Customer } from 'types/customer'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -41,6 +42,27 @@ export const usersActive: Column<User> = {
 export const usersSuperUser: Column<User> = {
   Header: i18n.t('superUser'),
   accessor: 'isSuperuser',
+  Cell: ({ value }) => (value ? <CheckIcon color="primary" /> : <CloseIcon color="error" />)
+}
+//#endregion
+
+//#region Customers
+export const customersName: Column<Customer> = {
+  Header: i18n.t('name'),
+  accessor: (r: Customer) =>
+    r.nickname ? `${r.firstName} ${r.lastName} (${r.nickname})` : `${r.firstName} ${r.lastName}`,
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => {
+    return <CellLink to={`${routes.customers}/${original.id}`}>{value}</CellLink>
+  }
+}
+export const customersActive: Column<Customer> = {
+  Header: i18n.t('active'),
+  accessor: 'active',
   Cell: ({ value }) => (value ? <CheckIcon color="primary" /> : <CloseIcon color="error" />)
 }
 //#endregion

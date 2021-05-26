@@ -2,24 +2,17 @@ import React from 'react'
 import { usePagination, useSortBy } from 'react-table'
 import Table from 'components/table/Table'
 import { LinearProgress } from '@material-ui/core'
-import useOwnerProperties from 'hooks/useOwnerProperties'
+import useCustomers from 'hooks/useCustomers'
+import { customersName, customersActive } from 'components/table/cells'
 import ScreenPlaceholder from 'components/ScreenPlaceholder'
-import {
-  ownerPropertyAddress,
-  ownerPropertyName,
-  ownerPropertyProducerName
-} from 'components/table/cells'
 import { useTranslation } from 'react-i18next'
 
-const PropertiesTable: React.FC = () => {
+const CustomersTable: React.FC = () => {
   const { t } = useTranslation()
-  const { data = [], isFetching } = useOwnerProperties()
+  const { data = [], isFetching } = useCustomers()
   const noData = !isFetching && !data.length
 
-  const columns = React.useMemo(
-    () => [ownerPropertyName, ownerPropertyProducerName, ownerPropertyAddress],
-    []
-  )
+  const columns = React.useMemo(() => [customersName, customersActive], [])
 
   return (
     <>
@@ -29,7 +22,7 @@ const PropertiesTable: React.FC = () => {
         </div>
       )}
       {noData ? (
-        <ScreenPlaceholder description={t('no_properties')} />
+        <ScreenPlaceholder description={t('no_customers')} />
       ) : (
         <Table
           columns={columns}
@@ -45,4 +38,4 @@ const PropertiesTable: React.FC = () => {
   )
 }
 
-export default PropertiesTable
+export default CustomersTable

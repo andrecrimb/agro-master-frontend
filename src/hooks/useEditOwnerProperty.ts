@@ -6,7 +6,7 @@ import { AxiosError } from 'axios'
 
 export type EditPropertyRequest = {
   id: number
-  data: {
+  data: Partial<{
     producerName: string
     name: string
     cnpj: string
@@ -16,7 +16,7 @@ export type EditPropertyRequest = {
     zip: string
     city: string
     state: string
-  }
+  }>
 }
 
 const useEditOwnerProperty = () => {

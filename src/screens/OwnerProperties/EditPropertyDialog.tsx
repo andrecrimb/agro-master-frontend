@@ -93,8 +93,12 @@ const EditPropertyDialog: React.FC = () => {
       {propertySelected ? (
         <form
           onSubmit={handleSubmit(values => {
+            const dataToEdit = Object.keys(formState.dirtyFields).reduce(
+              (prev, next) => ({ ...prev, [next]: values[next] }),
+              {} as Partial<typeof FORM_DEFAULT_VALUES>
+            )
             editProperty.mutate(
-              { id: ownerPropertyId, data: values },
+              { id: ownerPropertyId, data: dataToEdit },
               {
                 onSuccess: () => {
                   onClose()
@@ -208,16 +212,16 @@ const EditPropertyDialog: React.FC = () => {
                         onSuccess: res => {
                           clearErrors('zip')
                           if (res) {
-                            setValue('state', res.uf)
-                            setValue('city', res.localidade)
-                            setValue('address', res.logradouro)
+                            setValue('state', res.uf, { shouldDirty: true })
+                            setValue('city', res.localidade, { shouldDirty: true })
+                            setValue('address', res.logradouro, { shouldDirty: true })
                           }
                         },
                         onError: () => {
                           setError('zip', { message: 'invalid_zip' })
-                          setValue('state', '')
-                          setValue('city', '')
-                          setValue('address', '')
+                          setValue('state', '', { shouldDirty: true })
+                          setValue('city', '', { shouldDirty: true })
+                          setValue('address', '', { shouldDirty: true })
                         }
                       })
                   }}
@@ -276,12 +280,12 @@ const EditPropertyDialog: React.FC = () => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Tooltip title={t('deleteProperty') + ''} arrow placement="left">
+            <Tooltip title={t('delete_property') + ''} arrow placement="left">
               <IconButton
                 onClick={() =>
                   newDialog({
                     title: t('warning') + '!',
-                    message: t('deletePropertyQuestion', {
+                    message: t('delete_question', {
                       item: propertySelected.property.name
                     }),
                     confirmationButton: {

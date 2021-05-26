@@ -6,10 +6,9 @@ import useUsers from 'hooks/useUsers'
 import { usersName, usersEmail, usersActive, usersSuperUser } from 'components/table/cells'
 
 const UsersTable: React.FC = () => {
-  const { data = [] } = useUsers()
+  const { data = [], isFetching } = useUsers()
 
   const columns = React.useMemo(() => [usersName, usersEmail, usersActive, usersSuperUser], [])
-  const isFetching = false
 
   return (
     <>

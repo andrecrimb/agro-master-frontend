@@ -31,11 +31,11 @@ const useAddUser = () => {
     },
     {
       onSuccess: () => {
-        enqueueSnackbar(t('newUserAdded'), { variant: 'success' })
+        enqueueSnackbar(t('new_user_added'), { variant: 'success' })
         client.invalidateQueries('users')
       },
       onError: () => {
-        enqueueSnackbar(t('newUserError'), { variant: 'error' })
+        enqueueSnackbar(t('new_user_error'), { variant: 'error' })
       }
     }
   )

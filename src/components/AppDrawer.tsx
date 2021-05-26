@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import {
   MenuRounded as MenuIcon,
-  PeopleRounded as ClientsIcon,
+  PeopleRounded as CustomersIcon,
   SupervisedUserCircleRounded as UsersIcon,
   PinDropRounded as PropertiesIcon,
   MonetizationOnRounded as SalesIcon,
@@ -114,9 +114,9 @@ export const drawerList: DrawerItem[] = [
     icon: SalesIcon
   },
   {
-    path: routes.clients,
-    title: 'client_plural',
-    icon: ClientsIcon
+    path: routes.customers,
+    title: 'customer_plural',
+    icon: CustomersIcon
   },
   {
     path: routes.properties,

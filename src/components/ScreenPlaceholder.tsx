@@ -1,15 +1,17 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import styled from 'styledComponents'
 import { Typography } from '@material-ui/core'
 import { SvgIconProps } from '@material-ui/core/SvgIcon'
+import { FolderOpen as EmptyIcon } from '@material-ui/icons'
+import i18n from 'i18n'
 
 //#region Interfaces and Props
 type Props = {
-  icon?: React.ComponentType<SvgIconProps>
+  withAbsoluteWrapper?: boolean
+  Icon?: React.ComponentType<SvgIconProps>
   description?: string
+  title?: string
   iconSize?: string
-  titleFontSize?: string
-  descriptionSize?: string
 }
 //#endregion
 
@@ -35,19 +37,27 @@ const TextWrapper = styled.div`
   margin-bottom: 20px;
   padding: 0 16px;
 `
+const Wrapper = styled.div`
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 //#endregion
 
-const ScreenPlaceholder: React.FC<PropsWithChildren<Props>> = ({
-  children,
+const ScreenPlaceholder: React.FC<Props> = ({
+  title = i18n.t('empty_list'),
   description,
-  icon: Icon,
+  Icon = EmptyIcon,
   iconSize,
-  titleFontSize,
-  descriptionSize
+  withAbsoluteWrapper = true
 }) => {
   return (
-    <ContainerWrapper>
-      {Icon && (
+    <Wrapper style={{ position: withAbsoluteWrapper ? 'absolute' : '' }}>
+      <ContainerWrapper>
         <Icon
           style={{
             fontSize: iconSize ? iconSize : '3.8rem',
@@ -55,16 +65,16 @@ const ScreenPlaceholder: React.FC<PropsWithChildren<Props>> = ({
             opacity: 0.3
           }}
         />
-      )}
-      <TextWrapper>
-        <Typography align="center" variant="h4" style={{ fontSize: titleFontSize }}>
-          {children}
-        </Typography>
-        <Typography align="center" variant="h5" style={{ fontSize: descriptionSize }}>
-          {description}
-        </Typography>
-      </TextWrapper>
-    </ContainerWrapper>
+        <TextWrapper>
+          <Typography align="center" variant="h4">
+            {title}
+          </Typography>
+          <Typography align="center" variant="h5">
+            {description}
+          </Typography>
+        </TextWrapper>
+      </ContainerWrapper>
+    </Wrapper>
   )
 }
 

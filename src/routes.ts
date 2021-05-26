@@ -1,6 +1,6 @@
 const routes = {
   dashboard: '/',
-  clients: '/clients',
+  customers: '/customers',
   properties: '/properties',
   users: '/users',
   sales: '/sales'

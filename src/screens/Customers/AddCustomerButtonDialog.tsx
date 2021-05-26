@@ -7,56 +7,72 @@ import {
   IconButton,
   Button,
   Grid,
+  Switch,
   Typography,
+  FormControlLabel,
   TextField,
   Divider
 } from '@material-ui/core'
+import {
+  AddRounded as AddIcon,
+  PhoneRounded as PhoneIcon,
+  ClearRounded as ClearIcon
+} from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
+import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
-import { useForm } from 'react-hook-form'
-import { AddRounded as AddIcon } from '@material-ui/icons'
+import useAddCustomer from 'hooks/useAddCustomer'
 import useZipSearch from 'hooks/useZipSearch'
-import useAddOwnerProperty from 'hooks/useAddOwnerProperty'
 
 const FORM_DEFAULT_VALUES = {
-  producerName: '',
-  name: '',
-  cnpj: '',
-  cpf: '',
-  ie: '',
+  firstName: '',
+  lastName: '',
+  nickname: '',
+  active: true,
   address: '',
   zip: '',
   city: '',
-  state: ''
+  state: '',
+  phoneNumbers: [{ label: '', number: '' }]
 }
 
-const AddPropertyButtonDialog: React.FC = () => {
+const AddCustomerButtonDialog: React.FC = () => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
 
-  const addProperty = useAddOwnerProperty()
+  const addNewCustomer = useAddCustomer()
   const searchZip = useZipSearch()
 
-  const { handleSubmit, setValue, register, formState, reset, clearErrors, setError } = useForm<
-    typeof FORM_DEFAULT_VALUES
-  >({
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState,
+    setError,
+    reset,
+    setValue,
+    clearErrors
+  } = useForm<typeof FORM_DEFAULT_VALUES>({
     defaultValues: FORM_DEFAULT_VALUES
   })
 
-  const { ref: producerNameRef, ...producerName } = register('producerName')
-  const { ref: nameRef, ...name } = register('name')
-  const { ref: cnpjRef, ...cnpj } = register('cnpj')
-  const { ref: cpfRef, ...cpf } = register('cpf')
-  const { ref: ieRef, ...ie } = register('ie')
-  const { ref: zipRef, onBlur: zipOnBlur, ...zip } = register('zip')
-  const { ref: addressRef, ...address } = register('address')
-  const { ref: cityRef, ...city } = register('city')
-  const { ref: stateRef, ...state } = register('state')
+  const { fields, append, remove } = useFieldArray({
+    name: 'phoneNumbers',
+    control
+  })
 
   React.useEffect(() => {
     reset(FORM_DEFAULT_VALUES)
     searchZip.reset()
   }, [open === false])
+
+  const { ref: firstNameRef, ...firstName } = register('firstName')
+  const { ref: lastNameRef, ...lastName } = register('lastName')
+  const { ref: nicknameRef, ...nickname } = register('nickname')
+  const { ref: zipRef, onBlur: zipOnBlur, ...zip } = register('zip')
+  const { ref: addressRef, ...address } = register('address')
+  const { ref: cityRef, ...city } = register('city')
+  const { ref: stateRef, ...state } = register('state')
 
   return (
     <>
@@ -72,10 +88,10 @@ const AddPropertyButtonDialog: React.FC = () => {
           onClose={() => setOpen(false)}
           aria-labelledby="dialog-title"
         >
-          <DialogTitle id="dialog-title">{t('new_owner_property')}</DialogTitle>
+          <DialogTitle id="dialog-title">{t('add_new_customer')}</DialogTitle>
           <form
             onSubmit={handleSubmit(values => {
-              addProperty.mutate(values, {
+              return addNewCustomer.mutate(values, {
                 onSuccess: () => {
                   setOpen(false)
                 },
@@ -96,71 +112,42 @@ const AddPropertyButtonDialog: React.FC = () => {
                   </Typography>
                   <Divider />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <TextField
-                    id="name"
+                    id="firstName"
                     type="text"
                     size="small"
                     fullWidth
                     required
                     variant="filled"
-                    label={t('propertyName')}
-                    inputRef={nameRef}
-                    {...name}
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <TextField
-                    id="cnpj"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    error={!!formState.errors.cnpj}
-                    helperText={t(formState.errors.cnpj?.message || '')}
-                    variant="filled"
-                    label={t('cnpj')}
-                    inputRef={cnpjRef}
-                    {...cnpj}
+                    label={t('firstName')}
+                    inputRef={firstNameRef}
+                    {...firstName}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    id="cpf"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    variant="filled"
-                    label={t('cpf')}
-                    inputRef={cpfRef}
-                    {...cpf}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="ie"
+                    id="lastName"
                     type="text"
                     size="small"
                     fullWidth
                     required
                     variant="filled"
-                    label={t('ie')}
-                    inputRef={ieRef}
-                    {...ie}
+                    label={t('lastName')}
+                    inputRef={lastNameRef}
+                    {...lastName}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    id="producerName"
+                    id="nickname"
                     type="text"
                     size="small"
                     fullWidth
-                    required
                     variant="filled"
-                    label={t('producerName')}
-                    inputRef={producerNameRef}
-                    {...producerName}
+                    label={t('nickname')}
+                    inputRef={nicknameRef}
+                    {...nickname}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -175,7 +162,6 @@ const AddPropertyButtonDialog: React.FC = () => {
                     type="text"
                     size="small"
                     fullWidth
-                    required
                     error={!!formState.errors.zip?.message}
                     helperText={t(formState.errors.zip?.message || '')}
                     variant="filled"
@@ -212,7 +198,6 @@ const AddPropertyButtonDialog: React.FC = () => {
                         type="text"
                         size="small"
                         fullWidth
-                        required
                         variant="filled"
                         label={t('address')}
                         inputRef={addressRef}
@@ -225,7 +210,6 @@ const AddPropertyButtonDialog: React.FC = () => {
                         type="text"
                         size="small"
                         fullWidth
-                        required
                         InputProps={{ readOnly: true }}
                         variant="filled"
                         label={t('city')}
@@ -239,7 +223,6 @@ const AddPropertyButtonDialog: React.FC = () => {
                         type="text"
                         size="small"
                         fullWidth
-                        required
                         InputProps={{ readOnly: true }}
                         variant="filled"
                         label={t('state')}
@@ -249,6 +232,94 @@ const AddPropertyButtonDialog: React.FC = () => {
                     </Grid>
                   </>
                 ) : null}
+                <Grid item xs={12}>
+                  <Typography color="textSecondary" display="block" variant="subtitle1">
+                    {t('contact')}
+                  </Typography>
+                  <Divider />
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid container spacing={2} alignItems="center">
+                    {fields.map((field, index) => (
+                      <React.Fragment key={field.id}>
+                        <Grid item xs={6}>
+                          <Controller
+                            control={control}
+                            name={`phoneNumbers.${index}.label` as const}
+                            defaultValue={field.label}
+                            render={({ field }) => (
+                              <TextField
+                                id={`phoneNumbers.${index}.label`}
+                                type="text"
+                                size="small"
+                                fullWidth
+                                required
+                                placeholder={t('labelExample')}
+                                variant="filled"
+                                label={t('label')}
+                                {...field}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={5}>
+                          <Controller
+                            control={control}
+                            name={`phoneNumbers.${index}.number` as const}
+                            defaultValue={field.number}
+                            render={({ field }) => (
+                              <TextField
+                                id={`phoneNumbers.${index}.number`}
+                                type="text"
+                                size="small"
+                                fullWidth
+                                required
+                                variant="filled"
+                                label={t('phoneNumber')}
+                                {...field}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={1}>
+                          <IconButton color="inherit" size="small" onClick={() => remove(index)}>
+                            <ClearIcon />
+                          </IconButton>
+                        </Grid>
+                      </React.Fragment>
+                    ))}
+                    <Grid item xs={12}>
+                      <Button
+                        variant="outlined"
+                        startIcon={<PhoneIcon />}
+                        onClick={() => append({ label: '', number: '' })}
+                      >
+                        {t('newPhoneNumber')}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+                <Grid item xs={4}>
+                  <Controller
+                    control={control}
+                    name="active"
+                    render={({ field }) => (
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={field.value}
+                            onChange={ev => field.onChange(ev.target.checked)}
+                            color="secondary"
+                          />
+                        }
+                        label={t('active_customer')}
+                      />
+                    )}
+                  />
+                </Grid>
               </Grid>
             </DialogContent>
             <DialogActions>
@@ -267,10 +338,10 @@ const AddPropertyButtonDialog: React.FC = () => {
                 disabled={
                   !formState.isDirty ||
                   !!Object.keys(formState.errors).length ||
-                  addProperty.isLoading
+                  addNewCustomer.isLoading
                 }
                 type="submit"
-                isLoading={addProperty.isLoading}
+                isLoading={addNewCustomer.isLoading}
               >
                 {t('save')}
               </LoadingButton>
@@ -282,4 +353,4 @@ const AddPropertyButtonDialog: React.FC = () => {
   )
 }
 
-export default AddPropertyButtonDialog
+export default AddCustomerButtonDialog
