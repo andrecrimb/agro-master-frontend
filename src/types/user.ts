@@ -11,7 +11,6 @@ export type AuthUser = {
   email: string
   password: string
   isSuperuser: boolean
-  isEmployee: boolean
   active: boolean
   phoneNumbers?: {
     id: number

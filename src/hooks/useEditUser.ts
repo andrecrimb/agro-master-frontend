@@ -13,7 +13,6 @@ export type EditUserRequest = {
     email?: string
     password?: string
     isSuperuser?: boolean
-    isEmployee?: boolean
     active?: boolean
     phoneNumbers?: {
       label?: string
