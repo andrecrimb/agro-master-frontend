@@ -18,7 +18,7 @@ const UserDetails: React.FC<Props> = ({ id }) => {
   return (
     <DetailsDrawerWrapper
       header={{
-        title: t('user') + ' ',
+        title: t('user') + ' | ',
         highlightTitle: `${user.firstName} ${user.lastName || ''} ${
           user.nickname !== '' ? `(${user.nickname})` : ''
         }`

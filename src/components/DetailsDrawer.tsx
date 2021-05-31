@@ -3,8 +3,11 @@ import React, { PropsWithChildren } from 'react'
 import SplitterLayout from 'react-splitter-layout'
 
 const UserDrawer = React.lazy(() => import('../screens/Users/UserDetails'))
+const OwnerPropertyDrawer = React.lazy(
+  () => import('../screens/OwnerProperties/OwnerPropertyDetails')
+)
 
-type DrawerType = undefined | 'user' | 'customer'
+type DrawerType = undefined | 'user' | 'property'
 
 const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
@@ -12,12 +15,11 @@ const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   } = useUrlSearch({ params: ['drawer', 'id'] })
 
   const drawerType = drawer as DrawerType
-
   const DrawerComponent = React.useCallback(() => {
     let content: null | React.ReactElement = null
     switch (drawerType) {
-      case 'customer':
-        content = null
+      case 'property':
+        content = <OwnerPropertyDrawer id={+id} />
         break
       case 'user':
         content = <UserDrawer id={+id} />

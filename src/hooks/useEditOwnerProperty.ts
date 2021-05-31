@@ -30,9 +30,10 @@ const useEditOwnerProperty = () => {
       return data
     },
     {
-      onSuccess: () => {
+      onSuccess: (_, vars) => {
         enqueueSnackbar(t('edit_property_success'), { variant: 'success' })
         client.invalidateQueries('owner_properties')
+        client.invalidateQueries(['owner_property', vars.id])
       },
       onError: () => {
         enqueueSnackbar(t('edit_property_error'), { variant: 'error' })

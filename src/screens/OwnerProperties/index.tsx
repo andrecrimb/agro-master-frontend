@@ -5,25 +5,21 @@ import PageHeader from 'components/PageHeader'
 import { useTranslation } from 'react-i18next'
 import PropertiesTable from 'screens/OwnerProperties/PropertiesTable'
 import AddPropertyButtonDialog from './AddPropertyButtonDialog'
-import EditPropertyDialog from './EditPropertyDialog'
-import { Route } from 'react-router-dom'
+import DetailsDrawer from 'components/DetailsDrawer'
 
 const Properties: React.FC = () => {
   const { t } = useTranslation()
   return (
-    <>
-      <Fade in>
-        <PageHeaderAndContentGrid>
-          <PageHeader title={t('property_plural')}>{<AddPropertyButtonDialog />}</PageHeader>
-          <MainContentGridArea>
+    <Fade in>
+      <PageHeaderAndContentGrid>
+        <PageHeader title={t('property_plural')}>{<AddPropertyButtonDialog />}</PageHeader>
+        <MainContentGridArea>
+          <DetailsDrawer>
             <PropertiesTable />
-          </MainContentGridArea>
-        </PageHeaderAndContentGrid>
-      </Fade>
-      <Route exact path="/properties/:propertyid">
-        <EditPropertyDialog />
-      </Route>
-    </>
+          </DetailsDrawer>
+        </MainContentGridArea>
+      </PageHeaderAndContentGrid>
+    </Fade>
   )
 }
 
