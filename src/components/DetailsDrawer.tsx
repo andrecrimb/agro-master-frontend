@@ -1,9 +1,10 @@
 import useUrlSearch from 'hooks/useUrlSearch'
 import React, { PropsWithChildren } from 'react'
 import SplitterLayout from 'react-splitter-layout'
-import DetailsDrawerWrapper from 'components/DetailsDrawerWrapper'
 
-type DrawerType = null | 'user' | 'customer'
+const UserDrawer = React.lazy(() => import('../screens/Users/UserDetails'))
+
+type DrawerType = undefined | 'user' | 'customer'
 
 const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
@@ -16,27 +17,10 @@ const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     let content: null | React.ReactElement = null
     switch (drawerType) {
       case 'customer':
-        content = <div>Customer details</div>
+        content = null
         break
       case 'user':
-        content = (
-          <DetailsDrawerWrapper
-            header={{
-              title: 'Antonio carlos',
-              highlightTitle: 'Joaoziho',
-              RightActions: (
-                <>
-                  <button>Action</button>
-                </>
-              )
-            }}
-            tabs={[
-              { label: 'Geral', component: <div>Geral information</div> },
-              { label: 'Vendas', component: <div>Vendas</div> },
-              { label: 'Propriedades', component: <div>Propriedades</div> }
-            ]}
-          />
-        )
+        content = <UserDrawer id={+id} />
         break
       default:
         content = null
@@ -46,9 +30,9 @@ const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   }, [drawerType, id])
 
   return (
-    <SplitterLayout percentage secondaryInitialSize={38}>
+    <SplitterLayout percentage secondaryInitialSize={45}>
       {children}
-      {DrawerComponent !== null ? (
+      {drawer ? (
         <React.Suspense fallback={<div />}>
           <DrawerComponent />
         </React.Suspense>

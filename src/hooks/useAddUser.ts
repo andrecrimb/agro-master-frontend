@@ -26,7 +26,7 @@ const useAddUser = () => {
 
   return useMutation<User[], AxiosError, AddUserRequest>(
     async (reqBody: AddUserRequest) => {
-      const { data } = await authAxios.post('/api/user', reqBody)
+      const { data } = await authAxios.post('/api/users', reqBody)
       return data
     },
     {

@@ -7,6 +7,7 @@ import CellLink from 'components/table/CellLink'
 import routes from 'routes'
 import { OwnerProperty } from 'types/property'
 import { Customer } from 'types/customer'
+import { addURLSearch } from 'utils/utils'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -19,7 +20,7 @@ export const usersName: Column<User> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={`${routes.users}/${original.id}`}>{value}</CellLink>
+    return <CellLink to={addURLSearch({ drawer: 'user', id: original.id })}>{value}</CellLink>
   }
 }
 export const usersEmail: Column<User> = {
@@ -31,7 +32,7 @@ export const usersEmail: Column<User> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={`${routes.users}/${original.id}`}>{value}</CellLink>
+    return <CellLink to={addURLSearch({ drawer: 'user', id: original.id })}>{value}</CellLink>
   }
 }
 export const usersActive: Column<User> = {
@@ -57,7 +58,7 @@ export const customersName: Column<Customer> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={`${routes.customers}/${original.id}`}>{value}</CellLink>
+    return <CellLink to={addURLSearch({ drawer: 'customer', id: original.id })}>{value}</CellLink>
   }
 }
 export const customersActive: Column<Customer> = {
@@ -91,7 +92,7 @@ export const ownerPropertyName: Column<OwnerProperty> = {
     cell: {
       row: { original }
     }
-  }) => <CellLink to={`${routes.properties}/${original.id}`}>{value}</CellLink>
+  }) => <CellLink to={addURLSearch({ drawer: 'property', id: original.id })}>{value}</CellLink>
 }
 export const ownerPropertyAddress: Column<OwnerProperty> = {
   Header: i18n.t('address'),
@@ -101,7 +102,7 @@ export const ownerPropertyAddress: Column<OwnerProperty> = {
     cell: {
       row: { original }
     }
-  }) => <CellLink to={`${routes.properties}/${original.id}`}>{value}</CellLink>
+  }) => <CellLink to={addURLSearch({ drawer: 'property', id: original.id })}>{value}</CellLink>
 }
 export const ownerPropertyProducerName: Column<OwnerProperty> = {
   Header: i18n.t('producerName'),
@@ -111,6 +112,6 @@ export const ownerPropertyProducerName: Column<OwnerProperty> = {
     cell: {
       row: { original }
     }
-  }) => <CellLink to={`${routes.properties}/${original.id}`}>{value}</CellLink>
+  }) => <CellLink to={addURLSearch({ drawer: 'property', id: original.id })}>{value}</CellLink>
 }
 //#endregion

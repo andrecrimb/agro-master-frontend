@@ -28,13 +28,14 @@ const useEditUser = () => {
 
   return useMutation<any, AxiosError, EditUserRequest>(
     async (reqBody: EditUserRequest) => {
-      const { data } = await authAxios.patch('/api/user/' + reqBody.id, reqBody.data)
+      const { data } = await authAxios.patch('/api/users/' + reqBody.id, reqBody.data)
       return data
     },
     {
-      onSuccess: () => {
+      onSuccess: (_, vars) => {
         enqueueSnackbar(t('user_edit_success'), { variant: 'success' })
         client.invalidateQueries('users')
+        client.invalidateQueries(['user', vars.id])
       },
       onError: () => {
         enqueueSnackbar(t('user_edit_error'), { variant: 'error' })

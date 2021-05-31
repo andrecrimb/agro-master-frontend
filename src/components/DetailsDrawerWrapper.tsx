@@ -16,6 +16,7 @@ import { CloseRounded as CloseIcon } from '@material-ui/icons'
 const HeaderTitle = styled(Typography)`
   && {
     font-weight: normal;
+    font-size: 0.95rem;
   }
 `
 
@@ -31,6 +32,7 @@ const RightWrapper = styled.div`
 const StyledToolbar = styled(Toolbar)`
   &.MuiToolbar-root {
     justify-content: space-between;
+    min-height: 42px;
   }
 `
 
@@ -38,8 +40,8 @@ type Props = {
   tabs: TabItem[]
   header: {
     title: string
-    highlightTitle: string
-    RightActions: React.ReactNode
+    highlightTitle?: string
+    RightActions?: React.ReactNode
   }
 }
 
@@ -50,12 +52,7 @@ const DetailsDrawerWrapper: React.FC<Props> = ({
   const { params, setParams } = useUrlSearch(
     {
       params: ['drawerTab'],
-      formatValues: {
-        drawerTab: v => {
-          console.log(v)
-          return v && v < tabs.length ? v : 0
-        }
-      }
+      formatValues: { drawerTab: v => (v && v < tabs.length ? v : 0) }
     },
     [tabs]
   )
@@ -80,26 +77,30 @@ const DetailsDrawerWrapper: React.FC<Props> = ({
           <StyledToolbar variant="dense">
             <HeaderTitle variant="h6">
               {`${title} `}
-              <span style={{ color: muiTheme.palette.primary.main }}> ({highlightTitle})</span>
+              {highlightTitle ? (
+                <span style={{ color: muiTheme.palette.primary.main }}> {highlightTitle}</span>
+              ) : null}
             </HeaderTitle>
             <RightWrapper>
               {RightActions}
               <span>
-                <IconButton onClick={onClose}>
+                <IconButton color="inherit" size="small" onClick={onClose}>
                   <CloseIcon aria-label="close-drawer" />
                 </IconButton>
               </span>
             </RightWrapper>
           </StyledToolbar>
         </DetailsDrawerHeaderGridArea>
-        <DetailsDrawerTabsGridArea>
-          <HeaderTabs
-            orientation="vertical"
-            value={params.drawerTab}
-            tabs={tabsIndexLabel}
-            onChange={onTabChange}
-          />
-        </DetailsDrawerTabsGridArea>
+        {tabs.length > 1 ? (
+          <DetailsDrawerTabsGridArea>
+            <HeaderTabs
+              orientation="vertical"
+              value={params.drawerTab}
+              tabs={tabsIndexLabel}
+              onChange={onTabChange}
+            />
+          </DetailsDrawerTabsGridArea>
+        ) : null}
         <DetailsDrawerContentGridArea>
           {tabs[params.drawerTab] && tabs[params.drawerTab].component}
         </DetailsDrawerContentGridArea>
