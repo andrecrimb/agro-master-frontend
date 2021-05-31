@@ -8,6 +8,7 @@ import AddUserButtonDialog from './AddUserButtonDialog'
 import EditUserDialog from './EditUserDialog'
 import { Route } from 'react-router-dom'
 import routes from 'routes'
+import DetailsDrawer from 'components/DetailsDrawer'
 
 const Users: React.FC = () => {
   const { t } = useTranslation()
@@ -20,7 +21,9 @@ const Users: React.FC = () => {
             <AddUserButtonDialog />
           </PageHeader>
           <MainContentGridArea>
-            <UsersTable />
+            <DetailsDrawer>
+              <UsersTable />
+            </DetailsDrawer>
           </MainContentGridArea>
         </PageHeaderAndContentGrid>
       </Fade>

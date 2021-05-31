@@ -13,6 +13,7 @@ const StyledTabs = styled(Tabs)``
 const StyledTab = styled(Tab)`
   &.MuiTab-root {
     min-height: 44px;
+    min-width: 100px;
   }
 `
 

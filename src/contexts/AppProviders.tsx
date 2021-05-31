@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styledComponents'
 import { DialogsProvider } from './DialogsContext'
 import { muiTheme } from 'theme'
 import AuthenticationProvider from './AuthenticationProvider'
+import GlobalStyles from 'components/GlobalStyles'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,6 +23,7 @@ const AppProviders: React.FC = ({ children }) => {
       <ReactQueryDevtools initialIsOpen={false} />
       <MuiThemeProvider theme={muiTheme}>
         <ThemeProvider theme={{}}>
+          <GlobalStyles />
           <DialogsProvider>
             <SnackbarProvider maxSnack={8}>
               <AuthenticationProvider>{children}</AuthenticationProvider>

@@ -95,3 +95,39 @@ export const MainContentGridArea = styled.div`
   overflow: auto;
 `
 //#endregion
+
+//#region DetailsDrawerWrapperGrid
+export const DetailsDrawerWrapperGrid = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 9;
+
+  background-color: ${muiTheme.palette.grey[100]};
+  display: grid;
+  align-items: stretch;
+  grid-template-columns: 100px minmax(0, auto);
+  grid-template-rows: minmax(40px, auto) 1fr;
+  grid-template-areas:
+    'details-drawer-header details-drawer-header'
+    'details-drawer-tabs details-drawer-content';
+`
+export const DetailsDrawerTabsGridArea = styled.div`
+  grid-area: details-drawer-tabs;
+  position: relative;
+  border-right: 1px solid ${muiTheme.palette.divider};
+`
+export const DetailsDrawerHeaderGridArea = styled.div`
+  grid-area: details-drawer-header;
+  position: relative;
+  border-bottom: 1px solid ${muiTheme.palette.divider};
+`
+export const DetailsDrawerContentGridArea = styled.div`
+  grid-area: details-drawer-content;
+  position: relative;
+
+  overflow: auto;
+`
+//#endregion
