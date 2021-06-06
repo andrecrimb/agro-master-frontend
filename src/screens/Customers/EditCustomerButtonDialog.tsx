@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
 import { muiTheme } from 'theme'
-import useCustomers from 'hooks/useCustomers'
+import useCustomer from 'hooks/useCustomer'
 import useEditCustomer from 'hooks/useEditCustomer'
 import useZipSearch from 'hooks/useZipSearch'
 import useDeleteCustomer from 'hooks/useDeleteCustomer'
@@ -46,9 +46,7 @@ const EditUserDialog: React.FC<Props> = ({ customerId, onClick }) => {
   const [open, setOpen] = React.useState(false)
   const { newDialog } = useDialog()
 
-  const { data: customerSelected } = useCustomers({
-    select: d => d.find(customer => customer.id === customerId)
-  })
+  const { data: customerSelected } = useCustomer(customerId)
 
   const editCustomer = useEditCustomer()
   const searchZip = useZipSearch()
@@ -102,7 +100,7 @@ const EditUserDialog: React.FC<Props> = ({ customerId, onClick }) => {
         <DialogTitle id="dialog-title">
           {t('edit_customer')} |{' '}
           <span style={{ color: muiTheme.palette.primary.main }}>
-            {customerSelected?.firstName}
+            {customerSelected?.firstName} {customerSelected?.lastName}
           </span>
         </DialogTitle>
         {customerSelected ? (

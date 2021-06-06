@@ -30,9 +30,10 @@ const useEditCustomer = () => {
       return data
     },
     {
-      onSuccess: () => {
+      onSuccess: (_, vars) => {
         enqueueSnackbar(t('customer_edit_success'), { variant: 'success' })
         client.invalidateQueries('customers')
+        client.invalidateQueries(['customer', vars.id])
       },
       onError: () => {
         enqueueSnackbar(t('customer_edit_error'), { variant: 'error' })

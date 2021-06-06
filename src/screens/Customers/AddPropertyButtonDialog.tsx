@@ -15,9 +15,10 @@ import {
 import { useTranslation } from 'react-i18next'
 import LoadingButton from 'components/LoadingButton'
 import { useForm } from 'react-hook-form'
-import { AddRounded as AddIcon } from '@material-ui/icons'
 import useZipSearch from 'hooks/useZipSearch'
 import useAddCustomerProperty from 'hooks/useAddCustomerProperty'
+import useCustomer from 'hooks/useCustomer'
+import { muiTheme } from 'theme'
 
 const FORM_DEFAULT_VALUES = {
   producerName: '',
@@ -37,6 +38,7 @@ const AddPropertyButtonDialog: React.FC<Props> = ({ customerId, onClick }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
 
+  const { data: customer } = useCustomer(customerId)
   const addProperty = useAddCustomerProperty(customerId)
   const searchZip = useZipSearch()
 
@@ -80,7 +82,12 @@ const AddPropertyButtonDialog: React.FC<Props> = ({ customerId, onClick }) => {
           onClose={() => setOpen(false)}
           aria-labelledby="dialog-title"
         >
-          <DialogTitle id="dialog-title">{t('new_owner_property')}</DialogTitle>
+          <DialogTitle id="dialog-title">
+            {t('new_property')} |{' '}
+            <span style={{ color: muiTheme.palette.primary.main }}>
+              {customer?.firstName} {customer?.lastName}
+            </span>
+          </DialogTitle>
           <form
             onSubmit={handleSubmit(values => {
               addProperty.mutate(values, {

@@ -1,6 +1,6 @@
 import { Property } from 'types/property'
 
-export type CustomerProperty = { property: Property }
+export type CustomerProperty = { customerId: number; property: Property }
 
 export type Customer = {
   id: number

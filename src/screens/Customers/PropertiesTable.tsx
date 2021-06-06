@@ -4,7 +4,7 @@ import Table from 'components/table/Table'
 import { LinearProgress } from '@material-ui/core'
 import useCustomer from 'hooks/useCustomer'
 import ScreenPlaceholder from 'components/ScreenPlaceholder'
-import { customerPropertyGeneral } from 'components/table/cells'
+import { customerPropertyGeneral, customerPropertyEdit } from 'components/table/cells'
 import { useTranslation } from 'react-i18next'
 
 type Props = { customerId: number }
@@ -14,7 +14,7 @@ const PropertiesTable: React.FC<Props> = ({ customerId }) => {
   const { data = [], isFetching } = useCustomer(customerId, { select: d => d.properties })
   const noData = !isFetching && !data.length
 
-  const columns = React.useMemo(() => [customerPropertyGeneral], [])
+  const columns = React.useMemo(() => [customerPropertyGeneral, customerPropertyEdit], [])
 
   return (
     <>

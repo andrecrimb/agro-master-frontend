@@ -3,12 +3,14 @@ import { Column } from 'react-table'
 import i18n from 'i18n'
 import { User } from 'types/user'
 import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
+import { Button } from '@material-ui/core'
 import CellLink from 'components/table/CellLink'
 import routes from 'routes'
 import { OwnerProperty } from 'types/property'
 import { Customer, CustomerProperty } from 'types/customer'
 import { addURLSearch } from 'utils/utils'
 import InfoTable from 'components/InfoTable'
+import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -141,6 +143,15 @@ export const customerPropertyGeneral: Column<CustomerProperty> = {
       ]}
     />
   )
+}
+export const customerPropertyEdit: Column<CustomerProperty> = {
+  Header: '',
+  id: 'customerPropertyEdit',
+  Cell: ({
+    cell: {
+      row: { original: data }
+    }
+  }) => <EditPropertyDialog property={data.property} customerId={data.customerId} />
 }
 
 //#endregion

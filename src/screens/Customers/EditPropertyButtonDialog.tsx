@@ -18,10 +18,10 @@ import LoadingButton from 'components/LoadingButton'
 import { useForm } from 'react-hook-form'
 import useZipSearch from 'hooks/useZipSearch'
 import { muiTheme } from 'theme'
-import useEditOwnerProperty from 'hooks/useEditOwnerProperty'
-import useDeleteOwnerProperty from 'hooks/useDeleteOwnerProperty'
+import useEditCustomerProperty from 'hooks/useEditCustomerProperty'
+import useDeleteCustomerProperty from 'hooks/useDeleteCustomerProperty'
 import useDialog from 'hooks/useDialog'
-import useOwnerProperty from 'hooks/useOwnerProperty'
+import { Property } from 'types/property'
 
 const FORM_DEFAULT_VALUES = {
   producerName: '',
@@ -35,18 +35,16 @@ const FORM_DEFAULT_VALUES = {
   state: ''
 }
 
-type Props = { ownerPropertyId: number }
+type Props = { customerId: number; property: Property }
 
-const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
+const EditPropertyDialog: React.FC<Props> = ({ property, customerId }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { newDialog } = useDialog()
 
-  const { data: propertySelected } = useOwnerProperty(ownerPropertyId)
-
-  const editProperty = useEditOwnerProperty()
+  const editProperty = useEditCustomerProperty()
+  const deleteProperty = useDeleteCustomerProperty()
   const searchZip = useZipSearch()
-  const deleteProperty = useDeleteOwnerProperty()
 
   const { handleSubmit, setValue, register, formState, reset, clearErrors, setError } = useForm<
     typeof FORM_DEFAULT_VALUES
@@ -65,31 +63,27 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
   const { ref: stateRef, ...state } = register('state')
 
   React.useEffect(() => {
-    if (propertySelected && open) {
-      reset(propertySelected.property)
-    }
-  }, [propertySelected === undefined, open])
+    if (open) reset(property)
+  }, [open])
 
   return (
     <>
-      <Button variant="outlined" startIcon={<EditIcon />} onClick={() => setOpen(true)}>
-        {t('edit')}
-      </Button>
-      <Dialog
-        disableBackdropClick
-        open={open}
-        fullWidth
-        maxWidth="sm"
-        onClose={() => setOpen(false)}
-        aria-labelledby="dialog-title"
-      >
-        <DialogTitle id="dialog-title">
-          {t('edit_property')} |{' '}
-          <span style={{ color: muiTheme.palette.primary.main }}>
-            {propertySelected?.property.name}
-          </span>
-        </DialogTitle>
-        {propertySelected ? (
+      <IconButton color="inherit" onClick={() => setOpen(true)}>
+        <EditIcon />
+      </IconButton>
+      {open ? (
+        <Dialog
+          disableBackdropClick
+          open={open}
+          fullWidth
+          maxWidth="sm"
+          onClose={() => setOpen(false)}
+          aria-labelledby="dialog-title"
+        >
+          <DialogTitle id="dialog-title">
+            {t('edit_property')} |{' '}
+            <span style={{ color: muiTheme.palette.primary.main }}>{property.name}</span>
+          </DialogTitle>
           <form
             onSubmit={handleSubmit(values => {
               const dataToEdit = Object.keys(formState.dirtyFields).reduce(
@@ -97,7 +91,7 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
                 {} as Partial<typeof FORM_DEFAULT_VALUES>
               )
               editProperty.mutate(
-                { id: ownerPropertyId, data: dataToEdit },
+                { propertyId: property.id, customerId: customerId, data: dataToEdit },
                 {
                   onSuccess: () => {
                     setOpen(false)
@@ -228,8 +222,7 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
                     {...zip}
                   />
                 </Grid>
-                {(formState.dirtyFields.zip && searchZip.isSuccess) ||
-                (propertySelected && !searchZip.isError) ? (
+                {(formState.dirtyFields.zip && searchZip.isSuccess) || !searchZip.isError ? (
                   <>
                     <Grid item xs={6}>
                       <TextField
@@ -284,14 +277,12 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
                   onClick={() =>
                     newDialog({
                       title: t('warning') + '!',
-                      message: t('delete_question', {
-                        item: propertySelected.property.name
-                      }),
+                      message: t('delete_question', { item: property.name }),
                       confirmationButton: {
                         text: t('delete'),
                         onClick: () =>
                           deleteProperty.mutateAsync(
-                            { ownerPropertyId: propertySelected.id },
+                            { propertyId: property.id, customerId: customerId },
                             { onSuccess: () => setOpen(false) }
                           )
                       }
@@ -325,8 +316,8 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
               </LoadingButton>
             </DialogActions>
           </form>
-        ) : null}
-      </Dialog>
+        </Dialog>
+      ) : null}
     </>
   )
 }

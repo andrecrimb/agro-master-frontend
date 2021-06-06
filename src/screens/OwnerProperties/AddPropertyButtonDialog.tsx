@@ -72,7 +72,7 @@ const AddPropertyButtonDialog: React.FC = () => {
           onClose={() => setOpen(false)}
           aria-labelledby="dialog-title"
         >
-          <DialogTitle id="dialog-title">{t('new_owner_property')}</DialogTitle>
+          <DialogTitle id="dialog-title">{t('new_property')}</DialogTitle>
           <form
             onSubmit={handleSubmit(values => {
               addProperty.mutate(values, {
