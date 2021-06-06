@@ -6,8 +6,9 @@ import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
 import CellLink from 'components/table/CellLink'
 import routes from 'routes'
 import { OwnerProperty } from 'types/property'
-import { Customer } from 'types/customer'
+import { Customer, CustomerProperty } from 'types/customer'
 import { addURLSearch } from 'utils/utils'
+import InfoTable from 'components/InfoTable'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -114,4 +115,32 @@ export const ownerPropertyProducerName: Column<OwnerProperty> = {
     }
   }) => <CellLink to={addURLSearch({ drawer: 'property', id: original.id })}>{value}</CellLink>
 }
+//#endregion
+
+//#region Customer Properties
+export const customerPropertyGeneral: Column<CustomerProperty> = {
+  Header: i18n.t('generalData'),
+  accessor: (r: CustomerProperty) => r.property.name,
+  Cell: ({
+    value,
+    cell: {
+      row: { original: data }
+    }
+  }) => (
+    <InfoTable
+      entries={[
+        [i18n.t('name'), data.property.name],
+        [
+          i18n.t('address'),
+          `${data.property.address}, ${data.property.city}-${data.property.state}`
+        ],
+        [i18n.t('cep'), data.property.zip],
+        [i18n.t('cnpj'), data.property.cnpj],
+        [i18n.t('cpf'), data.property.cpf],
+        [i18n.t('producer'), data.property.producerName]
+      ]}
+    />
+  )
+}
+
 //#endregion

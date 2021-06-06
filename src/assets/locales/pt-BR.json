@@ -5,6 +5,7 @@
   "login": "Entrar",
   "forgotPassword": "Esqueci minha senha",
   "sale_plural": "Vendas",
+  "customer": "Cliente",
   "customer_plural": "Clientes",
   "property_plural": "Propriedades",
   "user_plural": "Usuários",
@@ -95,5 +96,7 @@
   "delete_rootstock_success": "Porta-enxerto deletado com sucesso",
   "delete_rootstock_error": "Erro ao deletar o porta-enxerto",
   "rootstock_edit_success": "Porta-enxerto editado com sucesso",
-  "rootstock_edit_error": "Erro ao editar o porta-enxerto"
+  "rootstock_edit_error": "Erro ao editar o porta-enxerto",
+  "edit_properties": "Editar Propriedades",
+  "add_property": "Adicionar Propriedade"
 }

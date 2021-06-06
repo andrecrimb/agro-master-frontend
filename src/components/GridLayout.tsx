@@ -108,7 +108,7 @@ export const DetailsDrawerWrapperGrid = styled.div`
   background-color: ${muiTheme.palette.grey[100]};
   display: grid;
   align-items: stretch;
-  grid-template-columns: minmax(0, auto) minmax(0, auto);
+  grid-template-columns: minmax(0, auto) 1fr;
   grid-template-rows: minmax(40px, auto) 1fr;
   grid-template-areas:
     'details-drawer-header details-drawer-header'
@@ -122,7 +122,7 @@ export const DetailsDrawerTabsGridArea = styled.div`
 export const DetailsDrawerHeaderGridArea = styled.div`
   grid-area: details-drawer-header;
   position: relative;
-  /* border-bottom: 1px solid ${muiTheme.palette.divider}; */
+  border-bottom: 1px solid ${muiTheme.palette.divider};
   border-top: 1px solid ${muiTheme.palette.divider};
 `
 export const DetailsDrawerContentGridArea = styled.div`

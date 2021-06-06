@@ -1,3 +1,7 @@
+import { Property } from 'types/property'
+
+export type CustomerProperty = { property: Property }
+
 export type Customer = {
   id: number
 
@@ -17,4 +21,6 @@ export type Customer = {
     number: string
     label: string
   }[]
+
+  properties?: CustomerProperty[]
 }

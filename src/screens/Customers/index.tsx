@@ -5,9 +5,7 @@ import PageHeader from 'components/PageHeader'
 import { useTranslation } from 'react-i18next'
 import CustomersTable from './CustomersTable'
 import AddCustomerButtonDialog from './AddCustomerButtonDialog'
-import EditCustomerDialog from './EditCustomerDialog'
-import { Route } from 'react-router-dom'
-import routes from 'routes'
+import DetailsDrawer from 'components/DetailsDrawer'
 
 const Customers: React.FC = () => {
   const { t } = useTranslation()
@@ -20,13 +18,12 @@ const Customers: React.FC = () => {
             <AddCustomerButtonDialog />
           </PageHeader>
           <MainContentGridArea>
-            <CustomersTable />
+            <DetailsDrawer>
+              <CustomersTable />
+            </DetailsDrawer>
           </MainContentGridArea>
         </PageHeaderAndContentGrid>
       </Fade>
-      <Route exact path={`${routes.customers}/:customerId`}>
-        <EditCustomerDialog />
-      </Route>
     </>
   )
 }

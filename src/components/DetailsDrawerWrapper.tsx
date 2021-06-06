@@ -84,7 +84,7 @@ const DetailsDrawerWrapper: React.FC<Props> = ({
             <RightWrapper>
               {RightActions}
               <span>
-                <IconButton color="inherit" size="small" onClick={onClose}>
+                <IconButton size="small" onClick={onClose}>
                   <CloseIcon aria-label="close-drawer" />
                 </IconButton>
               </span>

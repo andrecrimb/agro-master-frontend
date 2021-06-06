@@ -3,11 +3,12 @@ import React, { PropsWithChildren } from 'react'
 import SplitterLayout from 'react-splitter-layout'
 
 const UserDrawer = React.lazy(() => import('../screens/Users/UserDetails'))
+const CustomerDrawer = React.lazy(() => import('../screens/Customers/CustomerDetails'))
 const OwnerPropertyDrawer = React.lazy(
   () => import('../screens/OwnerProperties/OwnerPropertyDetails')
 )
 
-type DrawerType = undefined | 'user' | 'property'
+type DrawerType = undefined | 'user' | 'property' | 'customer'
 
 const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
@@ -23,6 +24,9 @@ const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         break
       case 'user':
         content = <UserDrawer id={+id} />
+        break
+      case 'customer':
+        content = <CustomerDrawer id={+id} />
         break
       default:
         content = null
