@@ -24,7 +24,7 @@ const useAddCustomer = () => {
   const { enqueueSnackbar } = useSnackbar()
   const client = useQueryClient()
 
-  return useMutation<Customer[], AxiosError, AddCustomerRequest>(
+  return useMutation<Customer, AxiosError, AddCustomerRequest>(
     async (reqBody: AddCustomerRequest) => {
       const { data } = await authAxios.post('/api/customers', reqBody)
       return data

@@ -98,5 +98,18 @@
   "rootstock_edit_success": "Porta-enxerto editado com sucesso",
   "rootstock_edit_error": "Erro ao editar o porta-enxerto",
   "edit_properties": "Editar Propriedades",
-  "add_property": "Adicionar Propriedade"
+  "add_property": "Adicionar Propriedade",
+  "greenhouse": "Estufa",
+  "greenhouse_plural": "Estufas",
+  "no_greenhouses": "Nenhuma estufa foi ainda adicionada",
+  "add_greenhouse_success": "Nova estufa adicionada com sucesso",
+  "add_greenhouse_error": "Erro ao adicionar a estufa",
+  "edit_greenhouse_success": "Estufa editada com sucesso",
+  "edit_greenhouse_error": "Erro ao editar a estufa",
+  "seedling": "Muda",
+  "borbulha": "Borbulha",
+  "add_new_greenhouse": "Adicionar nova Estufa",
+  "greenhouse_type": "Tipo de estufa",
+  "estufa1": "Estufa 1",
+  "select": "Selecione"
 }

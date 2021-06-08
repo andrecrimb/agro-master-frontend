@@ -11,6 +11,7 @@ import { Customer, CustomerProperty } from 'types/customer'
 import { addURLSearch } from 'utils/utils'
 import InfoTable from 'components/InfoTable'
 import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
+import { Greenhouse } from 'types/greenhouse'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -154,4 +155,31 @@ export const customerPropertyEdit: Column<CustomerProperty> = {
   }) => <EditPropertyDialog property={data.property} customerId={data.customerId} />
 }
 
+//#endregion
+
+//#region Greenhouses
+export const greenhouseLabel: Column<Greenhouse> = {
+  Header: i18n.t('name'),
+  accessor: 'label',
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => {
+    return <CellLink to={`${routes.greenhouses}/${original.id}`}>{value}</CellLink>
+  }
+}
+export const greenhouseProperty: Column<Greenhouse> = {
+  Header: i18n.t('property'),
+  accessor: (r: Greenhouse) => r.ownerProperty.property.name,
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => {
+    return <CellLink to={`${routes.greenhouses}/${original.id}`}>{value}</CellLink>
+  }
+}
 //#endregion

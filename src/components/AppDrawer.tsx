@@ -110,6 +110,11 @@ export const drawerList: DrawerItem[] = [
     icon: DashboardIcon
   },
   {
+    path: routes.greenhouses,
+    title: 'greenhouse_plural',
+    icon: SalesIcon
+  },
+  {
     path: routes.sales,
     title: 'sale_plural',
     icon: SalesIcon
