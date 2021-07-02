@@ -105,7 +105,7 @@ export const DetailsDrawerWrapperGrid = styled.div`
   right: 0;
   z-index: 9;
 
-  background-color: ${muiTheme.palette.grey[100]};
+  background-color: ${muiTheme.palette.grey[50]};
   display: grid;
   align-items: stretch;
   grid-template-columns: minmax(0, auto) 1fr;

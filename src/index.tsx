@@ -12,6 +12,10 @@ import PageLoading from 'components/PageLoading'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import routes from 'routes'
 import PageNotFoundPlaceholder from 'components/PageNotFoundPlaceholder'
+import 'dayjs/locale/pt-br'
+import dayjs from 'dayjs'
+
+dayjs.locale('pt-br')
 
 const Users = React.lazy(() => import('screens/Users'))
 const Properties = React.lazy(() => import('screens/OwnerProperties'))

@@ -15,7 +15,11 @@ import {
   MenuItem,
   Tooltip
 } from '@material-ui/core'
-import { PhoneRounded as PhoneIcon, ClearRounded as ClearIcon } from '@material-ui/icons'
+import {
+  PhoneRounded as PhoneIcon,
+  ClearRounded as ClearIcon,
+  Delete as DeleteIcon
+} from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
@@ -24,7 +28,6 @@ import useCustomer from 'hooks/useCustomer'
 import useEditCustomer from 'hooks/useEditCustomer'
 import useZipSearch from 'hooks/useZipSearch'
 import useDeleteCustomer from 'hooks/useDeleteCustomer'
-import { Delete as DeleteIcon } from '@material-ui/icons'
 import useDialog from 'hooks/useDialog'
 
 const FORM_DEFAULT_VALUES = {
@@ -41,7 +44,7 @@ const FORM_DEFAULT_VALUES = {
 
 type Props = { customerId: number; onClick: () => void }
 
-const EditUserDialog: React.FC<Props> = ({ customerId, onClick }) => {
+const EditCustomerButtonDialog: React.FC<Props> = ({ customerId, onClick }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { newDialog } = useDialog()
@@ -334,7 +337,7 @@ const EditUserDialog: React.FC<Props> = ({ customerId, onClick }) => {
                             color="secondary"
                           />
                         }
-                        label={t('activeUser')}
+                        label={t('active_customer')}
                       />
                     )}
                   />
@@ -394,4 +397,4 @@ const EditUserDialog: React.FC<Props> = ({ customerId, onClick }) => {
   )
 }
 
-export default EditUserDialog
+export default EditCustomerButtonDialog

@@ -3,7 +3,7 @@ import { usePagination, useSortBy } from 'react-table'
 import Table from 'components/table/Table'
 import { LinearProgress } from '@material-ui/core'
 import useGreenhouses from 'hooks/useGreenhouses'
-import { greenhouseLabel, greenhouseProperty } from 'components/table/cells'
+import { greenhouseLabel, greenhouseProperty, greenhouseType } from 'components/table/cells'
 import ScreenPlaceholder from 'components/ScreenPlaceholder'
 import { useTranslation } from 'react-i18next'
 
@@ -12,7 +12,7 @@ const GreenhousesTable: React.FC = () => {
   const { data = [], isFetching } = useGreenhouses()
   const noData = !isFetching && !data.length
 
-  const columns = React.useMemo(() => [greenhouseLabel, greenhouseProperty], [])
+  const columns = React.useMemo(() => [greenhouseLabel, greenhouseType, greenhouseProperty], [])
 
   return (
     <>

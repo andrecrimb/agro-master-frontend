@@ -3,15 +3,15 @@ import { Column } from 'react-table'
 import i18n from 'i18n'
 import { User } from 'types/user'
 import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
-import { Button } from '@material-ui/core'
+import { Chip } from '@material-ui/core'
 import CellLink from 'components/table/CellLink'
 import routes from 'routes'
 import { OwnerProperty } from 'types/property'
 import { Customer, CustomerProperty } from 'types/customer'
-import { addURLSearch } from 'utils/utils'
+import { addURLSearch, formatDate } from 'utils/utils'
 import InfoTable from 'components/InfoTable'
 import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
-import { Greenhouse } from 'types/greenhouse'
+import { Greenhouse, SeedlingBench } from 'types/greenhouse'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -125,7 +125,6 @@ export const customerPropertyGeneral: Column<CustomerProperty> = {
   Header: i18n.t('generalData'),
   accessor: (r: CustomerProperty) => r.property.name,
   Cell: ({
-    value,
     cell: {
       row: { original: data }
     }
@@ -167,7 +166,14 @@ export const greenhouseLabel: Column<Greenhouse> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={`${routes.greenhouses}/${original.id}`}>{value}</CellLink>
+    return <CellLink to={addURLSearch({ drawer: 'greenhouse', id: original.id })}>{value}</CellLink>
+  }
+}
+export const greenhouseType: Column<Greenhouse> = {
+  Header: i18n.t('greenhouse_type'),
+  accessor: 'type',
+  Cell: ({ value }) => {
+    return <Chip label={i18n.t(value)} />
   }
 }
 export const greenhouseProperty: Column<Greenhouse> = {
@@ -179,7 +185,35 @@ export const greenhouseProperty: Column<Greenhouse> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={`${routes.greenhouses}/${original.id}`}>{value}</CellLink>
+    return <CellLink to={addURLSearch({ drawer: 'greenhouse', id: original.id })}>{value}</CellLink>
   }
 }
+//#endregion
+
+//#region Benches
+export const benchLabel: Column<SeedlingBench> = {
+  Header: i18n.t('label'),
+  accessor: 'label'
+}
+export const benchQuantity: Column<SeedlingBench> = {
+  Header: i18n.t('quantity'),
+  accessor: 'quantity'
+}
+export const benchLastPlantingDate: Column<SeedlingBench> = {
+  Header: i18n.t('last_planting_date'),
+  accessor: (r: SeedlingBench) => formatDate(r.lastPlantingDate, 'DD/MM/YYYY')
+}
+export const benchFirstPaymentDate: Column<SeedlingBench> = {
+  Header: i18n.t('first_payment_date'),
+  accessor: (r: SeedlingBench) => formatDate(r.firstPaymentDate, 'DD/MM/YYYY')
+}
+export const benchRootstock: Column<SeedlingBench> = {
+  Header: i18n.t('rootstock'),
+  accessor: (r: SeedlingBench) => r.rootstock.name
+}
+export const benchResponsible: Column<SeedlingBench> = {
+  Header: i18n.t('responsible'),
+  accessor: (r: SeedlingBench) => `${r.user.firstName} ${r.user.lastName}`
+}
+
 //#endregion
