@@ -68,7 +68,7 @@ const EditPropertyDialog: React.FC<Props> = ({ property, customerId }) => {
 
   return (
     <>
-      <IconButton color="inherit" onClick={() => setOpen(true)}>
+      <IconButton size="small" onClick={() => setOpen(true)}>
         <EditIcon />
       </IconButton>
       {open ? (

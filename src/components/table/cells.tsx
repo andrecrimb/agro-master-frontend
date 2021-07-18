@@ -12,6 +12,7 @@ import { addURLSearch, formatDate } from 'utils/utils'
 import InfoTable from 'components/InfoTable'
 import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
 import { Greenhouse, SeedlingBench } from 'types/greenhouse'
+import EditBenchButtonDialog from 'screens/Greenhouses/EditBenchButtonDialog'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -215,5 +216,13 @@ export const benchResponsible: Column<SeedlingBench> = {
   Header: i18n.t('responsible'),
   accessor: (r: SeedlingBench) => `${r.user.firstName} ${r.user.lastName}`
 }
-
+export const benchActions: Column<SeedlingBench> = {
+  Header: ' ',
+  id: 'benchActions',
+  Cell: ({
+    cell: {
+      row: { original }
+    }
+  }) => <EditBenchButtonDialog bench={original} />
+}
 //#endregion

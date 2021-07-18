@@ -11,20 +11,18 @@ const Greenhouses: React.FC = () => {
   const { t } = useTranslation()
 
   return (
-    <>
-      <Fade in>
-        <PageHeaderAndContentGrid>
-          <PageHeader title={t('greenhouse_plural')}>
-            <AddGreenhouseButtonDialog />
-          </PageHeader>
-          <MainContentGridArea>
-            <DetailsDrawer>
-              <GreenhousesTable />
-            </DetailsDrawer>
-          </MainContentGridArea>
-        </PageHeaderAndContentGrid>
-      </Fade>
-    </>
+    <Fade in>
+      <PageHeaderAndContentGrid>
+        <PageHeader title={t('greenhouse_plural')}>
+          <AddGreenhouseButtonDialog />
+        </PageHeader>
+        <MainContentGridArea>
+          <DetailsDrawer>
+            <GreenhousesTable />
+          </DetailsDrawer>
+        </MainContentGridArea>
+      </PageHeaderAndContentGrid>
+    </Fade>
   )
 }
 

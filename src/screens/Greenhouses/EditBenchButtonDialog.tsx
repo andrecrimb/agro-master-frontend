@@ -14,7 +14,7 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core'
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons'
+import { EditRounded as EditIcon, Delete as DeleteIcon } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'

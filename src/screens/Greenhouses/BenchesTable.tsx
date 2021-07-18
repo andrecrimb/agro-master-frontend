@@ -1,6 +1,6 @@
 import React from 'react'
 import Table from 'components/table/Table'
-import { Greenhouse, SeedlingBench } from 'types/greenhouse'
+import { Greenhouse } from 'types/greenhouse'
 import ScreenPlaceholder from 'components/ScreenPlaceholder'
 import { useTranslation } from 'react-i18next'
 import { usePagination, useSortBy } from 'react-table'
@@ -10,29 +10,20 @@ import {
   benchLastPlantingDate,
   benchQuantity,
   benchRootstock,
-  benchResponsible
+  benchResponsible,
+  benchActions
 } from 'components/table/cells'
-import { Column } from 'react-table'
-import EditBenchButtonDialog from './EditBenchButtonDialog'
 
 type Props = { greenhouse: Greenhouse }
 
-const columns: Column<SeedlingBench>[] = [
+const columns = [
   benchLabel,
   benchQuantity,
   benchRootstock,
   benchLastPlantingDate,
   benchFirstPaymentDate,
   benchResponsible,
-  {
-    Header: ' ',
-    id: 'benchActions',
-    Cell: ({
-      cell: {
-        row: { original }
-      }
-    }) => <EditBenchButtonDialog bench={original} />
-  }
+  benchActions
 ]
 
 const BenchesTable: React.FC<Props> = ({ greenhouse }) => {
