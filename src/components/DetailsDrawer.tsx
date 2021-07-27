@@ -5,11 +5,12 @@ import SplitterLayout from 'react-splitter-layout'
 const UserDrawer = React.lazy(() => import('../screens/Users/UserDetails'))
 const GreenhouseDrawer = React.lazy(() => import('../screens/Greenhouses/GreenhouseDetails'))
 const CustomerDrawer = React.lazy(() => import('../screens/Customers/CustomerDetails'))
+const FruitsOrderDrawer = React.lazy(() => import('../screens/Orders/FruitsOrderDetails'))
 const OwnerPropertyDrawer = React.lazy(
   () => import('../screens/OwnerProperties/OwnerPropertyDetails')
 )
 
-type DrawerType = undefined | 'user' | 'property' | 'customer' | 'greenhouse'
+type DrawerType = undefined | 'user' | 'property' | 'customer' | 'greenhouse' | 'fruitOrder'
 
 const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const {
@@ -31,6 +32,9 @@ const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         break
       case 'customer':
         content = <CustomerDrawer id={+id} />
+        break
+      case 'fruitOrder':
+        content = <FruitsOrderDrawer id={+id} />
         break
       default:
         content = null

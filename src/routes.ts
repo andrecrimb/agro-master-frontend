@@ -3,7 +3,7 @@ const routes = {
   customers: '/customers',
   properties: '/properties',
   users: '/users',
-  sales: '/sales',
+  orders: '/orders',
   rootstocks: '/rootstocks',
   greenhouses: '/greenhouses'
 }

@@ -15,7 +15,7 @@ import {
   PeopleRounded as CustomersIcon,
   SupervisedUserCircleRounded as UsersIcon,
   PinDropRounded as PropertiesIcon,
-  MonetizationOnRounded as SalesIcon,
+  MonetizationOnRounded as OrdersIcon,
   DashboardRounded as DashboardIcon,
   MergeTypeRounded as RootstocksIcon
 } from '@material-ui/icons'
@@ -112,12 +112,12 @@ export const drawerList: DrawerItem[] = [
   {
     path: routes.greenhouses,
     title: 'greenhouse_plural',
-    icon: SalesIcon
+    icon: OrdersIcon
   },
   {
-    path: routes.sales,
+    path: routes.orders,
     title: 'sale_plural',
-    icon: SalesIcon
+    icon: OrdersIcon
   },
   {
     path: routes.customers,

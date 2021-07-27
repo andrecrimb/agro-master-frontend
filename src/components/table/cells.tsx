@@ -13,6 +13,7 @@ import InfoTable from 'components/InfoTable'
 import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
 import { Greenhouse, SeedlingBench } from 'types/greenhouse'
 import EditBenchButtonDialog from 'screens/Greenhouses/EditBenchButtonDialog'
+import { FruitsOrder, FruitsOrderItem, Payment } from 'types/orders'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -224,5 +225,91 @@ export const benchActions: Column<SeedlingBench> = {
       row: { original }
     }
   }) => <EditBenchButtonDialog bench={original} />
+}
+//#endregion
+
+//#region Fruits orders
+export const fruitOrderNfNumber: Column<FruitsOrder> = {
+  Header: i18n.t('invoice_number'),
+  accessor: 'nfNumber',
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
+}
+export const fruitOrderDate: Column<FruitsOrder> = {
+  Header: i18n.t('order_date'),
+  accessor: (r: FruitsOrder) => formatDate(r.orderDate),
+  id: 'orderDate',
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
+}
+export const fruitOrderDeliveryDate: Column<FruitsOrder> = {
+  Header: i18n.t('delivery_date'),
+  accessor: (r: FruitsOrder) => formatDate(r.deliveryDate),
+  id: 'deliveryDate',
+  Cell: ({
+    value,
+    cell: {
+      row: { original }
+    }
+  }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
+}
+export const fruitOrderCustomer: Column<FruitsOrder> = {
+  Header: i18n.t('customer'),
+  accessor: (r: FruitsOrder) =>
+    `${r.customerProperty.customer.firstName} ${r.customerProperty.customer.lastName}`
+}
+export const fruitOrderBoxQtd: Column<FruitsOrder> = {
+  Header: i18n.t('box_quantity'),
+  accessor: (r: FruitsOrder) => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+}
+export const fruitOrderValue: Column<FruitsOrder> = {
+  Header: i18n.t('order_value'),
+  accessor: (r: FruitsOrder) =>
+    r.fruitOrderItems.reduce((prev, next) => prev + next.quantity * next.boxPrice, 0)
+}
+//#endregion
+
+//#region Payments
+export const paymentsAmount: Column<Payment> = {
+  Header: i18n.t('amount'),
+  accessor: 'amount'
+}
+export const paymentsMethod: Column<Payment> = {
+  Header: i18n.t('payment_method'),
+  accessor: 'method',
+  Cell: ({ value }) => <Chip label={value} />
+}
+export const paymentsScheduledDate: Column<Payment> = {
+  Header: i18n.t('scheduled_date'),
+  accessor: (r: Payment) => formatDate(r.scheduledDate),
+  id: 'scheduledDate'
+}
+export const paymentsReceived: Column<Payment> = {
+  Header: i18n.t('received'),
+  accessor: 'received',
+  Cell: ({ value }) => (value ? <CheckIcon color="primary" /> : <CloseIcon color="error" />)
+}
+//#endregion
+
+//#region FruitsOrderItems
+export const FruitsOrderItemsName: Column<FruitsOrderItem> = {
+  Header: i18n.t('name'),
+  accessor: 'name'
+}
+export const FruitsOrderItemsQuantity: Column<FruitsOrderItem> = {
+  Header: i18n.t('box_quantity'),
+  accessor: 'quantity'
+}
+export const FruitsOrderItemsBoxPrice: Column<FruitsOrderItem> = {
+  Header: i18n.t('box_price'),
+  accessor: 'boxPrice'
 }
 //#endregion

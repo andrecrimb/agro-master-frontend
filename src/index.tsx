@@ -20,8 +20,11 @@ dayjs.locale('pt-br')
 const Users = React.lazy(() => import('screens/Users'))
 const Properties = React.lazy(() => import('screens/OwnerProperties'))
 const Customers = React.lazy(() => import('screens/Customers'))
+const Orders = React.lazy(() => import('screens/Orders'))
 const Greenhouses = React.lazy(() => import('screens/Greenhouses'))
 const Rootstocks = React.lazy(() => import('screens/Rootstocks'))
+
+//TODO change Route "component" prop to "render" or children
 
 const App: React.FC = () => {
   return (
@@ -36,6 +39,7 @@ const App: React.FC = () => {
               <Route path={routes.users} component={Users} />
               <Route path={routes.properties} component={Properties} />
               <Route path={routes.customers} component={Customers} />
+              <Route path={routes.orders} component={Orders} />
               <Route path={routes.greenhouses} component={Greenhouses} />
               <Route path={routes.rootstocks} component={Rootstocks} />
               <Route component={PageNotFoundPlaceholder} />
