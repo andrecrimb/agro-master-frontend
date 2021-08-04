@@ -172,5 +172,12 @@
   "fruits_order": "Venda de frutas",
   "customer_info": "Informações do cliente",
   "registered_by": "Registrado por",
-  "no_payments": "Nenhum pagamento registrado"
+  "no_payments": "Nenhum pagamento registrado",
+  "add_payment_success": "Novo pagamento adicionado com sucesso",
+  "add_payment_error": "Erro ao adicionar o pagamento",
+  "add_payment_to_order": "Adicionar pagamento para venda",
+  "edit_payment": "Editar pagamento",
+  "delete_payment": "Excluir pagamento",
+  "this_payment": "este pagamento",
+  "remove_payment_error": "Erro ao excluir o pagamento"
 }

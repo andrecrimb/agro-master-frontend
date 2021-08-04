@@ -5,6 +5,7 @@ export type PaymentMethod = 'money' | 'cheque'
 
 export type Payment = {
   id: number
+  orderId: number
   amount: number
   method: PaymentMethod
   scheduledDate: string
@@ -13,6 +14,7 @@ export type Payment = {
 
 export type FruitsOrderItem = {
   id: number
+  orderId: number
   name: string
   quantity: number
   boxPrice: number

@@ -7,7 +7,7 @@ import PaymentsTable from './PaymentsTable'
 import FruitsOrderItemsTable from './FruitsOrderItemsTable'
 import useFruitsOrder from 'hooks/useFruitsOrder'
 import { formatDate } from 'utils/utils'
-// import DrawerActions from './DrawerActions'
+import DrawerActions from './DrawerActions'
 
 type Props = { id: number }
 
@@ -23,8 +23,8 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
         title: t('fruits_order') + ' | ',
         highlightTitle: `${fruitsOrder.customerProperty.customer.firstName} ${
           fruitsOrder.customerProperty.customer.lastName || ''
-        } (${formatDate(fruitsOrder.orderDate, 'DD/MM/YYYY')})`
-        // RightActions: <DrawerActions customerId={id} />
+        } (${formatDate(fruitsOrder.orderDate, 'DD/MM/YYYY')})`,
+        RightActions: <DrawerActions orderId={id} />
       }}
       tabs={[
         {

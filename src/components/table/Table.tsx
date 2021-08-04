@@ -68,7 +68,7 @@ type TableOptions<D extends object = {}> = UseTableOptions<D> &
 interface Props<D extends object = any> {
   columns: Array<Column<D>>
   data: D[]
-  options?: Omit<TableOptions<D>, 'data' | 'columns'>
+  options?: any
   plugins?: Array<PluginHook<D>>
   renderRowSubComponent?: (row: any) => React.ReactNode
   globalFilter?: string
@@ -100,8 +100,8 @@ export function Table<T extends object>(props: Props<T>): React.ReactElement {
       data,
       initialState: { pageSize: 50, ...initialState },
       ...otherOptions
-    } as TableOptions<T>,
-    ...(plugins || {})
+    },
+    ...plugins
   )
 
   React.useEffect(() => table['setGlobalFilter']?.(globalFilter), [globalFilter])

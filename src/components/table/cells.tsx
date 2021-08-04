@@ -13,11 +13,13 @@ import InfoTable from 'components/InfoTable'
 import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
 import { Greenhouse, SeedlingBench } from 'types/greenhouse'
 import EditBenchButtonDialog from 'screens/Greenhouses/EditBenchButtonDialog'
+import EditPaymentButtonDialog from 'screens/Orders/EditPaymentButtonDialog'
 import { FruitsOrder, FruitsOrderItem, Payment } from 'types/orders'
+import { Rootstock } from 'types/rootstock'
 
 //#region Users
 export const usersName: Column<User> = {
-  Header: i18n.t('name'),
+  Header: i18n.t('name') + '',
   accessor: (r: User) =>
     r.nickname ? `${r.firstName} ${r.lastName} (${r.nickname})` : `${r.firstName} ${r.lastName}`,
   Cell: ({
@@ -30,7 +32,7 @@ export const usersName: Column<User> = {
   }
 }
 export const usersEmail: Column<User> = {
-  Header: i18n.t('email'),
+  Header: i18n.t('email') + '',
   accessor: 'email',
   Cell: ({
     value,
@@ -38,16 +40,16 @@ export const usersEmail: Column<User> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={addURLSearch({ drawer: 'user', id: original.id })}>{value}</CellLink>
+    return <CellLink to={addURLSearch({ drawer: 'user', id: original.id + '' })}>{value}</CellLink>
   }
 }
 export const usersActive: Column<User> = {
-  Header: i18n.t('active'),
+  Header: i18n.t('active') + '',
   accessor: 'active',
   Cell: ({ value }) => (value ? <CheckIcon color="primary" /> : <CloseIcon color="error" />)
 }
 export const usersSuperUser: Column<User> = {
-  Header: i18n.t('superUser'),
+  Header: i18n.t('superUser') + '',
   accessor: 'isSuperuser',
   Cell: ({ value }) => (value ? <CheckIcon color="primary" /> : <CloseIcon color="error" />)
 }
@@ -55,7 +57,7 @@ export const usersSuperUser: Column<User> = {
 
 //#region Customers
 export const customersName: Column<Customer> = {
-  Header: i18n.t('name'),
+  Header: i18n.t('name') + '',
   accessor: (r: Customer) =>
     r.nickname ? `${r.firstName} ${r.lastName} (${r.nickname})` : `${r.firstName} ${r.lastName}`,
   Cell: ({
@@ -68,15 +70,15 @@ export const customersName: Column<Customer> = {
   }
 }
 export const customersActive: Column<Customer> = {
-  Header: i18n.t('active'),
+  Header: i18n.t('active') + '',
   accessor: 'active',
   Cell: ({ value }) => (value ? <CheckIcon color="primary" /> : <CloseIcon color="error" />)
 }
 //#endregion
 
 //#region Rootstocks
-export const rootstocksName: Column<Customer> = {
-  Header: i18n.t('name'),
+export const rootstocksName: Column<Rootstock> = {
+  Header: i18n.t('name') + '',
   accessor: 'name',
   Cell: ({
     value,
@@ -91,7 +93,7 @@ export const rootstocksName: Column<Customer> = {
 
 //#region Owner Properties
 export const ownerPropertyName: Column<OwnerProperty> = {
-  Header: i18n.t('name'),
+  Header: i18n.t('name') + '',
   accessor: (r: OwnerProperty) => r.property.name,
   Cell: ({
     value,
@@ -101,7 +103,7 @@ export const ownerPropertyName: Column<OwnerProperty> = {
   }) => <CellLink to={addURLSearch({ drawer: 'property', id: original.id })}>{value}</CellLink>
 }
 export const ownerPropertyAddress: Column<OwnerProperty> = {
-  Header: i18n.t('address'),
+  Header: i18n.t('address') + '',
   accessor: (r: OwnerProperty) => `${r.property.address}, ${r.property.city} - ${r.property.state}`,
   Cell: ({
     value,
@@ -111,7 +113,7 @@ export const ownerPropertyAddress: Column<OwnerProperty> = {
   }) => <CellLink to={addURLSearch({ drawer: 'property', id: original.id })}>{value}</CellLink>
 }
 export const ownerPropertyProducerName: Column<OwnerProperty> = {
-  Header: i18n.t('producerName'),
+  Header: i18n.t('producerName') + '',
   accessor: (r: OwnerProperty) => r.property.producerName,
   Cell: ({
     value,
@@ -124,7 +126,7 @@ export const ownerPropertyProducerName: Column<OwnerProperty> = {
 
 //#region Customer Properties
 export const customerPropertyGeneral: Column<CustomerProperty> = {
-  Header: i18n.t('generalData'),
+  Header: i18n.t('generalData') + '',
   accessor: (r: CustomerProperty) => r.property.name,
   Cell: ({
     cell: {
@@ -160,7 +162,7 @@ export const customerPropertyEdit: Column<CustomerProperty> = {
 
 //#region Greenhouses
 export const greenhouseLabel: Column<Greenhouse> = {
-  Header: i18n.t('name'),
+  Header: i18n.t('name') + '',
   accessor: 'label',
   Cell: ({
     value,
@@ -168,18 +170,20 @@ export const greenhouseLabel: Column<Greenhouse> = {
       row: { original }
     }
   }) => {
-    return <CellLink to={addURLSearch({ drawer: 'greenhouse', id: original.id })}>{value}</CellLink>
+    return (
+      <CellLink to={addURLSearch({ drawer: 'greenhouse', id: original.id + '' })}>{value}</CellLink>
+    )
   }
 }
 export const greenhouseType: Column<Greenhouse> = {
-  Header: i18n.t('greenhouse_type'),
+  Header: i18n.t('greenhouse_type') + '',
   accessor: 'type',
   Cell: ({ value }) => {
     return <Chip label={i18n.t(value)} />
   }
 }
 export const greenhouseProperty: Column<Greenhouse> = {
-  Header: i18n.t('property'),
+  Header: i18n.t('property') + '',
   accessor: (r: Greenhouse) => r.ownerProperty.property.name,
   Cell: ({
     value,
@@ -194,27 +198,27 @@ export const greenhouseProperty: Column<Greenhouse> = {
 
 //#region Benches
 export const benchLabel: Column<SeedlingBench> = {
-  Header: i18n.t('label'),
+  Header: i18n.t('label') + '',
   accessor: 'label'
 }
 export const benchQuantity: Column<SeedlingBench> = {
-  Header: i18n.t('quantity'),
+  Header: i18n.t('quantity') + '',
   accessor: 'quantity'
 }
 export const benchLastPlantingDate: Column<SeedlingBench> = {
-  Header: i18n.t('last_planting_date'),
+  Header: i18n.t('last_planting_date') + '',
   accessor: (r: SeedlingBench) => formatDate(r.lastPlantingDate, 'DD/MM/YYYY')
 }
 export const benchFirstPaymentDate: Column<SeedlingBench> = {
-  Header: i18n.t('first_payment_date'),
+  Header: i18n.t('first_payment_date') + '',
   accessor: (r: SeedlingBench) => formatDate(r.firstPaymentDate, 'DD/MM/YYYY')
 }
 export const benchRootstock: Column<SeedlingBench> = {
-  Header: i18n.t('rootstock'),
+  Header: i18n.t('rootstock') + '',
   accessor: (r: SeedlingBench) => r.rootstock.name
 }
 export const benchResponsible: Column<SeedlingBench> = {
-  Header: i18n.t('responsible'),
+  Header: i18n.t('responsible') + '',
   accessor: (r: SeedlingBench) => `${r.user.firstName} ${r.user.lastName}`
 }
 export const benchActions: Column<SeedlingBench> = {
@@ -230,17 +234,19 @@ export const benchActions: Column<SeedlingBench> = {
 
 //#region Fruits orders
 export const fruitOrderNfNumber: Column<FruitsOrder> = {
-  Header: i18n.t('invoice_number'),
+  Header: i18n.t('invoice_number') + '',
   accessor: 'nfNumber',
   Cell: ({
     value,
     cell: {
       row: { original }
     }
-  }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
+  }) => (
+    <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id + '' })}>{value}</CellLink>
+  )
 }
 export const fruitOrderDate: Column<FruitsOrder> = {
-  Header: i18n.t('order_date'),
+  Header: i18n.t('order_date') + '',
   accessor: (r: FruitsOrder) => formatDate(r.orderDate),
   id: 'orderDate',
   Cell: ({
@@ -251,7 +257,7 @@ export const fruitOrderDate: Column<FruitsOrder> = {
   }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
 }
 export const fruitOrderDeliveryDate: Column<FruitsOrder> = {
-  Header: i18n.t('delivery_date'),
+  Header: i18n.t('delivery_date') + '',
   accessor: (r: FruitsOrder) => formatDate(r.deliveryDate),
   id: 'deliveryDate',
   Cell: ({
@@ -262,16 +268,16 @@ export const fruitOrderDeliveryDate: Column<FruitsOrder> = {
   }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
 }
 export const fruitOrderCustomer: Column<FruitsOrder> = {
-  Header: i18n.t('customer'),
+  Header: i18n.t('customer') + '',
   accessor: (r: FruitsOrder) =>
     `${r.customerProperty.customer.firstName} ${r.customerProperty.customer.lastName}`
 }
 export const fruitOrderBoxQtd: Column<FruitsOrder> = {
-  Header: i18n.t('box_quantity'),
+  Header: i18n.t('box_quantity') + '',
   accessor: (r: FruitsOrder) => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity, 0)
 }
 export const fruitOrderValue: Column<FruitsOrder> = {
-  Header: i18n.t('order_value'),
+  Header: i18n.t('order_value') + '',
   accessor: (r: FruitsOrder) =>
     r.fruitOrderItems.reduce((prev, next) => prev + next.quantity * next.boxPrice, 0)
 }
@@ -279,37 +285,46 @@ export const fruitOrderValue: Column<FruitsOrder> = {
 
 //#region Payments
 export const paymentsAmount: Column<Payment> = {
-  Header: i18n.t('amount'),
+  Header: i18n.t('amount') + '',
   accessor: 'amount'
 }
 export const paymentsMethod: Column<Payment> = {
-  Header: i18n.t('payment_method'),
+  Header: i18n.t('payment_method') + '',
   accessor: 'method',
   Cell: ({ value }) => <Chip label={value} />
 }
 export const paymentsScheduledDate: Column<Payment> = {
-  Header: i18n.t('scheduled_date'),
+  Header: i18n.t('scheduled_date') + '',
   accessor: (r: Payment) => formatDate(r.scheduledDate),
   id: 'scheduledDate'
 }
 export const paymentsReceived: Column<Payment> = {
-  Header: i18n.t('received'),
+  Header: i18n.t('received') + '',
   accessor: 'received',
   Cell: ({ value }) => (value ? <CheckIcon color="primary" /> : <CloseIcon color="error" />)
+}
+export const paymentsAction: Column<Payment> = {
+  Header: ' ',
+  id: 'paymentActions',
+  Cell: ({
+    cell: {
+      row: { original }
+    }
+  }) => <EditPaymentButtonDialog payment={original} />
 }
 //#endregion
 
 //#region FruitsOrderItems
 export const FruitsOrderItemsName: Column<FruitsOrderItem> = {
-  Header: i18n.t('name'),
+  Header: i18n.t('name') + '',
   accessor: 'name'
 }
 export const FruitsOrderItemsQuantity: Column<FruitsOrderItem> = {
-  Header: i18n.t('box_quantity'),
+  Header: i18n.t('box_quantity') + '',
   accessor: 'quantity'
 }
 export const FruitsOrderItemsBoxPrice: Column<FruitsOrderItem> = {
-  Header: i18n.t('box_price'),
+  Header: i18n.t('box_price') + '',
   accessor: 'boxPrice'
 }
 //#endregion

@@ -6,14 +6,21 @@ import {
   paymentsAmount,
   paymentsMethod,
   paymentsReceived,
-  paymentsScheduledDate
+  paymentsScheduledDate,
+  paymentsAction
 } from 'components/table/cells'
 import { useTranslation } from 'react-i18next'
 import { Payment } from 'types/orders'
 
 type Props = { payments: Payment[] }
 
-const columns = [paymentsAmount, paymentsMethod, paymentsScheduledDate, paymentsReceived]
+const columns = [
+  paymentsAmount,
+  paymentsMethod,
+  paymentsScheduledDate,
+  paymentsReceived,
+  paymentsAction
+]
 
 const PaymentsTable: React.FC<Props> = ({ payments }) => {
   const { t } = useTranslation()

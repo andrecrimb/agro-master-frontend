@@ -29,12 +29,8 @@ const columns = [
 const BenchesTable: React.FC<Props> = ({ greenhouse }) => {
   const { t } = useTranslation()
 
-  const initialState = React.useMemo(
-    () => ({
-      sortBy: [{ id: 'label', desc: false }]
-    }),
-    []
-  )
+  const initialState = React.useMemo(() => ({ sortBy: [{ id: 'label', desc: true }] }), [])
+
   if (!greenhouse.seedlingBenches.length) {
     return <ScreenPlaceholder description={t('no_benches')} />
   }
