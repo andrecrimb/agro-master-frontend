@@ -47,9 +47,7 @@ const Orders: React.FC = () => {
           <AddNewOrderMenu />
         </PageHeader>
         <MainContentGridArea>
-          <DetailsDrawer>
-            <FruitsOrdersTable />
-          </DetailsDrawer>
+          <DetailsDrawer>{ordersType === 'fruits' ? <FruitsOrdersTable /> : null}</DetailsDrawer>
         </MainContentGridArea>
       </PageHeaderAndContentGrid>
     </Fade>

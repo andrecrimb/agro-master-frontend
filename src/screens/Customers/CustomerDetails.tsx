@@ -20,7 +20,7 @@ const CustomerDetails: React.FC<Props> = ({ id }) => {
     <DetailsDrawerWrapper
       header={{
         title: t('customer') + ' | ',
-        highlightTitle: `${customer.firstName} ${customer.lastName || ''} ${
+        highlightTitle: `${customer.name} ${
           customer.nickname !== '' ? `(${customer.nickname})` : ''
         }`,
         RightActions: <DrawerActions customerId={id} />
@@ -42,9 +42,7 @@ const CustomerDetails: React.FC<Props> = ({ id }) => {
                     entries={[
                       [
                         t('name'),
-                        `${customer.firstName} ${customer.lastName} ${
-                          customer.nickname ? '(' + customer.nickname + ')' : ''
-                        }`
+                        `${customer.name} ${customer.nickname ? '(' + customer.nickname + ')' : ''}`
                       ],
                       [
                         t('active'),

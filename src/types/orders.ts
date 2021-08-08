@@ -2,6 +2,7 @@ import { Property } from 'types/property'
 
 export type OrderType = 'seed' | 'seedling' | 'rootstock' | 'borbulha' | 'fruit'
 export type PaymentMethod = 'money' | 'cheque'
+export type OrderStatus = 'issued' | 'canceled'
 
 export type Payment = {
   id: number
@@ -27,16 +28,12 @@ export type FruitsOrder = {
   deliveryDate: string
   nfNumber: string
   installmentsNumber: number
-  user: {
-    id: number
-    lastName: string
-    firstName: string
-  }
+  status: OrderStatus
+  user: { id: number; name: string }
   customerProperty: {
     customer: {
       id: number
-      lastName: string
-      firstName: string
+      name: string
       nickname: string
     }
     property: Property

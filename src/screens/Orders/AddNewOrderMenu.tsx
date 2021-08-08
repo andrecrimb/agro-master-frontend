@@ -4,6 +4,7 @@ import { AddRounded as AddIcon } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { OrderType } from 'types/orders'
 import AddFruitOrderDialog from './AddFruitOrderDialog'
+import AddSeedlingOrderDialog from './AddSeedlingOrderDialog'
 
 const AddNewOrderMenu: React.FC = () => {
   const { t } = useTranslation()
@@ -44,6 +45,9 @@ const AddNewOrderMenu: React.FC = () => {
       </Menu>
 
       {openDialog === 'fruit' ? <AddFruitOrderDialog onClose={() => setOpenDialog(null)} /> : null}
+      {openDialog === 'seedling' ? (
+        <AddSeedlingOrderDialog onClose={() => setOpenDialog(null)} />
+      ) : null}
     </>
   )
 }

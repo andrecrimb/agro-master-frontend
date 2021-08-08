@@ -9,7 +9,8 @@ import {
   fruitOrderDeliveryDate,
   fruitOrderCustomer,
   fruitOrderBoxQtd,
-  fruitOrderValue
+  fruitOrderValue,
+  fruitOrderStatus
 } from 'components/table/cells'
 import useFruitsOrders from 'hooks/useFruitsOrders'
 
@@ -18,6 +19,7 @@ const columns = [
   fruitOrderDeliveryDate,
   fruitOrderNfNumber,
   fruitOrderCustomer,
+  fruitOrderStatus,
   fruitOrderBoxQtd,
   fruitOrderValue
 ]

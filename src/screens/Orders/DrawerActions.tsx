@@ -16,6 +16,8 @@ const DrawerActions: React.FC<Props> = ({ orderId }) => {
     setAnchorEl(null)
   }
 
+  //TODO add a cancel order button
+
   return (
     <>
       <IconButton

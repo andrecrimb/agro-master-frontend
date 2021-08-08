@@ -6,8 +6,7 @@ import { AxiosError } from 'axios'
 import { Customer } from 'types/customer'
 
 export type AddCustomerRequest = {
-  firstName: string
-  lastName: string
+  name: string
   nickname: string
   active: boolean
 

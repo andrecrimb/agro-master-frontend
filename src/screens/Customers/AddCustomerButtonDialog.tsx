@@ -25,8 +25,7 @@ import useAddCustomer from 'hooks/useAddCustomer'
 import useZipSearch from 'hooks/useZipSearch'
 
 const FORM_DEFAULT_VALUES = {
-  firstName: '',
-  lastName: '',
+  name: '',
   nickname: '',
   active: true,
   address: '',
@@ -66,8 +65,7 @@ const AddCustomerButtonDialog: React.FC = () => {
     searchZip.reset()
   }, [open === false])
 
-  const { ref: firstNameRef, ...firstName } = register('firstName')
-  const { ref: lastNameRef, ...lastName } = register('lastName')
+  const { ref: nameRef, ...name } = register('name')
   const { ref: nicknameRef, ...nickname } = register('nickname')
   const { ref: zipRef, onBlur: zipOnBlur, ...zip } = register('zip')
   const { ref: addressRef, ...address } = register('address')
@@ -115,28 +113,15 @@ const AddCustomerButtonDialog: React.FC = () => {
                 <Grid item xs={6}>
                   <TextField
                     autoFocus
-                    id="firstName"
+                    id="name"
                     type="text"
                     size="small"
                     fullWidth
                     required
                     variant="filled"
-                    label={t('firstName')}
-                    inputRef={firstNameRef}
-                    {...firstName}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="lastName"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    variant="filled"
-                    label={t('lastName')}
-                    inputRef={lastNameRef}
-                    {...lastName}
+                    label={t('name')}
+                    inputRef={nameRef}
+                    {...name}
                   />
                 </Grid>
                 <Grid item xs={6}>

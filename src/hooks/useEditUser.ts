@@ -7,9 +7,7 @@ import { AxiosError } from 'axios'
 export type EditUserRequest = {
   id: number
   data: {
-    firstName?: string
-    lastName?: string
-    nickname?: string
+    name?: string
     email?: string
     password?: string
     isSuperuser?: boolean

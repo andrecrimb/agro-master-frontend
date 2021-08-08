@@ -5,9 +5,7 @@ export type Login = {
 
 export type AuthUser = {
   id: number
-  firstName: string
-  lastName: string
-  nickname: string
+  name: string
   email: string
   password: string
   isSuperuser: boolean

@@ -5,8 +5,7 @@ export type CustomerProperty = { customerId: number; property: Property }
 export type Customer = {
   id: number
 
-  firstName: string
-  lastName: string
+  name: string
   nickname: string
   active: boolean
 

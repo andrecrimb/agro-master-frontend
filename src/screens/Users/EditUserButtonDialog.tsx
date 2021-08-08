@@ -26,9 +26,7 @@ import useUser from 'hooks/useUser'
 import { muiTheme } from 'theme'
 
 const FORM_DEFAULT_VALUES = {
-  firstName: '',
-  lastName: '',
-  nickname: '',
+  name: '',
   email: '',
   password: '',
   passwordRepeat: '',
@@ -55,9 +53,7 @@ const EditUserButtonDialog: React.FC<Props> = ({ userId }) => {
     control
   })
 
-  const { ref: firstNameRef, ...firstName } = register('firstName')
-  const { ref: lastNameRef, ...lastName } = register('lastName')
-  const { ref: nicknameRef, ...nickname } = register('nickname')
+  const { ref: nameRef, ...name } = register('name')
   const { ref: emailRef, ...email } = register('email')
   const { ref: passwordRef, ...password } = register('password')
   const { ref: passwordRepeatRef, ...passwordRepeat } = register('passwordRepeat')
@@ -82,7 +78,7 @@ const EditUserButtonDialog: React.FC<Props> = ({ userId }) => {
       >
         <DialogTitle id="dialog-title">
           {t('edit_user')} |{' '}
-          <span style={{ color: muiTheme.palette.primary.main }}>{userSelected?.firstName}</span>
+          <span style={{ color: muiTheme.palette.primary.main }}>{userSelected?.name}</span>
         </DialogTitle>
         {userSelected ? (
           <form
@@ -133,40 +129,14 @@ const EditUserButtonDialog: React.FC<Props> = ({ userId }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    autoFocus
-                    id="firstName"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    variant="filled"
-                    label={t('firstName')}
-                    inputRef={firstNameRef}
-                    {...firstName}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="lastName"
+                    id="name"
                     type="text"
                     size="small"
                     fullWidth
                     variant="filled"
-                    label={t('lastName')}
-                    inputRef={lastNameRef}
-                    {...lastName}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="nickname"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    variant="filled"
-                    label={t('nickname')}
-                    inputRef={nicknameRef}
-                    {...nickname}
+                    label={t('name')}
+                    inputRef={nameRef}
+                    {...name}
                   />
                 </Grid>
                 <Grid item xs={6}>

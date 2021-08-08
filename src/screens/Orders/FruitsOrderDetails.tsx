@@ -2,7 +2,7 @@ import DetailsDrawerWrapper from 'components/DetailsDrawerWrapper'
 import InfoTable from 'components/InfoTable'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, Divider, Grid, Typography } from '@material-ui/core'
+import { Box, Divider, Grid, Typography, Chip } from '@material-ui/core'
 import PaymentsTable from './PaymentsTable'
 import FruitsOrderItemsTable from './FruitsOrderItemsTable'
 import useFruitsOrder from 'hooks/useFruitsOrder'
@@ -21,9 +21,10 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
     <DetailsDrawerWrapper
       header={{
         title: t('fruits_order') + ' | ',
-        highlightTitle: `${fruitsOrder.customerProperty.customer.firstName} ${
-          fruitsOrder.customerProperty.customer.lastName || ''
-        } (${formatDate(fruitsOrder.orderDate, 'DD/MM/YYYY')})`,
+        highlightTitle: `${fruitsOrder.customerProperty.customer.name} (${formatDate(
+          fruitsOrder.orderDate,
+          'DD/MM/YYYY'
+        )})`,
         RightActions: <DrawerActions orderId={id} />
       }}
       tabs={[
@@ -45,10 +46,8 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
                       [t('delivery_date'), formatDate(fruitsOrder.deliveryDate)],
                       [t('invoice_number'), fruitsOrder.nfNumber],
                       [t('installment_number'), fruitsOrder.installmentsNumber],
-                      [
-                        t('registered_by'),
-                        `${fruitsOrder.user.firstName} ${fruitsOrder.user.lastName}`
-                      ]
+                      [t('status'), <Chip key="order-status" label={t(fruitsOrder.status)} />],
+                      [t('registered_by'), `${fruitsOrder.user.name}`]
                     ]}
                   />
                 </Grid>
@@ -63,9 +62,7 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
                     entries={[
                       [
                         t('customer'),
-                        `${fruitsOrder.customerProperty.customer.firstName} ${
-                          fruitsOrder.customerProperty.customer.lastName
-                        } ${
+                        `${fruitsOrder.customerProperty.customer.name} ${
                           fruitsOrder.customerProperty.customer.nickname
                             ? '(' + fruitsOrder.customerProperty.customer.nickname + ')'
                             : ''

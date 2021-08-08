@@ -84,9 +84,7 @@ const AddPropertyButtonDialog: React.FC<Props> = ({ customerId, onClick }) => {
         >
           <DialogTitle id="dialog-title">
             {t('new_property')} |{' '}
-            <span style={{ color: muiTheme.palette.primary.main }}>
-              {customer?.firstName} {customer?.lastName}
-            </span>
+            <span style={{ color: muiTheme.palette.primary.main }}>{customer?.name}</span>
           </DialogTitle>
           <form
             onSubmit={handleSubmit(values => {

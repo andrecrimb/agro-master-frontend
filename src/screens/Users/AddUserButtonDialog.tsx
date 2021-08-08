@@ -24,9 +24,7 @@ import LoadingButton from 'components/LoadingButton'
 import useAddUser from 'hooks/useAddUser'
 
 const FORM_DEFAULT_VALUES = {
-  firstName: '',
-  lastName: '',
-  nickname: '',
+  name: '',
   email: '',
   password: '',
   passwordRepeat: '',
@@ -53,9 +51,7 @@ const AddUserButtonDialog: React.FC = () => {
     reset(FORM_DEFAULT_VALUES)
   }, [open === false])
 
-  const { ref: firstNameRef, ...firstName } = register('firstName')
-  const { ref: lastNameRef, ...lastName } = register('lastName')
-  const { ref: nicknameRef, ...nickname } = register('nickname')
+  const { ref: nameRef, ...name } = register('name')
   const { ref: emailRef, ...email } = register('email')
   const { ref: passwordRef, ...password } = register('password')
   const { ref: passwordRepeatRef, ...passwordRepeat } = register('passwordRepeat')
@@ -104,39 +100,15 @@ const AddUserButtonDialog: React.FC = () => {
                 <Grid item xs={6}>
                   <TextField
                     autoFocus
-                    id="firstName"
+                    id="name"
                     type="text"
                     size="small"
                     fullWidth
                     required
                     variant="filled"
-                    label={t('firstName')}
-                    inputRef={firstNameRef}
-                    {...firstName}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="lastName"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    variant="filled"
-                    label={t('lastName')}
-                    inputRef={lastNameRef}
-                    {...lastName}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="nickname"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    variant="filled"
-                    label={t('nickname')}
-                    inputRef={nicknameRef}
-                    {...nickname}
+                    label={t('name')}
+                    inputRef={nameRef}
+                    {...name}
                   />
                 </Grid>
                 <Grid item xs={6}>

@@ -26,8 +26,6 @@
   "clear": "Limpar",
   "close": "Fechar",
   "save": "Salvar",
-  "firstName": "Nome",
-  "lastName": "Sobrenome",
   "nickname": "Apelido",
   "generalData": "Dados gerais",
   "general": "Geral",
@@ -179,5 +177,8 @@
   "edit_payment": "Editar pagamento",
   "delete_payment": "Excluir pagamento",
   "this_payment": "este pagamento",
-  "remove_payment_error": "Erro ao excluir o pagamento"
+  "remove_payment_error": "Erro ao excluir o pagamento",
+  "status": "Status",
+  "issued": "Emitido",
+  "canceled": "Cancelado"
 }

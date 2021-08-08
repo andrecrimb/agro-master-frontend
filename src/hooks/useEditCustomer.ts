@@ -7,8 +7,7 @@ import { AxiosError } from 'axios'
 export type EditCustomerRequest = {
   id: number
   data: Partial<{
-    firstName: string
-    lastName: string
+    name: string
     nickname: string
     active: boolean
     address: string

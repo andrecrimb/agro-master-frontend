@@ -66,12 +66,8 @@ const UserMenu: React.FC = () => {
 
   const displayName = React.useMemo(
     () => ({
-      short: (user?.firstName && user?.lastName
-        ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`
-        : `${user?.firstName?.substring(0, 2)}`
-      ).toUpperCase(),
-      full:
-        user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.firstName
+      short: `${user?.name?.substring(0, 2)}`.toUpperCase(),
+      full: user?.name + ''
     }),
     [user]
   )

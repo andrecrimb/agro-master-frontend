@@ -6,9 +6,7 @@ import { AxiosError } from 'axios'
 import { User } from 'types/user'
 
 export type AddUserRequest = {
-  firstName: string
-  lastName: string
-  nickname: string
+  name: string
   email: string
   password: string
   isSuperuser: boolean

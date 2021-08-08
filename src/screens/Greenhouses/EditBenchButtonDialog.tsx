@@ -235,7 +235,7 @@ const EditBenchButtonDialog: React.FC<Props> = ({ bench }) => {
                               <MenuItem value={''}>{t('select')}</MenuItem>
                               {users.map(p => (
                                 <MenuItem key={p.id} value={p.id}>
-                                  {`${p.firstName} ${p.lastName}`}
+                                  {`${p.name}`}
                                 </MenuItem>
                               ))}
                             </Select>

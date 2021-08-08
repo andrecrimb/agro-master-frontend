@@ -19,9 +19,7 @@ const UserDetails: React.FC<Props> = ({ id }) => {
     <DetailsDrawerWrapper
       header={{
         title: t('user') + ' | ',
-        highlightTitle: `${user.firstName} ${user.lastName || ''} ${
-          user.nickname !== '' ? `(${user.nickname})` : ''
-        }`
+        highlightTitle: user.name
       }}
       tabs={[
         {
@@ -38,12 +36,7 @@ const UserDetails: React.FC<Props> = ({ id }) => {
                 <Grid item xs={12}>
                   <InfoTable
                     entries={[
-                      [
-                        t('name'),
-                        `${user.firstName} ${user.lastName} ${
-                          user.nickname ? '(' + user.nickname + ')' : ''
-                        }`
-                      ],
+                      [t('name'), user.name],
                       [t('email'), user.email],
                       [
                         t('superUser'),

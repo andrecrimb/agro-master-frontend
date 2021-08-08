@@ -8,7 +8,7 @@ export type SeedlingBench = {
   lastPlantingDate: string
   firstPaymentDate: string
   rootstock: { name: string; id: number }
-  user: { firstName: string; lastName: string; id: number }
+  user: { name: string; id: number }
   greenhouseId: number
 }
 

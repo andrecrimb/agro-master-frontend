@@ -20,15 +20,14 @@ import { Rootstock } from 'types/rootstock'
 //#region Users
 export const usersName: Column<User> = {
   Header: i18n.t('name') + '',
-  accessor: (r: User) =>
-    r.nickname ? `${r.firstName} ${r.lastName} (${r.nickname})` : `${r.firstName} ${r.lastName}`,
+  accessor: 'name',
   Cell: ({
     value,
     cell: {
       row: { original }
     }
   }) => {
-    return <CellLink to={addURLSearch({ drawer: 'user', id: original.id })}>{value}</CellLink>
+    return <CellLink to={addURLSearch({ drawer: 'user', id: original.id + '' })}>{value}</CellLink>
   }
 }
 export const usersEmail: Column<User> = {
@@ -58,8 +57,7 @@ export const usersSuperUser: Column<User> = {
 //#region Customers
 export const customersName: Column<Customer> = {
   Header: i18n.t('name') + '',
-  accessor: (r: Customer) =>
-    r.nickname ? `${r.firstName} ${r.lastName} (${r.nickname})` : `${r.firstName} ${r.lastName}`,
+  accessor: (r: Customer) => (r.nickname ? `${r.name} (${r.nickname})` : `${r.name}`),
   Cell: ({
     value,
     cell: {
@@ -207,19 +205,19 @@ export const benchQuantity: Column<SeedlingBench> = {
 }
 export const benchLastPlantingDate: Column<SeedlingBench> = {
   Header: i18n.t('last_planting_date') + '',
-  accessor: (r: SeedlingBench) => formatDate(r.lastPlantingDate, 'DD/MM/YYYY')
+  accessor: r => formatDate(r.lastPlantingDate, 'DD/MM/YYYY')
 }
 export const benchFirstPaymentDate: Column<SeedlingBench> = {
   Header: i18n.t('first_payment_date') + '',
-  accessor: (r: SeedlingBench) => formatDate(r.firstPaymentDate, 'DD/MM/YYYY')
+  accessor: r => formatDate(r.firstPaymentDate, 'DD/MM/YYYY')
 }
 export const benchRootstock: Column<SeedlingBench> = {
   Header: i18n.t('rootstock') + '',
-  accessor: (r: SeedlingBench) => r.rootstock.name
+  accessor: r => r.rootstock.name
 }
 export const benchResponsible: Column<SeedlingBench> = {
   Header: i18n.t('responsible') + '',
-  accessor: (r: SeedlingBench) => `${r.user.firstName} ${r.user.lastName}`
+  accessor: r => `${r.user.name}`
 }
 export const benchActions: Column<SeedlingBench> = {
   Header: ' ',
@@ -256,9 +254,14 @@ export const fruitOrderDate: Column<FruitsOrder> = {
     }
   }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
 }
+export const fruitOrderStatus: Column<FruitsOrder> = {
+  Header: i18n.t('status') + '',
+  accessor: 'status',
+  Cell: ({ value }) => <Chip label={i18n.t(value)} />
+}
 export const fruitOrderDeliveryDate: Column<FruitsOrder> = {
   Header: i18n.t('delivery_date') + '',
-  accessor: (r: FruitsOrder) => formatDate(r.deliveryDate),
+  accessor: r => formatDate(r.deliveryDate),
   id: 'deliveryDate',
   Cell: ({
     value,
@@ -269,17 +272,15 @@ export const fruitOrderDeliveryDate: Column<FruitsOrder> = {
 }
 export const fruitOrderCustomer: Column<FruitsOrder> = {
   Header: i18n.t('customer') + '',
-  accessor: (r: FruitsOrder) =>
-    `${r.customerProperty.customer.firstName} ${r.customerProperty.customer.lastName}`
+  accessor: r => `${r.customerProperty.customer.name}`
 }
 export const fruitOrderBoxQtd: Column<FruitsOrder> = {
   Header: i18n.t('box_quantity') + '',
-  accessor: (r: FruitsOrder) => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+  accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity, 0)
 }
 export const fruitOrderValue: Column<FruitsOrder> = {
   Header: i18n.t('order_value') + '',
-  accessor: (r: FruitsOrder) =>
-    r.fruitOrderItems.reduce((prev, next) => prev + next.quantity * next.boxPrice, 0)
+  accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity * next.boxPrice, 0)
 }
 //#endregion
 

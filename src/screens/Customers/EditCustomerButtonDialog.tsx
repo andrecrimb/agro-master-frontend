@@ -31,8 +31,7 @@ import useDeleteCustomer from 'hooks/useDeleteCustomer'
 import useDialog from 'hooks/useDialog'
 
 const FORM_DEFAULT_VALUES = {
-  firstName: '',
-  lastName: '',
+  name: '',
   nickname: '',
   active: true,
   address: '',
@@ -73,8 +72,7 @@ const EditCustomerButtonDialog: React.FC<Props> = ({ customerId, onClick }) => {
     control
   })
 
-  const { ref: firstNameRef, ...firstName } = register('firstName')
-  const { ref: lastNameRef, ...lastName } = register('lastName')
+  const { ref: nameRef, ...name } = register('name')
   const { ref: nicknameRef, ...nickname } = register('nickname')
   const { ref: zipRef, onBlur: zipOnBlur, ...zip } = register('zip')
   const { ref: addressRef, ...address } = register('address')
@@ -102,9 +100,7 @@ const EditCustomerButtonDialog: React.FC<Props> = ({ customerId, onClick }) => {
       <Dialog open={open} fullWidth maxWidth="sm" onClose={onClose} aria-labelledby="dialog-title">
         <DialogTitle id="dialog-title">
           {t('edit_customer')} |{' '}
-          <span style={{ color: muiTheme.palette.primary.main }}>
-            {customerSelected?.firstName} {customerSelected?.lastName}
-          </span>
+          <span style={{ color: muiTheme.palette.primary.main }}>{customerSelected?.name}</span>
         </DialogTitle>
         {customerSelected ? (
           <form
@@ -140,27 +136,15 @@ const EditCustomerButtonDialog: React.FC<Props> = ({ customerId, onClick }) => {
                 <Grid item xs={6}>
                   <TextField
                     autoFocus
-                    id="firstName"
+                    id="name"
                     type="text"
                     size="small"
                     fullWidth
                     required
                     variant="filled"
-                    label={t('firstName')}
-                    inputRef={firstNameRef}
-                    {...firstName}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="lastName"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    variant="filled"
-                    label={t('lastName')}
-                    inputRef={lastNameRef}
-                    {...lastName}
+                    label={t('name')}
+                    inputRef={nameRef}
+                    {...name}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -350,9 +334,7 @@ const EditCustomerButtonDialog: React.FC<Props> = ({ customerId, onClick }) => {
                   onClick={() =>
                     newDialog({
                       title: t('warning') + '!',
-                      message: t('delete_question', {
-                        item: customerSelected.firstName
-                      }),
+                      message: t('delete_question', { item: customerSelected.name }),
                       confirmationButton: {
                         text: t('delete'),
                         onClick: () =>
