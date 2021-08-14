@@ -10,7 +10,7 @@ const useOrders = <T = Order[]>(
   return useQuery(
     ['orders', type],
     async () => {
-      const { data } = await authAxios.get<Order[]>('/api/orders')
+      const { data } = await authAxios.get<Order[]>('/api/orders/?type=' + type)
       return data
     },
     {

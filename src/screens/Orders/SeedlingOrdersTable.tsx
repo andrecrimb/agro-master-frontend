@@ -43,17 +43,20 @@ const SeedlingOrdersTable: React.FC = () => {
           <LinearProgress color="secondary" />
         </div>
       ) : null}
-      {!data.length ? <ScreenPlaceholder description={t('no_orders')} /> : null}
-      <Table
-        columns={columns}
-        data={data}
-        plugins={[useSortBy, usePagination]}
-        options={{
-          disableSortRemove: true,
-          autoResetSortBy: false,
-          initialState
-        }}
-      />
+      {!data.length ? (
+        <ScreenPlaceholder description={t('no_orders')} />
+      ) : (
+        <Table
+          columns={columns}
+          data={data}
+          plugins={[useSortBy, usePagination]}
+          options={{
+            disableSortRemove: true,
+            autoResetSortBy: false,
+            initialState
+          }}
+        />
+      )}
     </>
   )
 }
