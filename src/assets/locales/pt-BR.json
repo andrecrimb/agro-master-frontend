@@ -196,5 +196,9 @@
   "add_order_items_error": "Erro ao adicionar os items à venda",
   "edit_order_item_error": "Erro ao editar o item da venda",
   "delete_order_item_error": "Erro ao excluir o item da venda",
-  "delete_item": "Excluir item"
+  "delete_item": "Excluir item",
+  "seedling_quantity": "Quantidade de mudas",
+  "borbulha_quantity": "Quantidade de borbulhas",
+  "seed_quantity": "Quantidade de sementes",
+  "rootstock_quantity": "Quantidade de porta-enxertos"
 }

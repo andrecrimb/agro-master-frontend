@@ -7,33 +7,38 @@ import HeaderTabs from 'components/HeaderTabs'
 import { TabProps } from '@material-ui/core/Tab'
 import AddOrderButtonDialog from 'screens/Orders/AddOrderButtonDialog'
 import DetailsDrawer from 'components/DetailsDrawer'
-import FruitsOrdersTable from './FruitsOrdersTable'
+import FruitOrdersTable from './FruitOrdersTable'
+import SeedlingOrdersTable from './SeedlingOrdersTable'
+import BorbulhaOrdersTable from './BorbulhaOrdersTable'
+import SeedOrdersTable from './SeedOrdersTable'
+import RootstockOrdersTable from './RootstockOrdersTable'
+import { OrderType } from 'types/orders'
 
 const Orders: React.FC = () => {
   const { t } = useTranslation()
-  const [ordersType, setOrdersType] = React.useState('fruits')
+  const [ordersType, setOrdersType] = React.useState<OrderType>('seedling')
 
   const tabs: TabProps[] = React.useMemo(
     () => [
       {
         label: t('seedling_plural'),
-        value: 'seedlings'
+        value: 'seedling'
       },
       {
         label: t('borbulha_plural'),
-        value: 'borbulhas'
+        value: 'borbulha'
       },
       {
         label: t('seed_plural'),
-        value: 'seeds'
+        value: 'seed'
       },
       {
         label: t('fruit_plural'),
-        value: 'fruits'
+        value: 'fruit'
       },
       {
         label: t('rootstock_plural'),
-        value: 'rootstocks'
+        value: 'rootstock'
       }
     ],
     []
@@ -47,7 +52,13 @@ const Orders: React.FC = () => {
           <AddOrderButtonDialog />
         </PageHeader>
         <MainContentGridArea>
-          <DetailsDrawer>{ordersType === 'fruits' ? <FruitsOrdersTable /> : null}</DetailsDrawer>
+          <DetailsDrawer>
+            {ordersType === 'seedling' ? <SeedlingOrdersTable /> : null}
+            {ordersType === 'fruit' ? <FruitOrdersTable /> : null}
+            {ordersType === 'borbulha' ? <BorbulhaOrdersTable /> : null}
+            {ordersType === 'seed' ? <SeedOrdersTable /> : null}
+            {ordersType === 'rootstock' ? <RootstockOrdersTable /> : null}
+          </DetailsDrawer>
         </MainContentGridArea>
       </PageHeaderAndContentGrid>
     </Fade>

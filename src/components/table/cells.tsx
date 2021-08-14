@@ -231,8 +231,8 @@ export const benchActions: Column<SeedlingBench> = {
 }
 //#endregion
 
-//#region Fruits orders
-export const fruitOrderNfNumber: Column<Order> = {
+//#region Orders
+export const orderNfNumber: Column<Order> = {
   Header: i18n.t('invoice_number') + '',
   accessor: 'nfNumber',
   Cell: ({
@@ -241,10 +241,12 @@ export const fruitOrderNfNumber: Column<Order> = {
       row: { original }
     }
   }) => (
-    <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id + '' })}>{value}</CellLink>
+    <CellLink to={addURLSearch({ drawer: original.type + 'Order', id: original.id + '' })}>
+      {value}
+    </CellLink>
   )
 }
-export const fruitOrderDate: Column<Order> = {
+export const orderDate: Column<Order> = {
   Header: i18n.t('order_date') + '',
   accessor: r => formatDate(r.orderDate),
   id: 'orderDate',
@@ -253,14 +255,18 @@ export const fruitOrderDate: Column<Order> = {
     cell: {
       row: { original }
     }
-  }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
+  }) => (
+    <CellLink to={addURLSearch({ drawer: original.type + 'Order', id: original.id })}>
+      {value}
+    </CellLink>
+  )
 }
-export const fruitOrderStatus: Column<Order> = {
+export const orderStatus: Column<Order> = {
   Header: i18n.t('status') + '',
   accessor: 'status',
   Cell: ({ value }) => <Chip label={i18n.t(value)} />
 }
-export const fruitOrderDeliveryDate: Column<Order> = {
+export const orderDeliveryDate: Column<Order> = {
   Header: i18n.t('delivery_date') + '',
   accessor: r => formatDate(r.deliveryDate),
   id: 'deliveryDate',
@@ -269,9 +275,13 @@ export const fruitOrderDeliveryDate: Column<Order> = {
     cell: {
       row: { original }
     }
-  }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
+  }) => (
+    <CellLink to={addURLSearch({ drawer: original.type + 'Order', id: original.id })}>
+      {value}
+    </CellLink>
+  )
 }
-export const fruitOrderCustomer: Column<Order> = {
+export const orderCustomer: Column<Order> = {
   Header: i18n.t('customer') + '',
   accessor: r => `${r.customerProperty.customer.name}`
 }
@@ -282,6 +292,45 @@ export const fruitOrderBoxQtd: Column<Order> = {
 export const fruitOrderValue: Column<Order> = {
   Header: i18n.t('order_value') + '',
   accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity * next.boxPrice, 0)
+}
+
+export const seedlingOrderValue: Column<Order> = {
+  Header: i18n.t('order_value') + '',
+  accessor: r =>
+    r.seedlingBenchOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0)
+}
+export const seedlingOrderQtd: Column<Order> = {
+  Header: i18n.t('seedling_quantity') + '',
+  accessor: r => r.seedlingBenchOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+}
+
+export const borbulhaOrderValue: Column<Order> = {
+  Header: i18n.t('order_value') + '',
+  accessor: r =>
+    r.borbulhaOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0)
+}
+export const borbulhaOrderQtd: Column<Order> = {
+  Header: i18n.t('borbulha_quantity') + '',
+  accessor: r => r.borbulhaOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+}
+
+export const seedOrderValue: Column<Order> = {
+  Header: i18n.t('order_value') + '',
+  accessor: r => r.seedOrderItems.reduce((prev, next) => prev + next.quantity * next.kgPrice, 0)
+}
+export const seedOrderQtd: Column<Order> = {
+  Header: i18n.t('seed_quantity') + '',
+  accessor: r => r.seedOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+}
+
+export const rootstockOrderValue: Column<Order> = {
+  Header: i18n.t('order_value') + '',
+  accessor: r =>
+    r.rootstockOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0)
+}
+export const rootstockOrderQtd: Column<Order> = {
+  Header: i18n.t('rootstock_quantity') + '',
+  accessor: r => r.rootstockOrderItems.reduce((prev, next) => prev + next.quantity, 0)
 }
 //#endregion
 
