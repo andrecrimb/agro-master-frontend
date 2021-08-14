@@ -14,7 +14,8 @@ import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
 import { Greenhouse, SeedlingBench } from 'types/greenhouse'
 import EditBenchButtonDialog from 'screens/Greenhouses/EditBenchButtonDialog'
 import EditPaymentButtonDialog from 'screens/Orders/EditPaymentButtonDialog'
-import { FruitsOrder, FruitsOrderItem, Payment } from 'types/orders'
+import EditFruitItemButtonDialog from 'screens/Orders/EditFruitItemButtonDialog'
+import { Payment, FruitOrderItem, Order } from 'types/orders'
 import { Rootstock } from 'types/rootstock'
 
 //#region Users
@@ -231,7 +232,7 @@ export const benchActions: Column<SeedlingBench> = {
 //#endregion
 
 //#region Fruits orders
-export const fruitOrderNfNumber: Column<FruitsOrder> = {
+export const fruitOrderNfNumber: Column<Order> = {
   Header: i18n.t('invoice_number') + '',
   accessor: 'nfNumber',
   Cell: ({
@@ -243,9 +244,9 @@ export const fruitOrderNfNumber: Column<FruitsOrder> = {
     <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id + '' })}>{value}</CellLink>
   )
 }
-export const fruitOrderDate: Column<FruitsOrder> = {
+export const fruitOrderDate: Column<Order> = {
   Header: i18n.t('order_date') + '',
-  accessor: (r: FruitsOrder) => formatDate(r.orderDate),
+  accessor: r => formatDate(r.orderDate),
   id: 'orderDate',
   Cell: ({
     value,
@@ -254,12 +255,12 @@ export const fruitOrderDate: Column<FruitsOrder> = {
     }
   }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
 }
-export const fruitOrderStatus: Column<FruitsOrder> = {
+export const fruitOrderStatus: Column<Order> = {
   Header: i18n.t('status') + '',
   accessor: 'status',
   Cell: ({ value }) => <Chip label={i18n.t(value)} />
 }
-export const fruitOrderDeliveryDate: Column<FruitsOrder> = {
+export const fruitOrderDeliveryDate: Column<Order> = {
   Header: i18n.t('delivery_date') + '',
   accessor: r => formatDate(r.deliveryDate),
   id: 'deliveryDate',
@@ -270,15 +271,15 @@ export const fruitOrderDeliveryDate: Column<FruitsOrder> = {
     }
   }) => <CellLink to={addURLSearch({ drawer: 'fruitOrder', id: original.id })}>{value}</CellLink>
 }
-export const fruitOrderCustomer: Column<FruitsOrder> = {
+export const fruitOrderCustomer: Column<Order> = {
   Header: i18n.t('customer') + '',
   accessor: r => `${r.customerProperty.customer.name}`
 }
-export const fruitOrderBoxQtd: Column<FruitsOrder> = {
+export const fruitOrderBoxQtd: Column<Order> = {
   Header: i18n.t('box_quantity') + '',
   accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity, 0)
 }
-export const fruitOrderValue: Column<FruitsOrder> = {
+export const fruitOrderValue: Column<Order> = {
   Header: i18n.t('order_value') + '',
   accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity * next.boxPrice, 0)
 }
@@ -292,7 +293,7 @@ export const paymentsAmount: Column<Payment> = {
 export const paymentsMethod: Column<Payment> = {
   Header: i18n.t('payment_method') + '',
   accessor: 'method',
-  Cell: ({ value }) => <Chip label={value} />
+  Cell: ({ value }) => <Chip label={i18n.t(value)} />
 }
 export const paymentsScheduledDate: Column<Payment> = {
   Header: i18n.t('scheduled_date') + '',
@@ -316,16 +317,25 @@ export const paymentsAction: Column<Payment> = {
 //#endregion
 
 //#region FruitsOrderItems
-export const FruitsOrderItemsName: Column<FruitsOrderItem> = {
+export const FruitsOrderItemsName: Column<FruitOrderItem> = {
   Header: i18n.t('name') + '',
   accessor: 'name'
 }
-export const FruitsOrderItemsQuantity: Column<FruitsOrderItem> = {
+export const FruitsOrderItemsQuantity: Column<FruitOrderItem> = {
   Header: i18n.t('box_quantity') + '',
   accessor: 'quantity'
 }
-export const FruitsOrderItemsBoxPrice: Column<FruitsOrderItem> = {
+export const FruitsOrderItemsBoxPrice: Column<FruitOrderItem> = {
   Header: i18n.t('box_price') + '',
   accessor: 'boxPrice'
+}
+export const FruitsOrderItemsAction: Column<FruitOrderItem> = {
+  Header: ' ',
+  id: 'fruitsOrderItemsActions',
+  Cell: ({
+    cell: {
+      row: { original }
+    }
+  }) => <EditFruitItemButtonDialog fruitOrderItem={original} />
 }
 //#endregion

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Box, Divider, Grid, Typography, Chip } from '@material-ui/core'
 import PaymentsTable from './PaymentsTable'
 import FruitsOrderItemsTable from './FruitsOrderItemsTable'
-import useFruitsOrder from 'hooks/useFruitsOrder'
+import useFruitsOrder from 'hooks/useOrder'
 import { formatDate } from 'utils/utils'
 import DrawerActions from './DrawerActions'
 
@@ -25,7 +25,7 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
           fruitsOrder.orderDate,
           'DD/MM/YYYY'
         )})`,
-        RightActions: <DrawerActions orderId={id} />
+        RightActions: fruitsOrder.status === 'issued' ? <DrawerActions orderId={id} /> : null
       }}
       tabs={[
         {
@@ -45,7 +45,6 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
                       [t('order_date'), formatDate(fruitsOrder.orderDate)],
                       [t('delivery_date'), formatDate(fruitsOrder.deliveryDate)],
                       [t('invoice_number'), fruitsOrder.nfNumber],
-                      [t('installment_number'), fruitsOrder.installmentsNumber],
                       [t('status'), <Chip key="order-status" label={t(fruitsOrder.status)} />],
                       [t('registered_by'), `${fruitsOrder.user.name}`]
                     ]}

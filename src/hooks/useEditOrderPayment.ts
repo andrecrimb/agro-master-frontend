@@ -18,7 +18,7 @@ const useEditOrderPayment = (paymentId: number, orderId: number) => {
     },
     {
       onSuccess: () => {
-        client.invalidateQueries(['fruitsOrder', orderId])
+        client.invalidateQueries(['order', orderId])
       },
       onError: e => {
         console.error(e)

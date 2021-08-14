@@ -12,7 +12,7 @@ import {
   fruitOrderValue,
   fruitOrderStatus
 } from 'components/table/cells'
-import useFruitsOrders from 'hooks/useFruitsOrders'
+import useOrders from 'hooks/useOrders'
 
 const columns = [
   fruitOrderDate,
@@ -26,7 +26,7 @@ const columns = [
 
 const FruitsOrdersTable: React.FC = () => {
   const { t } = useTranslation()
-  const { data = [] } = useFruitsOrders()
+  const { data = [] } = useOrders('fruit')
 
   const initialState = React.useMemo(
     () => ({

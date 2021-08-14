@@ -1,12 +1,19 @@
-import { IconButton, Popover, List } from '@material-ui/core'
+import { IconButton, Popover, List, MenuItem } from '@material-ui/core'
 import { MoreVert as MoreIcon } from '@material-ui/icons'
 import React from 'react'
-import AddPaymentButtonDialog from './AddPaymentButtonDialog'
+import AddPaymentDialog from './AddPaymentDialog'
+import CancelOrderMenuItem from './CancelOrderMenuItem'
+import EditOrderDialog from './EditOrderDialog'
+import AddFruitOrderItemsDialog from './AddFruitOrderItemsDialog'
+import { useTranslation } from 'react-i18next'
 
 type Props = { orderId: number }
 
 const DrawerActions: React.FC<Props> = ({ orderId }) => {
+  const { t } = useTranslation()
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [open, setOpen] = React.useState<null | 'addPayments' | 'editOrder' | 'addOrderItems'>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -14,6 +21,7 @@ const DrawerActions: React.FC<Props> = ({ orderId }) => {
 
   const handleClose = () => {
     setAnchorEl(null)
+    setOpen(null)
   }
 
   //TODO add a cancel order button
@@ -36,9 +44,17 @@ const DrawerActions: React.FC<Props> = ({ orderId }) => {
         onClose={handleClose}
       >
         <List>
-          <AddPaymentButtonDialog orderId={orderId} onClick={handleClose} />
+          <MenuItem onClick={() => setOpen('editOrder')}>{t('edit_order')}</MenuItem>
+          <MenuItem onClick={() => setOpen('addPayments')}>{t('add_payment')}</MenuItem>
+          <MenuItem onClick={() => setOpen('addOrderItems')}>{t('add_order_items')}</MenuItem>
+          <CancelOrderMenuItem onClick={handleClose} orderId={orderId} />
         </List>
       </Popover>
+      {open === 'addPayments' ? <AddPaymentDialog orderId={orderId} onClose={handleClose} /> : null}
+      {open === 'editOrder' ? <EditOrderDialog orderId={orderId} onClose={handleClose} /> : null}
+      {open === 'addOrderItems' ? (
+        <AddFruitOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      ) : null}
     </>
   )
 }

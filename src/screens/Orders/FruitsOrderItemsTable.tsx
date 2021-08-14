@@ -4,13 +4,19 @@ import Table from 'components/table/Table'
 import {
   FruitsOrderItemsName,
   FruitsOrderItemsQuantity,
-  FruitsOrderItemsBoxPrice
+  FruitsOrderItemsBoxPrice,
+  FruitsOrderItemsAction
 } from 'components/table/cells'
-import { FruitsOrderItem } from 'types/orders'
+import { FruitOrderItem } from 'types/orders'
 
-type Props = { orderItems: FruitsOrderItem[] }
+type Props = { orderItems: FruitOrderItem[] }
 
-const columns = [FruitsOrderItemsName, FruitsOrderItemsQuantity, FruitsOrderItemsBoxPrice]
+const columns = [
+  FruitsOrderItemsName,
+  FruitsOrderItemsQuantity,
+  FruitsOrderItemsBoxPrice,
+  FruitsOrderItemsAction
+]
 
 const FruitsOrderItemsTable: React.FC<Props> = ({ orderItems }) => {
   return (

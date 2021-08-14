@@ -3,25 +3,27 @@ import authAxios from 'utils/authAxios'
 import { useSnackbar } from 'notistack'
 import { useTranslation } from 'react-i18next'
 
-const useDeletePayment = (paymentId: number, orderId: number) => {
+const useDeleteOrderFruitItem = (orderFruitItemId: number, orderId: number) => {
   const client = useQueryClient()
   const { t } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
 
   return useMutation(
     async () => {
-      const { data } = await authAxios.delete(`/api/orders/${orderId}/payments/${paymentId}`)
+      const { data } = await authAxios.delete(
+        `/api/orders/${orderId}/fruitOrderItems/${orderFruitItemId}`
+      )
       return data
     },
     {
-      onSuccess: (_, vars) => {
+      onSuccess: () => {
         client.invalidateQueries(['order', orderId])
       },
-      onError: err => {
-        enqueueSnackbar(t('remove_payment_error'), { variant: 'error' })
+      onError: () => {
+        enqueueSnackbar(t('delete_order_item_error'), { variant: 'error' })
       }
     }
   )
 }
 
-export default useDeletePayment
+export default useDeleteOrderFruitItem

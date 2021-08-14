@@ -5,7 +5,7 @@ import PageHeader from 'components/PageHeader'
 import { useTranslation } from 'react-i18next'
 import HeaderTabs from 'components/HeaderTabs'
 import { TabProps } from '@material-ui/core/Tab'
-import AddNewOrderMenu from 'screens/Orders/AddNewOrderMenu'
+import AddOrderButtonDialog from 'screens/Orders/AddOrderButtonDialog'
 import DetailsDrawer from 'components/DetailsDrawer'
 import FruitsOrdersTable from './FruitsOrdersTable'
 
@@ -24,7 +24,7 @@ const Orders: React.FC = () => {
         value: 'borbulhas'
       },
       {
-        label: t('seeds'),
+        label: t('seed_plural'),
         value: 'seeds'
       },
       {
@@ -44,7 +44,7 @@ const Orders: React.FC = () => {
       <PageHeaderAndContentGrid>
         <PageHeader title={t('sale_plural')}>
           <HeaderTabs tabs={tabs} value={ordersType} onChange={v => setOrdersType(v)} />
-          <AddNewOrderMenu />
+          <AddOrderButtonDialog />
         </PageHeader>
         <MainContentGridArea>
           <DetailsDrawer>{ordersType === 'fruits' ? <FruitsOrdersTable /> : null}</DetailsDrawer>

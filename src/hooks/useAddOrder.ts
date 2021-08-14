@@ -3,22 +3,22 @@ import { useSnackbar } from 'notistack'
 import authAxios from 'utils/authAxios'
 import { useTranslation } from 'react-i18next'
 import { AxiosError } from 'axios'
-import { AddFruitOrderRequest } from 'types/orders'
+import { OrderRequest } from 'types/orders'
 
-const useAddFruitOrder = () => {
+const useAddOrder = () => {
   const { t } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
   const client = useQueryClient()
 
-  return useMutation<unknown, AxiosError, AddFruitOrderRequest>(
-    async (reqBody: AddFruitOrderRequest) => {
-      const { data } = await authAxios.post('/api/orders/fruits', reqBody)
+  return useMutation<OrderRequest, AxiosError, OrderRequest>(
+    async (reqBody: OrderRequest) => {
+      const { data } = await authAxios.post<OrderRequest>('/api/orders', reqBody)
       return data
     },
     {
-      onSuccess: () => {
+      onSuccess: (_, orderRequest) => {
         enqueueSnackbar(t('new_order_added'), { variant: 'success' })
-        client.invalidateQueries('fruits_orders')
+        client.invalidateQueries(['orders', orderRequest.type])
       },
       onError: () => {
         enqueueSnackbar(t('new_order_error'), { variant: 'error' })
@@ -27,4 +27,4 @@ const useAddFruitOrder = () => {
   )
 }
 
-export default useAddFruitOrder
+export default useAddOrder

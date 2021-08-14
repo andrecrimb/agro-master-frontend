@@ -13,7 +13,7 @@ export type Payment = {
   received: boolean
 }
 
-export type FruitsOrderItem = {
+export type FruitOrderItem = {
   id: number
   orderId: number
   name: string
@@ -21,13 +21,48 @@ export type FruitsOrderItem = {
   boxPrice: number
 }
 
-export type FruitsOrder = {
+export type SeedOrderItem = {
+  id: number
+  orderId: number
+  name: string
+  quantity: number
+  kgPrice: number
+}
+
+export type RootstockOrderItem = {
+  id: number
+  orderId: number
+  rootstock: { name: string }
+  quantity: number
+  unityPrice: number
+}
+
+export type BorbulhaOrderItem = {
+  id: number
+  orderId: number
+  name: string
+  quantity: number
+  unityPrice: number
+}
+
+export type SeedlingBenchOrderItem = {
+  id: number
+  orderId: number
+  seedlingBench: {
+    label: string
+    rootstock: { name: string }
+    greenhouse: { label: string }
+  }
+  quantity: number
+  unityPrice: number
+}
+
+export type Order = {
   id: number
   type: OrderType
   orderDate: string
   deliveryDate: string
   nfNumber: string
-  installmentsNumber: number
   status: OrderStatus
   user: { id: number; name: string }
   customerProperty: {
@@ -39,25 +74,18 @@ export type FruitsOrder = {
     property: Property
   }
   payments: Payment[]
-  fruitOrderItems: FruitsOrderItem[]
+  fruitOrderItems: FruitOrderItem[]
+  seedOrderItems: SeedOrderItem[]
+  rootstockOrderItems: RootstockOrderItem[]
+  borbulhaOrderItems: BorbulhaOrderItem[]
+  seedlingBenchOrderItems: SeedlingBenchOrderItem[]
 }
 
-export type AddFruitOrderRequest = {
+export type OrderRequest = {
+  id?: number
   type: OrderType
-  orderDate: string
-  deliveryDate: string
   nfNumber: string
-  installmentsNumber: number
+  deliveryDate: string
+  orderDate: string
   customerPropertyId: number
-  payments: {
-    amount: number
-    method: PaymentMethod
-    scheduledDate: Date
-    received: boolean
-  }[]
-  fruitOrderItems: {
-    name: string
-    quantity: number
-    boxPrice: number
-  }[]
 }

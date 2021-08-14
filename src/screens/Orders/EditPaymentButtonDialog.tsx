@@ -28,7 +28,6 @@ import DayUtils from '@date-io/dayjs'
 import { DatePicker } from '@material-ui/pickers'
 import { EditRounded as EditIcon, Delete as DeleteIcon } from '@material-ui/icons'
 import useDialog from 'hooks/useDialog'
-import { formatDate } from 'utils/utils'
 import useDeletePayment from 'hooks/useDeletePayment'
 
 const FORM_DEFAULT_VALUES = {
@@ -62,19 +61,12 @@ const EditPaymentButtonDialog: React.FC<Props> = ({ payment }) => {
 
   return (
     <>
-      <IconButton onClick={() => setOpen(true)}>
+      <IconButton size="small" onClick={() => setOpen(true)}>
         <EditIcon />
       </IconButton>
       {open ? (
         <MuiPickersUtilsProvider utils={DayUtils}>
-          <Dialog
-            disableBackdropClick
-            open={open}
-            fullWidth
-            maxWidth="sm"
-            onClose={() => setOpen(false)}
-            aria-labelledby="dialog-title"
-          >
+          <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="dialog-title">
             <DialogTitle id="dialog-title">{t('edit_payment')}</DialogTitle>
             <form
               onSubmit={handleSubmit(values => {
@@ -93,12 +85,6 @@ const EditPaymentButtonDialog: React.FC<Props> = ({ payment }) => {
             >
               <DialogContent>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography color="textSecondary" display="block" variant="subtitle1">
-                      {t('generalData')}
-                    </Typography>
-                    <Divider />
-                  </Grid>
                   <Grid item xs={12}>
                     <TextField
                       id="name"
