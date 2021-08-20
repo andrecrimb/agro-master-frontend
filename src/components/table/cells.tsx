@@ -14,7 +14,11 @@ import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
 import { Greenhouse, SeedlingBench } from 'types/greenhouse'
 import EditBenchButtonDialog from 'screens/Greenhouses/EditBenchButtonDialog'
 import EditPaymentButtonDialog from 'screens/Orders/EditPaymentButtonDialog'
-import EditFruitItemButtonDialog from 'screens/Orders/EditFruitItemButtonDialog'
+import DeleteFruitsOrderItemButton from 'screens/Orders/DeleteFruitsOrderItemButton'
+import DeleteSeedlingsOrderItemButton from 'screens/Orders/DeleteSeedlingsOrderItemButton'
+import DeleteSeedsOrderItemButton from 'screens/Orders/DeleteSeedsOrderItemButton'
+import DeleteRootstocksOrderItemButton from 'screens/Orders/DeleteRootstocksOrderItemButton'
+import DeleteBorbulhasOrderItemButton from 'screens/Orders/DeleteBorbulhasOrderItemButton'
 import {
   Payment,
   FruitOrderItem,
@@ -393,7 +397,7 @@ export const fruitsOrderItemsAction: Column<FruitOrderItem> = {
     cell: {
       row: { original }
     }
-  }) => <EditFruitItemButtonDialog fruitOrderItem={original} />
+  }) => <DeleteFruitsOrderItemButton orderItem={original} />
 }
 //#endregion
 
@@ -417,7 +421,7 @@ export const seedsOrderItemsAction: Column<SeedOrderItem> = {
     cell: {
       row: { original }
     }
-  }) => <h1>MISSING COMPONENT</h1>
+  }) => <DeleteSeedsOrderItemButton orderItem={original} />
 }
 //#endregion
 
@@ -442,7 +446,7 @@ export const rootstocksOrderItemsAction: Column<RootstockOrderItem> = {
     cell: {
       row: { original }
     }
-  }) => <h1>MISSING COMPONENT</h1>
+  }) => <DeleteRootstocksOrderItemButton orderItem={original} />
 }
 //#endregion
 
@@ -466,7 +470,7 @@ export const borbulhasOrderItemsAction: Column<BorbulhaOrderItem> = {
     cell: {
       row: { original }
     }
-  }) => <h1>MISSING COMPONENT</h1>
+  }) => <DeleteBorbulhasOrderItemButton orderItem={original} />
 }
 //#endregion
 
@@ -491,6 +495,6 @@ export const seedlingsOrderItemsAction: Column<SeedlingBenchOrderItem> = {
     cell: {
       row: { original }
     }
-  }) => <h1>MISSING COMPONENT</h1>
+  }) => <DeleteSeedlingsOrderItemButton orderItem={original} />
 }
 //#endregion

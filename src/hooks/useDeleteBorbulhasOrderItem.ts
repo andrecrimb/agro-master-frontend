@@ -3,7 +3,7 @@ import authAxios from 'utils/authAxios'
 import { useSnackbar } from 'notistack'
 import { useTranslation } from 'react-i18next'
 
-const useDeleteOrderFruitItem = (orderFruitItemId: number, orderId: number) => {
+const useDeleteBorbulhasOrderItem = (orderItemId: number, orderId: number) => {
   const client = useQueryClient()
   const { t } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
@@ -11,7 +11,7 @@ const useDeleteOrderFruitItem = (orderFruitItemId: number, orderId: number) => {
   return useMutation(
     async () => {
       const { data } = await authAxios.delete(
-        `/api/orders/${orderId}/fruitOrderItems/${orderFruitItemId}`
+        `/api/orders/${orderId}/borbulhasOrderItems/${orderItemId}`
       )
       return data
     },
@@ -26,4 +26,4 @@ const useDeleteOrderFruitItem = (orderFruitItemId: number, orderId: number) => {
   )
 }
 
-export default useDeleteOrderFruitItem
+export default useDeleteBorbulhasOrderItem

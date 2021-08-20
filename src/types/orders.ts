@@ -32,6 +32,7 @@ export type SeedOrderItem = {
 export type RootstockOrderItem = {
   id: number
   orderId: number
+  rootstockId: number
   rootstock: { name: string }
   quantity: number
   unityPrice: number
@@ -43,6 +44,7 @@ export type BorbulhaOrderItem = {
   name: string
   quantity: number
   unityPrice: number
+  greenhouseId: number
   greenhouse: {
     label: string
     ownerProperty: { property: { name: string } }
@@ -52,6 +54,7 @@ export type BorbulhaOrderItem = {
 export type SeedlingBenchOrderItem = {
   id: number
   orderId: number
+  seedlingBenchId: number
   seedlingBench: {
     label: string
     rootstock: { name: string }
