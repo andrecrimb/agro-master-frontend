@@ -78,134 +78,126 @@ const AddPaymentButtonDialog: React.FC<Props> = ({ orderId, onClose }) => {
           })}
         >
           <DialogContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Grid container spacing={2} alignItems="center">
-                  {paymentFields.map((field, index) => (
-                    <React.Fragment key={field.id}>
-                      <Grid item xs={3}>
-                        <Controller
-                          control={control}
-                          name={`payments.${index}.method` as const}
-                          defaultValue={field.method}
-                          render={({ field, formState }) => (
-                            <FormControl component="fieldset" fullWidth>
-                              <FormLabel component="legend">{t('payment_method')}</FormLabel>
-                              <RadioGroup
-                                style={{ flexDirection: 'row' }}
-                                aria-label={t('payment_method')}
-                                name={field.name}
-                                value={field.value}
-                                onChange={ev => field.onChange(ev.target.value)}
-                              >
-                                <FormControlLabel
-                                  value="cheque"
-                                  control={<Radio />}
-                                  label={t('cheque')}
-                                />
-                                <FormControlLabel
-                                  value="money"
-                                  control={<Radio />}
-                                  label={t('money')}
-                                />
-                              </RadioGroup>
-                            </FormControl>
-                          )}
-                        />
-                      </Grid>
-
-                      <Grid item xs={3}>
-                        <Controller
-                          control={control}
-                          name={`payments.${index}.amount` as const}
-                          defaultValue={field.amount}
-                          render={({ field }) => (
-                            <TextField
-                              id={`payments.${index}.amount`}
-                              type="text"
-                              size="small"
-                              fullWidth
-                              required
-                              variant="filled"
-                              label={t('amount')}
-                              {...field}
-                            />
-                          )}
-                        />
-                      </Grid>
-
-                      <Grid item xs={3}>
-                        <Controller
-                          control={control}
-                          name={`payments.${index}.scheduledDate` as const}
-                          defaultValue={field.scheduledDate}
-                          render={({ field }) => (
-                            <DatePicker
-                              autoOk
-                              format="DD/MM/YYYY"
-                              fullWidth
-                              required
-                              size="small"
-                              invalidDateMessage={t('invalid_date')}
-                              inputVariant="filled"
-                              label={t('scheduled_date')}
-                              value={new Date(field.value)}
-                              onBlur={field.onBlur}
-                              onChange={d => field.onChange(d?.toISOString())}
-                              cancelLabel={t('cancel')}
-                            />
-                          )}
-                        />
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <Controller
-                          control={control}
-                          name={`payments.${index}.received` as const}
-                          defaultValue={field.received}
-                          render={({ field }) => (
+            <Grid container spacing={2} alignItems="center">
+              {paymentFields.map((field, index) => (
+                <React.Fragment key={field.id}>
+                  <Grid item xs={3}>
+                    <Controller
+                      control={control}
+                      name={`payments.${index}.method` as const}
+                      defaultValue={field.method}
+                      render={({ field, formState }) => (
+                        <FormControl component="fieldset" fullWidth>
+                          <FormLabel component="legend">{t('payment_method')}</FormLabel>
+                          <RadioGroup
+                            style={{ flexDirection: 'row' }}
+                            aria-label={t('payment_method')}
+                            name={field.name}
+                            value={field.value}
+                            onChange={ev => field.onChange(ev.target.value)}
+                          >
                             <FormControlLabel
-                              control={
-                                <Switch
-                                  checked={field.value}
-                                  onChange={ev => field.onChange(ev.target.checked)}
-                                  name={field.name}
-                                />
-                              }
-                              label={t('received')}
+                              value="cheque"
+                              control={<Radio />}
+                              label={t('cheque')}
                             />
-                          )}
-                        />
-                      </Grid>
-
-                      <Grid item xs={1}>
-                        <IconButton
-                          color="inherit"
-                          size="small"
-                          onClick={() => removePayment(index)}
-                        >
-                          <ClearIcon />
-                        </IconButton>
-                      </Grid>
-                    </React.Fragment>
-                  ))}
-                  <Grid item xs={12}>
-                    <Button
-                      variant="outlined"
-                      startIcon={<PaymentIcon />}
-                      onClick={() =>
-                        appendPayment({
-                          amount: 0,
-                          method: 'cheque',
-                          scheduledDate: new Date().toISOString(),
-                          received: true
-                        })
-                      }
-                    >
-                      {t('add_payment')}
-                    </Button>
+                            <FormControlLabel
+                              value="money"
+                              control={<Radio />}
+                              label={t('money')}
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      )}
+                    />
                   </Grid>
-                </Grid>
+
+                  <Grid item xs={3}>
+                    <Controller
+                      control={control}
+                      name={`payments.${index}.amount` as const}
+                      defaultValue={field.amount}
+                      render={({ field }) => (
+                        <TextField
+                          id={`payments.${index}.amount`}
+                          type="text"
+                          size="small"
+                          fullWidth
+                          required
+                          variant="filled"
+                          label={t('amount')}
+                          {...field}
+                        />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={3}>
+                    <Controller
+                      control={control}
+                      name={`payments.${index}.scheduledDate` as const}
+                      defaultValue={field.scheduledDate}
+                      render={({ field }) => (
+                        <DatePicker
+                          autoOk
+                          format="DD/MM/YYYY"
+                          fullWidth
+                          required
+                          size="small"
+                          invalidDateMessage={t('invalid_date')}
+                          inputVariant="filled"
+                          label={t('scheduled_date')}
+                          value={new Date(field.value)}
+                          onBlur={field.onBlur}
+                          onChange={d => field.onChange(d?.toISOString())}
+                          cancelLabel={t('cancel')}
+                        />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={2}>
+                    <Controller
+                      control={control}
+                      name={`payments.${index}.received` as const}
+                      defaultValue={field.received}
+                      render={({ field }) => (
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={field.value}
+                              onChange={ev => field.onChange(ev.target.checked)}
+                              name={field.name}
+                            />
+                          }
+                          label={t('received')}
+                        />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={1}>
+                    <IconButton color="inherit" size="small" onClick={() => removePayment(index)}>
+                      <ClearIcon />
+                    </IconButton>
+                  </Grid>
+                </React.Fragment>
+              ))}
+              <Grid item xs={12}>
+                <Button
+                  variant="outlined"
+                  startIcon={<PaymentIcon />}
+                  onClick={() =>
+                    appendPayment({
+                      amount: 0,
+                      method: 'cheque',
+                      scheduledDate: new Date().toISOString(),
+                      received: true
+                    })
+                  }
+                >
+                  {t('add_payment')}
+                </Button>
               </Grid>
             </Grid>
           </DialogContent>

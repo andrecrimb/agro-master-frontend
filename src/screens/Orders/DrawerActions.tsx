@@ -4,12 +4,17 @@ import React from 'react'
 import AddPaymentDialog from './AddPaymentDialog'
 import CancelOrderMenuItem from './CancelOrderMenuItem'
 import EditOrderDialog from './EditOrderDialog'
-import AddFruitOrderItemsDialog from './AddFruitOrderItemsDialog'
+import AddFruitsOrderItemsDialog from './AddFruitsOrderItemsDialog'
+import AddSeedsOrderItemsDialog from './AddSeedsOrderItemsDialog'
+import AddRootstockOrderItemsDialog from './AddRootstocksOrderItemsDialog'
+import AddSeedlingsOrderItemsDialog from './AddSeedlingsOrderItemsDialog'
+import AddBorbulhasOrderItemsDialog from './AddBorbulhasOrderItemsDialog'
 import { useTranslation } from 'react-i18next'
+import { OrderType } from 'types/orders'
 
-type Props = { orderId: number }
+type Props = { orderId: number; orderType: OrderType }
 
-const DrawerActions: React.FC<Props> = ({ orderId }) => {
+const DrawerActions: React.FC<Props> = ({ orderId, orderType }) => {
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -23,8 +28,6 @@ const DrawerActions: React.FC<Props> = ({ orderId }) => {
     setAnchorEl(null)
     setOpen(null)
   }
-
-  //TODO add a cancel order button
 
   return (
     <>
@@ -52,8 +55,20 @@ const DrawerActions: React.FC<Props> = ({ orderId }) => {
       </Popover>
       {open === 'addPayments' ? <AddPaymentDialog orderId={orderId} onClose={handleClose} /> : null}
       {open === 'editOrder' ? <EditOrderDialog orderId={orderId} onClose={handleClose} /> : null}
-      {open === 'addOrderItems' ? (
-        <AddFruitOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      {open === 'addOrderItems' && orderType === 'fruit' ? (
+        <AddFruitsOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      ) : null}
+      {open === 'addOrderItems' && orderType === 'borbulha' ? (
+        <AddBorbulhasOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      ) : null}
+      {open === 'addOrderItems' && orderType === 'seed' ? (
+        <AddSeedsOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      ) : null}
+      {open === 'addOrderItems' && orderType === 'seedling' ? (
+        <AddSeedlingsOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      ) : null}
+      {open === 'addOrderItems' && orderType === 'rootstock' ? (
+        <AddRootstockOrderItemsDialog orderId={orderId} onClose={handleClose} />
       ) : null}
     </>
   )

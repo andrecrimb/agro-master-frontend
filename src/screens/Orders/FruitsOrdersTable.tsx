@@ -8,8 +8,8 @@ import {
   orderDate,
   orderDeliveryDate,
   orderCustomer,
-  seedOrderQtd,
-  seedOrderValue,
+  fruitOrderBoxQtd,
+  fruitOrderValue,
   orderStatus
 } from 'components/table/cells'
 import useOrders from 'hooks/useOrders'
@@ -19,15 +19,15 @@ const columns = [
   orderNfNumber,
   orderDate,
   orderDeliveryDate,
+  orderStatus,
   orderCustomer,
-  seedOrderQtd,
-  seedOrderValue,
-  orderStatus
+  fruitOrderBoxQtd,
+  fruitOrderValue
 ]
 
-const SeedOrdersTable: React.FC = () => {
+const FruitsOrdersTable: React.FC = () => {
   const { t } = useTranslation()
-  const { data = [], isLoading } = useOrders('seed')
+  const { data = [], isLoading } = useOrders('fruit')
 
   const initialState = React.useMemo(
     () => ({
@@ -35,6 +35,10 @@ const SeedOrdersTable: React.FC = () => {
     }),
     []
   )
+
+  if (!data.length) {
+    return <ScreenPlaceholder description={t('no_orders')} />
+  }
 
   return (
     <>
@@ -61,4 +65,4 @@ const SeedOrdersTable: React.FC = () => {
   )
 }
 
-export default SeedOrdersTable
+export default FruitsOrdersTable

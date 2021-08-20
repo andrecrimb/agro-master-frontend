@@ -3,11 +3,16 @@ import { useSnackbar } from 'notistack'
 import authAxios from 'utils/authAxios'
 import { useTranslation } from 'react-i18next'
 import { AxiosError } from 'axios'
-import { FruitOrderItem, Order } from 'types/orders'
+import { Order } from 'types/orders'
 
-type ReqBody = Omit<FruitOrderItem, 'id' | 'orderId'>[]
+type ReqBody = {
+  name: string
+  quantity: number
+  unityPrice: number
+  greenhouseId: number
+}[]
 
-const useAddFruitOrderItems = (orderId: number) => {
+const useAddBorbulhasOrderItems = (orderId: number) => {
   const { t } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
   const client = useQueryClient()
@@ -15,7 +20,7 @@ const useAddFruitOrderItems = (orderId: number) => {
   return useMutation<Order, AxiosError, ReqBody>(
     async (reqBody: ReqBody) => {
       const { data } = await authAxios.post<Order>(
-        `/api/orders/${orderId}/fruitOrderItems`,
+        `/api/orders/${orderId}/borbulhasOrderItems`,
         reqBody
       )
       return data
@@ -23,7 +28,7 @@ const useAddFruitOrderItems = (orderId: number) => {
     {
       onSuccess: () => {
         enqueueSnackbar(t('add_order_items_success'), { variant: 'success' })
-        client.invalidateQueries(['orders', 'fruit'])
+        client.invalidateQueries(['orders', 'borbulha'])
         client.invalidateQueries(['order', orderId])
       },
       onError: () => {
@@ -33,4 +38,4 @@ const useAddFruitOrderItems = (orderId: number) => {
   )
 }
 
-export default useAddFruitOrderItems
+export default useAddBorbulhasOrderItems

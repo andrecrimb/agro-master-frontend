@@ -7,11 +7,11 @@ import HeaderTabs from 'components/HeaderTabs'
 import { TabProps } from '@material-ui/core/Tab'
 import AddOrderButtonDialog from 'screens/Orders/AddOrderButtonDialog'
 import DetailsDrawer from 'components/DetailsDrawer'
-import FruitOrdersTable from './FruitOrdersTable'
-import SeedlingOrdersTable from './SeedlingOrdersTable'
-import BorbulhaOrdersTable from './BorbulhaOrdersTable'
-import SeedOrdersTable from './SeedOrdersTable'
-import RootstockOrdersTable from './RootstockOrdersTable'
+import FruitsOrdersTable from './FruitsOrdersTable'
+import SeedlingsOrdersTable from './SeedlingsOrdersTable'
+import BorbulhasOrdersTable from './BorbulhaOrdersTable'
+import SeedsOrdersTable from './SeedsOrdersTable'
+import RootstocksOrdersTable from './RootstockOrdersTable'
 import { OrderType } from 'types/orders'
 
 const Orders: React.FC = () => {
@@ -53,11 +53,11 @@ const Orders: React.FC = () => {
         </PageHeader>
         <MainContentGridArea>
           <DetailsDrawer>
-            {ordersType === 'seedling' ? <SeedlingOrdersTable /> : null}
-            {ordersType === 'fruit' ? <FruitOrdersTable /> : null}
-            {ordersType === 'borbulha' ? <BorbulhaOrdersTable /> : null}
-            {ordersType === 'seed' ? <SeedOrdersTable /> : null}
-            {ordersType === 'rootstock' ? <RootstockOrdersTable /> : null}
+            {ordersType === 'seedling' ? <SeedlingsOrdersTable /> : null}
+            {ordersType === 'fruit' ? <FruitsOrdersTable /> : null}
+            {ordersType === 'borbulha' ? <BorbulhasOrdersTable /> : null}
+            {ordersType === 'seed' ? <SeedsOrdersTable /> : null}
+            {ordersType === 'rootstock' ? <RootstocksOrdersTable /> : null}
           </DetailsDrawer>
         </MainContentGridArea>
       </PageHeaderAndContentGrid>

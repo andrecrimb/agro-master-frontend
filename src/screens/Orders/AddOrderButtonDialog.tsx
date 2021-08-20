@@ -29,7 +29,7 @@ import { OrderRequest } from 'types/orders'
 import useUrlSearch from 'hooks/useUrlSearch'
 
 const FORM_DEFAULT_VALUES: OrderRequest = {
-  type: 'fruit',
+  type: 'seedling',
   orderDate: new Date().toISOString(),
   deliveryDate: new Date().toISOString(),
   nfNumber: '',

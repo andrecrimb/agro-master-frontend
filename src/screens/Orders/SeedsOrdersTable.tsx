@@ -8,8 +8,8 @@ import {
   orderDate,
   orderDeliveryDate,
   orderCustomer,
-  seedlingOrderQtd,
-  seedlingOrderValue,
+  seedOrderQtd,
+  seedOrderValue,
   orderStatus
 } from 'components/table/cells'
 import useOrders from 'hooks/useOrders'
@@ -19,15 +19,15 @@ const columns = [
   orderNfNumber,
   orderDate,
   orderDeliveryDate,
+  orderStatus,
   orderCustomer,
-  seedlingOrderQtd,
-  seedlingOrderValue,
-  orderStatus
+  seedOrderQtd,
+  seedOrderValue
 ]
 
-const SeedlingOrdersTable: React.FC = () => {
+const SeedsOrdersTable: React.FC = () => {
   const { t } = useTranslation()
-  const { data = [], isLoading } = useOrders('seedling')
+  const { data = [], isLoading } = useOrders('seed')
 
   const initialState = React.useMemo(
     () => ({
@@ -61,4 +61,4 @@ const SeedlingOrdersTable: React.FC = () => {
   )
 }
 
-export default SeedlingOrdersTable
+export default SeedsOrdersTable

@@ -15,7 +15,15 @@ import { Greenhouse, SeedlingBench } from 'types/greenhouse'
 import EditBenchButtonDialog from 'screens/Greenhouses/EditBenchButtonDialog'
 import EditPaymentButtonDialog from 'screens/Orders/EditPaymentButtonDialog'
 import EditFruitItemButtonDialog from 'screens/Orders/EditFruitItemButtonDialog'
-import { Payment, FruitOrderItem, Order } from 'types/orders'
+import {
+  Payment,
+  FruitOrderItem,
+  Order,
+  SeedOrderItem,
+  RootstockOrderItem,
+  BorbulhaOrderItem,
+  SeedlingBenchOrderItem
+} from 'types/orders'
 import { Rootstock } from 'types/rootstock'
 
 //#region Users
@@ -366,19 +374,19 @@ export const paymentsAction: Column<Payment> = {
 //#endregion
 
 //#region FruitsOrderItems
-export const FruitsOrderItemsName: Column<FruitOrderItem> = {
+export const fruitsOrderItemsName: Column<FruitOrderItem> = {
   Header: i18n.t('name') + '',
   accessor: 'name'
 }
-export const FruitsOrderItemsQuantity: Column<FruitOrderItem> = {
+export const fruitsOrderItemsQuantity: Column<FruitOrderItem> = {
   Header: i18n.t('box_quantity') + '',
   accessor: 'quantity'
 }
-export const FruitsOrderItemsBoxPrice: Column<FruitOrderItem> = {
+export const fruitsOrderItemsBoxPrice: Column<FruitOrderItem> = {
   Header: i18n.t('box_price') + '',
   accessor: 'boxPrice'
 }
-export const FruitsOrderItemsAction: Column<FruitOrderItem> = {
+export const fruitsOrderItemsAction: Column<FruitOrderItem> = {
   Header: ' ',
   id: 'fruitsOrderItemsActions',
   Cell: ({
@@ -386,5 +394,103 @@ export const FruitsOrderItemsAction: Column<FruitOrderItem> = {
       row: { original }
     }
   }) => <EditFruitItemButtonDialog fruitOrderItem={original} />
+}
+//#endregion
+
+//#region SeedsOrderItems
+export const seedsOrderItemsName: Column<SeedOrderItem> = {
+  Header: i18n.t('name') + '',
+  accessor: 'name'
+}
+export const seedsOrderItemsQuantity: Column<SeedOrderItem> = {
+  Header: i18n.t('seed_quantity') + '',
+  accessor: 'quantity'
+}
+export const seedsOrderItemsKgPrice: Column<SeedOrderItem> = {
+  Header: i18n.t('kg_price') + '',
+  accessor: 'kgPrice'
+}
+export const seedsOrderItemsAction: Column<SeedOrderItem> = {
+  Header: ' ',
+  id: 'seedsOrderItemsActions',
+  Cell: ({
+    cell: {
+      row: { original }
+    }
+  }) => <h1>MISSING COMPONENT</h1>
+}
+//#endregion
+
+//#region RootstocksOrderItems
+export const rootstocksOrderItemsName: Column<RootstockOrderItem> = {
+  Header: i18n.t('name') + '',
+  id: 'name',
+  accessor: r => r.rootstock.name
+}
+export const rootstocksOrderItemsQuantity: Column<RootstockOrderItem> = {
+  Header: i18n.t('rootstock_quantity') + '',
+  accessor: 'quantity'
+}
+export const rootstocksOrderItemsKgPrice: Column<RootstockOrderItem> = {
+  Header: i18n.t('unity_price') + '',
+  accessor: 'unityPrice'
+}
+export const rootstocksOrderItemsAction: Column<RootstockOrderItem> = {
+  Header: ' ',
+  id: 'rootstocksOrderItemsActions',
+  Cell: ({
+    cell: {
+      row: { original }
+    }
+  }) => <h1>MISSING COMPONENT</h1>
+}
+//#endregion
+
+//#region BorbulhasOrderItems
+export const borbulhasOrderItemsName: Column<BorbulhaOrderItem> = {
+  Header: i18n.t('name') + '',
+  accessor: 'name'
+}
+export const borbulhasOrderItemsQuantity: Column<BorbulhaOrderItem> = {
+  Header: i18n.t('borbulha_quantity') + '',
+  accessor: 'quantity'
+}
+export const borbulhasOrderItemsKgPrice: Column<BorbulhaOrderItem> = {
+  Header: i18n.t('unity_price') + '',
+  accessor: 'unityPrice'
+}
+export const borbulhasOrderItemsAction: Column<BorbulhaOrderItem> = {
+  Header: ' ',
+  id: 'borbulhasOrderItemsActions',
+  Cell: ({
+    cell: {
+      row: { original }
+    }
+  }) => <h1>MISSING COMPONENT</h1>
+}
+//#endregion
+
+//#region SeedlingsOrderItems
+export const seedlingsOrderItemsName: Column<SeedlingBenchOrderItem> = {
+  Header: i18n.t('name') + '',
+  id: 'name',
+  accessor: r => `${r.seedlingBench.rootstock.name} (${r.seedlingBench.label})`
+}
+export const seedlingsOrderItemsQuantity: Column<SeedlingBenchOrderItem> = {
+  Header: i18n.t('seedling_quantity') + '',
+  accessor: 'quantity'
+}
+export const seedlingsOrderItemsKgPrice: Column<SeedlingBenchOrderItem> = {
+  Header: i18n.t('unity_price') + '',
+  accessor: 'unityPrice'
+}
+export const seedlingsOrderItemsAction: Column<SeedlingBenchOrderItem> = {
+  Header: ' ',
+  id: 'seedlingsOrderItemsActions',
+  Cell: ({
+    cell: {
+      row: { original }
+    }
+  }) => <h1>MISSING COMPONENT</h1>
 }
 //#endregion

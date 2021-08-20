@@ -19,10 +19,10 @@ const columns = [
   orderNfNumber,
   orderDate,
   orderDeliveryDate,
+  orderStatus,
   orderCustomer,
   borbulhaOrderQtd,
-  borbulhaOrderValue,
-  orderStatus
+  borbulhaOrderValue
 ]
 
 const BorbulhaOrdersTable: React.FC = () => {

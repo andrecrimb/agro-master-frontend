@@ -12,7 +12,7 @@ const AuthenticationProvider: React.FC<PropsWithChildren<{}>> = ({ children }) =
     return <h1>Server down (Change message later)</h1>
   }
 
-  if (errorCode === 401) {
+  if (errorCode && errorCode >= 400 && errorCode < 500) {
     return <Login />
   }
 

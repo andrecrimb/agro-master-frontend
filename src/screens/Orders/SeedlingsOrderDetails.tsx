@@ -4,14 +4,14 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Divider, Grid, Typography, Chip } from '@material-ui/core'
 import PaymentsTable from './PaymentsTable'
-import FruitOrderItemsTable from './FruitsOrderItemsTable'
+import SeedlingsOrderItemsTable from './SeedlingsOrderItemsTable'
 import useOrder from 'hooks/useOrder'
 import { formatDate } from 'utils/utils'
 import DrawerActions from './DrawerActions'
 
 type Props = { id: number }
 
-const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
+const SeedlingsOrderDetails: React.FC<Props> = ({ id }) => {
   const { t } = useTranslation()
   const { data: order } = useOrder(id)
 
@@ -20,13 +20,13 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
   return (
     <DetailsDrawerWrapper
       header={{
-        title: t('fruits_order') + ' | ',
+        title: t('seedlings_order') + ' | ',
         highlightTitle: `${order.customerProperty.customer.name} (${formatDate(
           order.orderDate,
           'DD/MM/YYYY'
         )})`,
         RightActions:
-          order.status === 'issued' ? <DrawerActions orderType="fruit" orderId={id} /> : null
+          order.status === 'issued' ? <DrawerActions orderType="seedling" orderId={id} /> : null
       }}
       tabs={[
         {
@@ -91,11 +91,11 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
         },
         {
           label: t('order_items'),
-          component: <FruitOrderItemsTable orderItems={order.fruitOrderItems} />
+          component: <SeedlingsOrderItemsTable orderItems={order.seedlingBenchOrderItems} />
         }
       ]}
     />
   )
 }
 
-export default FruitsOrderDetails
+export default SeedlingsOrderDetails

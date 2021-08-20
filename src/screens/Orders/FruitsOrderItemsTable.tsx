@@ -2,20 +2,20 @@ import React from 'react'
 import { usePagination, useSortBy } from 'react-table'
 import Table from 'components/table/Table'
 import {
-  FruitsOrderItemsName,
-  FruitsOrderItemsQuantity,
-  FruitsOrderItemsBoxPrice,
-  FruitsOrderItemsAction
+  fruitsOrderItemsName,
+  fruitsOrderItemsQuantity,
+  fruitsOrderItemsBoxPrice,
+  fruitsOrderItemsAction
 } from 'components/table/cells'
 import { FruitOrderItem } from 'types/orders'
 
 type Props = { orderItems: FruitOrderItem[] }
 
 const columns = [
-  FruitsOrderItemsName,
-  FruitsOrderItemsQuantity,
-  FruitsOrderItemsBoxPrice,
-  FruitsOrderItemsAction
+  fruitsOrderItemsName,
+  fruitsOrderItemsQuantity,
+  fruitsOrderItemsBoxPrice,
+  fruitsOrderItemsAction
 ]
 
 const FruitsOrderItemsTable: React.FC<Props> = ({ orderItems }) => {

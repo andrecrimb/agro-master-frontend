@@ -19,10 +19,10 @@ const columns = [
   orderNfNumber,
   orderDate,
   orderDeliveryDate,
+  orderStatus,
   orderCustomer,
   rootstockOrderQtd,
-  rootstockOrderValue,
-  orderStatus
+  rootstockOrderValue
 ]
 
 const RootstockOrdersTable: React.FC = () => {

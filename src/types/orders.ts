@@ -43,6 +43,10 @@ export type BorbulhaOrderItem = {
   name: string
   quantity: number
   unityPrice: number
+  greenhouse: {
+    label: string
+    ownerProperty: { property: { name: string } }
+  }
 }
 
 export type SeedlingBenchOrderItem = {
