@@ -8,6 +8,8 @@ import {
   seedsOrderItemsAction
 } from 'components/table/cells'
 import { SeedOrderItem } from 'types/orders'
+import ScreenPlaceholder from 'components/ScreenPlaceholder'
+import { useTranslation } from 'react-i18next'
 
 type Props = { orderItems: SeedOrderItem[] }
 
@@ -19,6 +21,12 @@ const columns = [
 ]
 
 const SeedsOrderItemsTable: React.FC<Props> = ({ orderItems }) => {
+  const { t } = useTranslation()
+
+  if (!orderItems.length) {
+    return <ScreenPlaceholder description={t('no_items')} />
+  }
+
   return (
     <Table
       columns={columns}

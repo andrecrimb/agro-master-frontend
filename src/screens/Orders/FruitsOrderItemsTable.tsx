@@ -8,6 +8,8 @@ import {
   fruitsOrderItemsAction
 } from 'components/table/cells'
 import { FruitOrderItem } from 'types/orders'
+import { useTranslation } from 'react-i18next'
+import ScreenPlaceholder from 'components/ScreenPlaceholder'
 
 type Props = { orderItems: FruitOrderItem[] }
 
@@ -19,6 +21,12 @@ const columns = [
 ]
 
 const FruitsOrderItemsTable: React.FC<Props> = ({ orderItems }) => {
+  const { t } = useTranslation()
+
+  if (!orderItems.length) {
+    return <ScreenPlaceholder description={t('no_items')} />
+  }
+
   return (
     <Table
       columns={columns}

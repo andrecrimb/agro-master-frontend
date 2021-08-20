@@ -8,6 +8,8 @@ import {
   borbulhasOrderItemsAction
 } from 'components/table/cells'
 import { BorbulhaOrderItem } from 'types/orders'
+import { useTranslation } from 'react-i18next'
+import ScreenPlaceholder from 'components/ScreenPlaceholder'
 
 type Props = { orderItems: BorbulhaOrderItem[] }
 
@@ -19,6 +21,12 @@ const columns = [
 ]
 
 const BorbulhasOrderItemsTable: React.FC<Props> = ({ orderItems }) => {
+  const { t } = useTranslation()
+
+  if (!orderItems.length) {
+    return <ScreenPlaceholder description={t('no_items')} />
+  }
+
   return (
     <Table
       columns={columns}

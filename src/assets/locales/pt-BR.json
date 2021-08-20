@@ -204,5 +204,6 @@
   "seedling_quantity": "Quantidade de mudas",
   "borbulha_quantity": "Quantidade de borbulhas",
   "seed_quantity": "Quantidade de sementes",
-  "rootstock_quantity": "Quantidade de porta-enxertos"
+  "rootstock_quantity": "Quantidade de porta-enxertos",
+  "no_items": "Nenhum Item"
 }

@@ -8,6 +8,8 @@ import {
   seedlingsOrderItemsAction
 } from 'components/table/cells'
 import { SeedlingBenchOrderItem } from 'types/orders'
+import { useTranslation } from 'react-i18next'
+import ScreenPlaceholder from 'components/ScreenPlaceholder'
 
 type Props = { orderItems: SeedlingBenchOrderItem[] }
 
@@ -19,6 +21,12 @@ const columns = [
 ]
 
 const SeedlingsOrderItemsTable: React.FC<Props> = ({ orderItems }) => {
+  const { t } = useTranslation()
+
+  if (!orderItems.length) {
+    return <ScreenPlaceholder description={t('no_items')} />
+  }
+
   return (
     <Table
       columns={columns}
