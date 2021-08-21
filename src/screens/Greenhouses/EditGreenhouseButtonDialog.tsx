@@ -21,7 +21,7 @@ import { useForm, Controller } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
 import useEditGreenhouse from 'hooks/useEditGreenhouse'
 import useGreenhouse from 'hooks/useGreenhouse'
-import { GreenhouseType } from 'types/greenhouse'
+import { Greenhouse, GreenhouseType } from 'types/greenhouse'
 import useOwnerProperties from 'hooks/useOwnerProperties'
 import { muiTheme } from 'theme'
 
@@ -31,15 +31,13 @@ const FORM_DEFAULT_VALUES = {
   ownerPropertyId: ''
 }
 
-type Props = { greenhouseId: number; onClick: () => void }
+type Props = { greenhouse: Greenhouse; onClick: () => void }
 
-const EditGreenhouseButtonDialog: React.FC<Props> = ({ greenhouseId, onClick }) => {
+const EditGreenhouseButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
 
   const { data: ownerProperties = [] } = useOwnerProperties()
-  const { data: greenhouse } = useGreenhouse(greenhouseId)
-
   const editGreenhouse = useEditGreenhouse()
 
   const { handleSubmit, control, register, formState, setError, reset } = useForm<

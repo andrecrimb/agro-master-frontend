@@ -21,6 +21,8 @@ import useUsers from 'hooks/useUsers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DayUtils from '@date-io/dayjs'
 import { DatePicker } from '@material-ui/pickers'
+import { Greenhouse } from 'types/greenhouse'
+import { muiTheme } from 'theme'
 
 const FORM_DEFAULT_VALUES = {
   label: '',
@@ -32,11 +34,11 @@ const FORM_DEFAULT_VALUES = {
 }
 
 type Props = {
-  greenhouseId: number
+  greenhouse: Greenhouse
   onClick: () => void
 }
 
-const AddBenchButtonDialog: React.FC<Props> = ({ greenhouseId, onClick }) => {
+const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
 
@@ -77,12 +79,15 @@ const AddBenchButtonDialog: React.FC<Props> = ({ greenhouseId, onClick }) => {
             onClose={() => setOpen(false)}
             aria-labelledby="dialog-title"
           >
-            <DialogTitle id="dialog-title">{t('add_new_bench')}</DialogTitle>
+            <DialogTitle id="dialog-title">
+              {t('add_new_bench')} |{' '}
+              <span style={{ color: muiTheme.palette.primary.main }}>{greenhouse.label}</span>
+            </DialogTitle>
             <form
               onSubmit={handleSubmit(({ userId, rootstockId, ...other }) => {
                 return addBench.mutate(
                   {
-                    greenhouseId: +greenhouseId,
+                    greenhouseId: greenhouse.id,
                     data: { userId: +userId, rootstockId: +rootstockId, ...other }
                   },
                   {

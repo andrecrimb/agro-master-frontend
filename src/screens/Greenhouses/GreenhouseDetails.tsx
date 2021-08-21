@@ -20,7 +20,7 @@ const GreenhouseDetails: React.FC<Props> = ({ id }) => {
       header={{
         title: t('greenhouse') + ' | ',
         highlightTitle: `${greenhouse.label} (${greenhouse.ownerProperty.property.name})`,
-        RightActions: <DrawerActions greenhouseId={id} />
+        RightActions: <DrawerActions greenhouse={greenhouse} />
       }}
       tabs={[
         {

@@ -5,17 +5,17 @@ import { useTranslation } from 'react-i18next'
 import useGreenhouse from 'hooks/useGreenhouse'
 import useDeleteGreenhouse from 'hooks/useDeleteGreenhouse'
 import useUrlSearch from 'hooks/useUrlSearch'
+import { Greenhouse } from 'types/greenhouse'
 
 type Props = {
-  greenhouseId: number
+  greenhouse: Greenhouse
   onClick: () => void
 }
 
-const DeleteButton: React.FC<Props> = ({ onClick, greenhouseId }) => {
+const DeleteButton: React.FC<Props> = ({ onClick, greenhouse }) => {
   const { t } = useTranslation()
   const { setParams } = useUrlSearch({ params: [] })
 
-  const { data: greenhouse } = useGreenhouse(greenhouseId)
   const { newDialog } = useDialog()
   const deleteGreenhouse = useDeleteGreenhouse()
 
@@ -31,7 +31,7 @@ const DeleteButton: React.FC<Props> = ({ onClick, greenhouseId }) => {
             text: t('delete'),
             onClick: () =>
               deleteGreenhouse.mutateAsync(
-                { greenhouseId },
+                { greenhouseId: greenhouse.id },
                 { onSuccess: () => setParams({ drawer: null, drawerTab: null, id: null }) }
               )
           }

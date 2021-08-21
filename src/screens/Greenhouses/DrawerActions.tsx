@@ -4,10 +4,11 @@ import React from 'react'
 import AddBenchButtonDialog from './AddBenchButtonDialog'
 import EditGreenhouseButtonDialog from './EditGreenhouseButtonDialog'
 import DeleteButton from './DeleteButton'
+import { Greenhouse } from 'types/greenhouse'
 
-type Props = { greenhouseId: number }
+type Props = { greenhouse: Greenhouse }
 
-const DrawerActions: React.FC<Props> = ({ greenhouseId }) => {
+const DrawerActions: React.FC<Props> = ({ greenhouse }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,9 +37,11 @@ const DrawerActions: React.FC<Props> = ({ greenhouseId }) => {
         onClose={handleClose}
       >
         <List>
-          <EditGreenhouseButtonDialog greenhouseId={greenhouseId} onClick={handleClose} />
-          <DeleteButton greenhouseId={greenhouseId} onClick={handleClose} />
-          <AddBenchButtonDialog greenhouseId={greenhouseId} onClick={handleClose} />
+          <EditGreenhouseButtonDialog greenhouse={greenhouse} onClick={handleClose} />
+          <DeleteButton greenhouse={greenhouse} onClick={handleClose} />
+          {greenhouse.type === 'seedling' ? (
+            <AddBenchButtonDialog greenhouse={greenhouse} onClick={handleClose} />
+          ) : null}
         </List>
       </Popover>
     </>
