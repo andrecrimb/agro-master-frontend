@@ -13,6 +13,7 @@ const GreenhousesTable: React.FC = () => {
   const noData = !isFetching && !data.length
 
   const columns = React.useMemo(() => [greenhouseLabel, greenhouseType, greenhouseProperty], [])
+  const initialState = React.useMemo(() => ({ sortBy: [{ id: 'label', desc: false }] }), [])
 
   return (
     <>
@@ -30,7 +31,8 @@ const GreenhousesTable: React.FC = () => {
           plugins={[useSortBy, usePagination]}
           options={{
             disableSortRemove: true,
-            autoResetSortBy: false
+            autoResetSortBy: false,
+            initialState
           }}
         />
       )}
