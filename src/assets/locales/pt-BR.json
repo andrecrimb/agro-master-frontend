@@ -138,7 +138,7 @@
   "delete_bench": "Deletar bancada",
   "invalid_date": "Data inválida",
   "invalid_quantity": "Quantidade inválida",
-  "bench_duplicated": "Essa bancada já existe",
+  "bench_duplicated": "Essa bancada já existe nesta estufa",
   "edit_bench": "Editar bancada {{bench}}",
   "fruit_plural": "Frutas",
   "box_price": "Preço da caixa",

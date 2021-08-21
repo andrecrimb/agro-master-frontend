@@ -195,7 +195,7 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => 
                               <MenuItem value={0}>{t('select')}</MenuItem>
                               {benches.map(r => (
                                 <MenuItem key={r.id} value={r.id}>
-                                  {r.label} - {r.rootstock.name}
+                                  B.{r.label}, {r.rootstock.name}
                                 </MenuItem>
                               ))}
                             </Select>
