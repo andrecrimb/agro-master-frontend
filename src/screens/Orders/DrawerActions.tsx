@@ -10,11 +10,11 @@ import AddRootstockOrderItemsDialog from './AddRootstocksOrderItemsDialog'
 import AddSeedlingsOrderItemsDialog from './AddSeedlingsOrderItemsDialog'
 import AddBorbulhasOrderItemsDialog from './AddBorbulhasOrderItemsDialog'
 import { useTranslation } from 'react-i18next'
-import { OrderType } from 'types/orders'
+import { Order } from 'types/orders'
 
-type Props = { orderId: number; orderType: OrderType }
+type Props = { order: Order }
 
-const DrawerActions: React.FC<Props> = ({ orderId, orderType }) => {
+const DrawerActions: React.FC<Props> = ({ order }) => {
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -50,25 +50,27 @@ const DrawerActions: React.FC<Props> = ({ orderId, orderType }) => {
           <MenuItem onClick={() => setOpen('editOrder')}>{t('edit_order')}</MenuItem>
           <MenuItem onClick={() => setOpen('addPayments')}>{t('add_payment')}</MenuItem>
           <MenuItem onClick={() => setOpen('addOrderItems')}>{t('add_order_items')}</MenuItem>
-          <CancelOrderMenuItem onClick={handleClose} orderId={orderId} />
+          <CancelOrderMenuItem onClick={handleClose} orderId={order.id} />
         </List>
       </Popover>
-      {open === 'addPayments' ? <AddPaymentDialog orderId={orderId} onClose={handleClose} /> : null}
-      {open === 'editOrder' ? <EditOrderDialog orderId={orderId} onClose={handleClose} /> : null}
-      {open === 'addOrderItems' && orderType === 'fruit' ? (
-        <AddFruitsOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      {open === 'addPayments' ? (
+        <AddPaymentDialog orderId={order.id} onClose={handleClose} />
       ) : null}
-      {open === 'addOrderItems' && orderType === 'borbulha' ? (
-        <AddBorbulhasOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      {open === 'editOrder' ? <EditOrderDialog orderId={order.id} onClose={handleClose} /> : null}
+      {open === 'addOrderItems' && order.type === 'fruit' ? (
+        <AddFruitsOrderItemsDialog orderId={order.id} onClose={handleClose} />
       ) : null}
-      {open === 'addOrderItems' && orderType === 'seed' ? (
-        <AddSeedsOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      {open === 'addOrderItems' && order.type === 'borbulha' ? (
+        <AddBorbulhasOrderItemsDialog orderId={order.id} onClose={handleClose} />
       ) : null}
-      {open === 'addOrderItems' && orderType === 'seedling' ? (
-        <AddSeedlingsOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      {open === 'addOrderItems' && order.type === 'seed' ? (
+        <AddSeedsOrderItemsDialog orderId={order.id} onClose={handleClose} />
       ) : null}
-      {open === 'addOrderItems' && orderType === 'rootstock' ? (
-        <AddRootstockOrderItemsDialog orderId={orderId} onClose={handleClose} />
+      {open === 'addOrderItems' && order.type === 'seedling' ? (
+        <AddSeedlingsOrderItemsDialog order={order} onClose={handleClose} />
+      ) : null}
+      {open === 'addOrderItems' && order.type === 'rootstock' ? (
+        <AddRootstockOrderItemsDialog orderId={order.id} onClose={handleClose} />
       ) : null}
     </>
   )

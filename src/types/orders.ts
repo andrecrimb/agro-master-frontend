@@ -58,7 +58,7 @@ export type SeedlingBenchOrderItem = {
   seedlingBench: {
     label: string
     rootstock: { name: string }
-    greenhouse: { label: string }
+    greenhouse: { label: string; ownerPropertyId: number }
   }
   quantity: number
   unityPrice: number

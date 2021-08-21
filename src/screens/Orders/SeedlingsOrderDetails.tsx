@@ -25,8 +25,7 @@ const SeedlingsOrderDetails: React.FC<Props> = ({ id }) => {
           order.orderDate,
           'DD/MM/YYYY'
         )})`,
-        RightActions:
-          order.status === 'issued' ? <DrawerActions orderType="seedling" orderId={id} /> : null
+        RightActions: order.status === 'issued' ? <DrawerActions order={order} /> : null
       }}
       tabs={[
         {

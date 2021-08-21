@@ -25,6 +25,7 @@ import { muiTheme } from 'theme'
 import useGreenhouses from 'hooks/useGreenhouses'
 import { SeedlingBench } from 'types/greenhouse'
 import useOwnerProperties from 'hooks/useOwnerProperties'
+import { Order } from 'types/orders'
 
 //#region Styles
 const TotalValueBox = styled.div`
@@ -57,12 +58,29 @@ const FORM_DEFAULT_VALUES = {
   ]
 }
 
-type Props = { onClose: () => void; orderId: number }
+type Props = { onClose: () => void; order: Order }
 
-const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
+const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
   const { t } = useTranslation()
 
-  const [propertySelected, setPropertySelect] = React.useState(0)
+  /**
+   * Order has already benches
+   * user should not be able to select another property
+   */
+  const propertyIdFromOrder = React.useMemo(() => {
+    if (!order.seedlingBenchOrderItems.length) {
+      return -1
+    }
+    return order.seedlingBenchOrderItems.reduce(
+      (prev, next) => (prev > -1 ? prev : next.seedlingBench.greenhouse.ownerPropertyId),
+      -1
+    )
+  }, [order.seedlingBenchOrderItems.length > 0])
+
+  const [orderSum, setOrderSum] = React.useState('0,00')
+  const [propertySelected, setPropertySelect] = React.useState(() =>
+    propertyIdFromOrder > -1 ? propertyIdFromOrder : 0
+  )
   const [benches, setBenches] = React.useState<SeedlingBench[]>([])
 
   const { data: properties = [] } = useOwnerProperties()
@@ -74,9 +92,7 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => 
     [greenhouses, propertySelected]
   )
 
-  const addSeedlingsOrderItems = useAddSeedlingsOrderItems(orderId)
-
-  const [orderSum, setOrderSum] = React.useState('0,00')
+  const addSeedlingsOrderItems = useAddSeedlingsOrderItems(order.id)
 
   const { handleSubmit, control, formState, setError, getValues } = useForm<
     typeof FORM_DEFAULT_VALUES
@@ -132,7 +148,8 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => 
               <FormControl fullWidth variant="filled" required>
                 <InputLabel id="property-selected">{t('property_plural')}</InputLabel>
                 <Select
-                  defaultValue={0}
+                  defaultValue={propertyIdFromOrder > -1 ? propertyIdFromOrder : 0}
+                  disabled={propertyIdFromOrder > -1}
                   onChange={ev => setPropertySelect(ev.target.value as number)}
                   labelId="property-selected"
                   id="property-selected"

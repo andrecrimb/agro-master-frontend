@@ -25,8 +25,7 @@ const RootstocksOrderDetails: React.FC<Props> = ({ id }) => {
           order.orderDate,
           'DD/MM/YYYY'
         )})`,
-        RightActions:
-          order.status === 'issued' ? <DrawerActions orderType="rootstock" orderId={id} /> : null
+        RightActions: order.status === 'issued' ? <DrawerActions order={order} /> : null
       }}
       tabs={[
         {
