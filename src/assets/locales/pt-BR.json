@@ -205,5 +205,7 @@
   "borbulha_quantity": "Quantidade de borbulhas",
   "seed_quantity": "Quantidade de sementes",
   "rootstock_quantity": "Quantidade de porta-enxertos",
-  "no_items": "Nenhum Item"
+  "no_items": "Nenhum Item",
+  "new_greenhouse_error": "Erro ao adicionar nova estufa",
+  "greenhouse_already_exists": "Essa estufa já existe nesta propriedade"
 }

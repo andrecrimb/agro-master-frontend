@@ -87,6 +87,8 @@ const AddGreenhouseButtonDialog: React.FC = () => {
                     size="small"
                     fullWidth
                     required
+                    error={!!formState.errors.label}
+                    helperText={t(formState.errors.label?.message || '')}
                     placeholder={t('estufa1')}
                     variant="filled"
                     label={t('name')}
