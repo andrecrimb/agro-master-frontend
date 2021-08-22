@@ -475,10 +475,15 @@ export const borbulhasOrderItemsAction: Column<BorbulhaOrderItem> = {
 //#endregion
 
 //#region SeedlingsOrderItems
-export const seedlingsOrderItemsName: Column<SeedlingBenchOrderItem> = {
-  Header: i18n.t('name') + '',
+export const seedlingsOrderItemsGhBench: Column<SeedlingBenchOrderItem> = {
+  Header: `${i18n.t('greenhouse')} - ${i18n.t('bench')}`,
+  id: 'greenhouseBench',
+  accessor: r => `E.${r.seedlingBench.greenhouse.label} - B.${r.seedlingBench.label}`
+}
+export const seedlingsOrderItemsVariety: Column<SeedlingBenchOrderItem> = {
+  Header: i18n.t('variety') + '',
   id: 'name',
-  accessor: r => `${r.seedlingBench.rootstock.name} (${r.seedlingBench.label})`
+  accessor: r => r.seedlingBench.rootstock.name
 }
 export const seedlingsOrderItemsQuantity: Column<SeedlingBenchOrderItem> = {
   Header: i18n.t('seedling_quantity') + '',

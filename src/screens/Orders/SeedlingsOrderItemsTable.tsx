@@ -2,7 +2,8 @@ import React from 'react'
 import { usePagination, useSortBy } from 'react-table'
 import Table from 'components/table/Table'
 import {
-  seedlingsOrderItemsName,
+  seedlingsOrderItemsGhBench,
+  seedlingsOrderItemsVariety,
   seedlingsOrderItemsQuantity,
   seedlingsOrderItemsKgPrice,
   seedlingsOrderItemsAction
@@ -14,7 +15,8 @@ import ScreenPlaceholder from 'components/ScreenPlaceholder'
 type Props = { orderItems: SeedlingBenchOrderItem[] }
 
 const columns = [
-  seedlingsOrderItemsName,
+  seedlingsOrderItemsGhBench,
+  seedlingsOrderItemsVariety,
   seedlingsOrderItemsQuantity,
   seedlingsOrderItemsKgPrice,
   seedlingsOrderItemsAction

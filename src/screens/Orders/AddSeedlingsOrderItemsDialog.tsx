@@ -117,8 +117,6 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
     setOrderSum(total.replace('.', ','))
   }
 
-  console.log(greenhousesFiltered)
-
   return (
     <Dialog open disableBackdropClick fullWidth onClose={onClose} aria-labelledby="dialog-title">
       <DialogTitle id="dialog-title">{t('add_order_items')}</DialogTitle>
@@ -136,7 +134,9 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
             onError: e => {
               const apiErrors = e?.response?.data.errors || []
               for (const apiError of apiErrors) {
-                setError(apiError.param, { message: apiError.msg })
+                setError(('seedlingsOrderItems.' + apiError.param) as any, {
+                  message: apiError.msg
+                })
               }
             }
           })
@@ -231,6 +231,10 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
                             id={`seedlingsOrderItems.${index}.quantity`}
                             type="number"
                             size="small"
+                            error={!!formState.errors.seedlingsOrderItems?.[index]?.quantity}
+                            helperText={t(
+                              formState.errors.seedlingsOrderItems?.[index]?.quantity?.message || ''
+                            )}
                             fullWidth
                             required
                             variant="filled"
