@@ -22,6 +22,8 @@ import { useTranslation } from 'react-i18next'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
 import useAddUser from 'hooks/useAddUser'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 const FORM_DEFAULT_VALUES = {
   name: '',
@@ -76,7 +78,17 @@ const AddUserButtonDialog: React.FC = () => {
                 setError('password', { message: 'passwords_dont_match' })
                 return setError('passwordRepeat', { message: 'passwords_dont_match' })
               }
-              return addNewUser.mutate(newUserData, {
+
+              const reqBody = {
+                ...newUserData,
+                //* Unmask phone numbers
+                phoneNumbers: newUserData.phoneNumbers.map(pn => ({
+                  ...pn,
+                  number: unmaskNumber(pn.number)
+                }))
+              }
+
+              return addNewUser.mutate(reqBody, {
                 onSuccess: () => {
                   setOpen(false)
                 },
@@ -192,14 +204,17 @@ const AddUserButtonDialog: React.FC = () => {
                             name={`phoneNumbers.${index}.number` as const}
                             defaultValue={field.number}
                             render={({ field }) => (
-                              <TextField
+                              <NumberFormat
                                 id={`phoneNumbers.${index}.number`}
-                                type="text"
-                                size="small"
+                                size={'small' as any}
                                 fullWidth
                                 required
                                 variant="filled"
                                 label={t('phoneNumber')}
+                                customInput={TextField}
+                                type="tel"
+                                format="(##) #########"
+                                getInputRef={field.ref}
                                 {...field}
                               />
                             )}
