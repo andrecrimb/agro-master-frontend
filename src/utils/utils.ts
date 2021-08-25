@@ -30,3 +30,7 @@ export const addURLSearch = (
   }
   return withPathName ? `${window.location.pathname}?${urlParams.toString()}` : urlParams.toString()
 }
+
+export const unmaskNumber = (num: string) => {
+  return num.replace(/[^0-9.]/g, '')
+}

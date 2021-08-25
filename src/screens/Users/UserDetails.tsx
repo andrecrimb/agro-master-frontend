@@ -6,6 +6,7 @@ import EditUserButtonDialog from './EditUserButtonDialog'
 import { useTranslation } from 'react-i18next'
 import { Box, Divider, Grid, Typography } from '@material-ui/core'
 import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
+import NumberFormat from 'react-number-format'
 
 type Props = { id: number }
 
@@ -65,7 +66,12 @@ const UserDetails: React.FC<Props> = ({ id }) => {
                     <InfoTable
                       entries={user.phoneNumbers.map(phoneNumber => [
                         phoneNumber.label,
-                        phoneNumber.number
+                        <NumberFormat
+                          displayType="text"
+                          key={'phone-' + phoneNumber.number}
+                          value={phoneNumber.number}
+                          format="(##) #########"
+                        />
                       ])}
                     />
                   </Grid>

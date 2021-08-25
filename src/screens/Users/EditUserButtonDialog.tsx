@@ -25,6 +25,8 @@ import LoadingButton from 'components/LoadingButton'
 import useEditUser from 'hooks/useEditUser'
 import { muiTheme } from 'theme'
 import { User } from 'types/user'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 const FORM_DEFAULT_VALUES = {
   name: '',
@@ -44,7 +46,9 @@ const EditUserButtonDialog: React.FC<Props> = ({ user }) => {
 
   const editUser = useEditUser()
 
-  const { handleSubmit, control, register, formState, setError, reset } = useForm({
+  const { handleSubmit, control, register, formState, setError, reset } = useForm<
+    typeof FORM_DEFAULT_VALUES
+  >({
     defaultValues: FORM_DEFAULT_VALUES
   })
 
@@ -99,11 +103,23 @@ const EditUserButtonDialog: React.FC<Props> = ({ user }) => {
 
             const dataToEdit = Object.keys(
               shouldUpdatePassword ? formState.dirtyFields : dirtyFields
-            ).reduce((prev, next) => ({ ...prev, [next]: formValues[next] }), {})
+            ).reduce(
+              (prev, next) => ({ ...prev, [next]: formValues[next] }),
+              {} as Partial<typeof FORM_DEFAULT_VALUES>
+            )
 
             if (!Object.keys(dataToEdit).length) {
               return reset({ passwordRepeat, ...formValues })
             }
+
+            //* Remove phone mask
+            if (dataToEdit.phoneNumbers) {
+              dataToEdit.phoneNumbers = dataToEdit.phoneNumbers.map(pn => ({
+                ...pn,
+                number: unmaskNumber(pn.number)
+              }))
+            }
+
             return editUser.mutate(
               { id: user.id, data: dataToEdit },
               {
@@ -225,14 +241,17 @@ const EditUserButtonDialog: React.FC<Props> = ({ user }) => {
                           name={`phoneNumbers.${index}.number` as const}
                           defaultValue={field.number}
                           render={({ field }) => (
-                            <TextField
+                            <NumberFormat
                               id={`phoneNumbers.${index}.number`}
-                              type="text"
-                              size="small"
+                              size={'small' as any}
                               fullWidth
                               required
                               variant="filled"
                               label={t('phoneNumber')}
+                              customInput={TextField}
+                              type="tel"
+                              format="(##) #########"
+                              getInputRef={field.ref}
                               {...field}
                             />
                           )}
