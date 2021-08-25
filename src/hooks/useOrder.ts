@@ -11,7 +11,6 @@ const useOrder = <T = Order>(orderId: number, options?: UseQueryOptions<Order, A
       return data
     },
     {
-      refetchOnWindowFocus: false,
       ...options
     }
   )
