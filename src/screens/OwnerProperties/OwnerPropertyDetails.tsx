@@ -18,7 +18,8 @@ const OwnerPropertyDetails: React.FC<Props> = ({ id }) => {
     <DetailsDrawerWrapper
       header={{
         title: t('property') + ' | ',
-        highlightTitle: data.property.name
+        highlightTitle: data.property.name,
+        RightActions: <EditPropertyButtonDialog ownerProperty={data} />
       }}
       tabs={[
         {
@@ -46,11 +47,6 @@ const OwnerPropertyDetails: React.FC<Props> = ({ id }) => {
                       [t('producer'), data.property.producerName]
                     ]}
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <Box textAlign="right">
-                    <EditPropertyButtonDialog ownerPropertyId={id} />
-                  </Box>
                 </Grid>
               </Grid>
             </Box>

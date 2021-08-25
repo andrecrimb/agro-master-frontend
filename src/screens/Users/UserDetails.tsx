@@ -19,7 +19,8 @@ const UserDetails: React.FC<Props> = ({ id }) => {
     <DetailsDrawerWrapper
       header={{
         title: t('user') + ' | ',
-        highlightTitle: user.name
+        highlightTitle: user.name,
+        RightActions: <EditUserButtonDialog user={user} />
       }}
       tabs={[
         {
@@ -69,11 +70,6 @@ const UserDetails: React.FC<Props> = ({ id }) => {
                     />
                   </Grid>
                 ) : null}
-                <Grid item xs={12}>
-                  <Box textAlign="right">
-                    <EditUserButtonDialog userId={id} />
-                  </Box>
-                </Grid>
               </Grid>
             </Box>
           )

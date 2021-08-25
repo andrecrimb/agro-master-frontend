@@ -21,7 +21,7 @@ import { muiTheme } from 'theme'
 import useEditOwnerProperty from 'hooks/useEditOwnerProperty'
 import useDeleteOwnerProperty from 'hooks/useDeleteOwnerProperty'
 import useDialog from 'hooks/useDialog'
-import useOwnerProperty from 'hooks/useOwnerProperty'
+import { OwnerProperty } from 'types/property'
 
 const FORM_DEFAULT_VALUES = {
   producerName: '',
@@ -35,14 +35,12 @@ const FORM_DEFAULT_VALUES = {
   state: ''
 }
 
-type Props = { ownerPropertyId: number }
+type Props = { ownerProperty: OwnerProperty }
 
-const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
+const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { newDialog } = useDialog()
-
-  const { data: propertySelected } = useOwnerProperty(ownerPropertyId)
 
   const editProperty = useEditOwnerProperty()
   const searchZip = useZipSearch()
@@ -65,16 +63,18 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
   const { ref: stateRef, ...state } = register('state')
 
   React.useEffect(() => {
-    if (propertySelected && open) {
-      reset(propertySelected.property)
+    if (open) {
+      reset(ownerProperty.property)
     }
-  }, [propertySelected === undefined, open])
+  }, [open])
 
   return (
     <>
-      <Button variant="outlined" startIcon={<EditIcon />} onClick={() => setOpen(true)}>
-        {t('edit')}
-      </Button>
+      <Tooltip arrow title={t('edit') + ''}>
+        <IconButton onClick={() => setOpen(true)}>
+          <EditIcon />
+        </IconButton>
+      </Tooltip>
       <Dialog
         disableBackdropClick
         open={open}
@@ -86,246 +86,243 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerPropertyId }) => {
         <DialogTitle id="dialog-title">
           {t('edit_property')} |{' '}
           <span style={{ color: muiTheme.palette.primary.main }}>
-            {propertySelected?.property.name}
+            {ownerProperty.property.name}
           </span>
         </DialogTitle>
-        {propertySelected ? (
-          <form
-            onSubmit={handleSubmit(values => {
-              const dataToEdit = Object.keys(formState.dirtyFields).reduce(
-                (prev, next) => ({ ...prev, [next]: values[next] }),
-                {} as Partial<typeof FORM_DEFAULT_VALUES>
-              )
-              editProperty.mutate(
-                { id: ownerPropertyId, data: dataToEdit },
-                {
-                  onSuccess: () => {
-                    setOpen(false)
-                  },
-                  onError: e => {
-                    const apiErrors = e?.response?.data.errors || []
-                    for (const apiError of apiErrors) {
-                      setError(apiError.param, { message: apiError.msg })
-                    }
+        <form
+          onSubmit={handleSubmit(values => {
+            const dataToEdit = Object.keys(formState.dirtyFields).reduce(
+              (prev, next) => ({ ...prev, [next]: values[next] }),
+              {} as Partial<typeof FORM_DEFAULT_VALUES>
+            )
+            editProperty.mutate(
+              { id: ownerProperty.id, data: dataToEdit },
+              {
+                onSuccess: () => {
+                  setOpen(false)
+                },
+                onError: e => {
+                  const apiErrors = e?.response?.data.errors || []
+                  for (const apiError of apiErrors) {
+                    setError(apiError.param, { message: apiError.msg })
                   }
                 }
-              )
-            })}
-          >
-            <DialogContent>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography color="textSecondary" display="block" variant="subtitle1">
-                    {t('generalData')}
-                  </Typography>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="name"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    variant="filled"
-                    label={t('propertyName')}
-                    inputRef={nameRef}
-                    {...name}
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <TextField
-                    id="cnpj"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    error={!!formState.errors.cnpj}
-                    helperText={t(formState.errors.cnpj?.message || '')}
-                    variant="filled"
-                    label={t('cnpj')}
-                    inputRef={cnpjRef}
-                    {...cnpj}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="cpf"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    variant="filled"
-                    label={t('cpf')}
-                    inputRef={cpfRef}
-                    {...cpf}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="ie"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    variant="filled"
-                    label={t('ie')}
-                    inputRef={ieRef}
-                    {...ie}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="producerName"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    variant="filled"
-                    label={t('producerName')}
-                    inputRef={producerNameRef}
-                    {...producerName}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography color="textSecondary" display="block" variant="subtitle1">
-                    {t('address')}
-                  </Typography>
-                  <Divider />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    id="zip"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    error={!!formState.errors.zip?.message}
-                    helperText={t(formState.errors.zip?.message || '')}
-                    variant="filled"
-                    label={t('zip')}
-                    onBlur={ev => {
-                      zipOnBlur(ev)
-                      ev.target.value !== '' &&
-                        searchZip.mutateAsync(ev.target.value, {
-                          onSuccess: res => {
-                            clearErrors('zip')
-                            if (res) {
-                              setValue('state', res.uf, { shouldDirty: true })
-                              setValue('city', res.localidade, { shouldDirty: true })
-                              setValue('address', res.logradouro, { shouldDirty: true })
-                            }
-                          },
-                          onError: () => {
-                            setError('zip', { message: 'invalid_zip' })
-                            setValue('state', '', { shouldDirty: true })
-                            setValue('city', '', { shouldDirty: true })
-                            setValue('address', '', { shouldDirty: true })
-                          }
-                        })
-                    }}
-                    inputRef={zipRef}
-                    {...zip}
-                  />
-                </Grid>
-                {(formState.dirtyFields.zip && searchZip.isSuccess) ||
-                (propertySelected && !searchZip.isError) ? (
-                  <>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="address"
-                        type="text"
-                        size="small"
-                        fullWidth
-                        required
-                        variant="filled"
-                        label={t('address')}
-                        inputRef={addressRef}
-                        {...address}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="city"
-                        type="text"
-                        size="small"
-                        fullWidth
-                        required
-                        InputProps={{ readOnly: true }}
-                        InputLabelProps={{ shrink: true }}
-                        variant="filled"
-                        label={t('city')}
-                        inputRef={cityRef}
-                        {...city}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        id="state"
-                        type="text"
-                        size="small"
-                        fullWidth
-                        required
-                        InputProps={{ readOnly: true }}
-                        InputLabelProps={{ shrink: true }}
-                        variant="filled"
-                        label={t('state')}
-                        inputRef={stateRef}
-                        {...state}
-                      />
-                    </Grid>
-                  </>
-                ) : null}
+              }
+            )
+          })}
+        >
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography color="textSecondary" display="block" variant="subtitle1">
+                  {t('generalData')}
+                </Typography>
+                <Divider />
               </Grid>
-            </DialogContent>
-            <DialogActions>
-              <Tooltip title={t('delete_property') + ''} arrow placement="left">
-                <IconButton
-                  onClick={() =>
-                    newDialog({
-                      title: t('warning') + '!',
-                      message: t('delete_question', {
-                        item: propertySelected.property.name
-                      }),
-                      confirmationButton: {
-                        text: t('delete'),
-                        onClick: () =>
-                          deleteProperty.mutateAsync(
-                            { ownerPropertyId: propertySelected.id },
-                            { onSuccess: () => setOpen(false) }
-                          )
-                      }
-                    })
-                  }
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-              <Button
-                variant="outlined"
-                color="primary"
-                data-testid="button_cancel"
-                onClick={() => setOpen(false)}
-              >
-                {t('cancel')}
-              </Button>
-              <LoadingButton
-                color="primary"
-                variant="contained"
-                data-testid="button_save"
-                disabled={
-                  !formState.isDirty ||
-                  !!Object.keys(formState.errors).length ||
-                  editProperty.isLoading
+              <Grid item xs={12}>
+                <TextField
+                  id="name"
+                  type="text"
+                  size="small"
+                  fullWidth
+                  required
+                  variant="filled"
+                  label={t('propertyName')}
+                  inputRef={nameRef}
+                  {...name}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField
+                  id="cnpj"
+                  type="text"
+                  size="small"
+                  fullWidth
+                  required
+                  error={!!formState.errors.cnpj}
+                  helperText={t(formState.errors.cnpj?.message || '')}
+                  variant="filled"
+                  label={t('cnpj')}
+                  inputRef={cnpjRef}
+                  {...cnpj}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="cpf"
+                  type="text"
+                  size="small"
+                  fullWidth
+                  variant="filled"
+                  label={t('cpf')}
+                  inputRef={cpfRef}
+                  {...cpf}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="ie"
+                  type="text"
+                  size="small"
+                  fullWidth
+                  required
+                  variant="filled"
+                  label={t('ie')}
+                  inputRef={ieRef}
+                  {...ie}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="producerName"
+                  type="text"
+                  size="small"
+                  fullWidth
+                  required
+                  variant="filled"
+                  label={t('producerName')}
+                  inputRef={producerNameRef}
+                  {...producerName}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography color="textSecondary" display="block" variant="subtitle1">
+                  {t('address')}
+                </Typography>
+                <Divider />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="zip"
+                  type="text"
+                  size="small"
+                  fullWidth
+                  required
+                  error={!!formState.errors.zip?.message}
+                  helperText={t(formState.errors.zip?.message || '')}
+                  variant="filled"
+                  label={t('zip')}
+                  onBlur={ev => {
+                    zipOnBlur(ev)
+                    ev.target.value !== '' &&
+                      searchZip.mutateAsync(ev.target.value, {
+                        onSuccess: res => {
+                          clearErrors('zip')
+                          if (res) {
+                            setValue('state', res.uf, { shouldDirty: true })
+                            setValue('city', res.localidade, { shouldDirty: true })
+                            setValue('address', res.logradouro, { shouldDirty: true })
+                          }
+                        },
+                        onError: () => {
+                          setError('zip', { message: 'invalid_zip' })
+                          setValue('state', '', { shouldDirty: true })
+                          setValue('city', '', { shouldDirty: true })
+                          setValue('address', '', { shouldDirty: true })
+                        }
+                      })
+                  }}
+                  inputRef={zipRef}
+                  {...zip}
+                />
+              </Grid>
+              {(formState.dirtyFields.zip && searchZip.isSuccess) || !searchZip.isError ? (
+                <>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="address"
+                      type="text"
+                      size="small"
+                      fullWidth
+                      required
+                      variant="filled"
+                      label={t('address')}
+                      inputRef={addressRef}
+                      {...address}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="city"
+                      type="text"
+                      size="small"
+                      fullWidth
+                      required
+                      InputProps={{ readOnly: true }}
+                      InputLabelProps={{ shrink: true }}
+                      variant="filled"
+                      label={t('city')}
+                      inputRef={cityRef}
+                      {...city}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      id="state"
+                      type="text"
+                      size="small"
+                      fullWidth
+                      required
+                      InputProps={{ readOnly: true }}
+                      InputLabelProps={{ shrink: true }}
+                      variant="filled"
+                      label={t('state')}
+                      inputRef={stateRef}
+                      {...state}
+                    />
+                  </Grid>
+                </>
+              ) : null}
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Tooltip title={t('delete_property') + ''} arrow placement="left">
+              <IconButton
+                onClick={() =>
+                  newDialog({
+                    title: t('warning') + '!',
+                    message: t('delete_question', {
+                      item: ownerProperty.property.name
+                    }),
+                    confirmationButton: {
+                      text: t('delete'),
+                      onClick: () =>
+                        deleteProperty.mutateAsync(
+                          { ownerPropertyId: ownerProperty.id },
+                          { onSuccess: () => setOpen(false) }
+                        )
+                    }
+                  })
                 }
-                type="submit"
-                isLoading={editProperty.isLoading}
               >
-                {t('save')}
-              </LoadingButton>
-            </DialogActions>
-          </form>
-        ) : null}
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+            <Button
+              variant="outlined"
+              color="primary"
+              data-testid="button_cancel"
+              onClick={() => setOpen(false)}
+            >
+              {t('cancel')}
+            </Button>
+            <LoadingButton
+              color="primary"
+              variant="contained"
+              data-testid="button_save"
+              disabled={
+                !formState.isDirty ||
+                !!Object.keys(formState.errors).length ||
+                editProperty.isLoading
+              }
+              type="submit"
+              isLoading={editProperty.isLoading}
+            >
+              {t('save')}
+            </LoadingButton>
+          </DialogActions>
+        </form>
       </Dialog>
     </>
   )
