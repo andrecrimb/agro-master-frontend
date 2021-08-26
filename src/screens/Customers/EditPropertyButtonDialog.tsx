@@ -15,13 +15,15 @@ import {
 import { Delete as DeleteIcon, EditRounded as EditIcon } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
 import LoadingButton from 'components/LoadingButton'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import useZipSearch from 'hooks/useZipSearch'
 import { muiTheme } from 'theme'
 import useEditCustomerProperty from 'hooks/useEditCustomerProperty'
 import useDeleteCustomerProperty from 'hooks/useDeleteCustomerProperty'
 import useDialog from 'hooks/useDialog'
 import { Property } from 'types/property'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 const FORM_DEFAULT_VALUES = {
   producerName: '',
@@ -46,18 +48,21 @@ const EditPropertyDialog: React.FC<Props> = ({ property, customerId }) => {
   const deleteProperty = useDeleteCustomerProperty()
   const searchZip = useZipSearch()
 
-  const { handleSubmit, setValue, register, formState, reset, clearErrors, setError } = useForm<
-    typeof FORM_DEFAULT_VALUES
-  >({
+  const {
+    handleSubmit,
+    setValue,
+    register,
+    formState,
+    reset,
+    clearErrors,
+    setError,
+    control
+  } = useForm<typeof FORM_DEFAULT_VALUES>({
     defaultValues: FORM_DEFAULT_VALUES
   })
 
   const { ref: producerNameRef, ...producerName } = register('producerName')
   const { ref: nameRef, ...name } = register('name')
-  const { ref: cnpjRef, ...cnpj } = register('cnpj')
-  const { ref: cpfRef, ...cpf } = register('cpf')
-  const { ref: ieRef, ...ie } = register('ie')
-  const { ref: zipRef, onBlur: zipOnBlur, ...zip } = register('zip')
   const { ref: addressRef, ...address } = register('address')
   const { ref: cityRef, ...city } = register('city')
   const { ref: stateRef, ...state } = register('state')
@@ -86,12 +91,18 @@ const EditPropertyDialog: React.FC<Props> = ({ property, customerId }) => {
           </DialogTitle>
           <form
             onSubmit={handleSubmit(values => {
-              const dataToEdit = Object.keys(formState.dirtyFields).reduce(
-                (prev, next) => ({ ...prev, [next]: values[next] }),
+              const reqBody = Object.keys(formState.dirtyFields).reduce(
+                (prev, next) => ({
+                  ...prev,
+                  [next]: ['ie', 'cnpj', 'zip', 'cpf'].includes(next)
+                    ? unmaskNumber(values[next])
+                    : values[next]
+                }),
                 {} as Partial<typeof FORM_DEFAULT_VALUES>
               )
+
               editProperty.mutate(
-                { propertyId: property.id, customerId: customerId, data: dataToEdit },
+                { propertyId: property.id, customerId: customerId, data: reqBody },
                 {
                   onSuccess: () => {
                     setOpen(false)
@@ -129,43 +140,71 @@ const EditPropertyDialog: React.FC<Props> = ({ property, customerId }) => {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <TextField
-                    id="cnpj"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    error={!!formState.errors.cnpj}
-                    helperText={t(formState.errors.cnpj?.message || '')}
-                    variant="filled"
-                    label={t('cnpj')}
-                    inputRef={cnpjRef}
-                    {...cnpj}
+                  <Controller
+                    name="cnpj"
+                    control={control}
+                    render={({ field }) => (
+                      <NumberFormat
+                        id="cnpj"
+                        size={'small' as any}
+                        fullWidth
+                        required
+                        error={!!formState.errors.cnpj}
+                        helperText={t(formState.errors.cnpj?.message || '')}
+                        label={t('cnpj')}
+                        variant="filled"
+                        customInput={TextField}
+                        type="tel"
+                        format="##.###.###/####-##"
+                        mask="_"
+                        getInputRef={field.ref}
+                        {...field}
+                      />
+                    )}
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
-                    id="cpf"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    variant="filled"
-                    label={t('cpf')}
-                    inputRef={cpfRef}
-                    {...cpf}
+                  <Controller
+                    name="cpf"
+                    control={control}
+                    render={({ field }) => (
+                      <NumberFormat
+                        id="cpf"
+                        size={'small' as any}
+                        fullWidth
+                        required
+                        label={t('cpf')}
+                        variant="filled"
+                        customInput={TextField}
+                        type="tel"
+                        format="###.###.###-##"
+                        mask="_"
+                        getInputRef={field.ref}
+                        {...field}
+                      />
+                    )}
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
-                    id="ie"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    variant="filled"
-                    label={t('ie')}
-                    inputRef={ieRef}
-                    {...ie}
+                  <Controller
+                    name="ie"
+                    control={control}
+                    render={({ field }) => (
+                      <NumberFormat
+                        id="ie"
+                        size={'small' as any}
+                        fullWidth
+                        required
+                        label={t('ie')}
+                        variant="filled"
+                        customInput={TextField}
+                        type="tel"
+                        format="###.###.###.###"
+                        mask="_"
+                        getInputRef={field.ref}
+                        {...field}
+                      />
+                    )}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -188,38 +227,47 @@ const EditPropertyDialog: React.FC<Props> = ({ property, customerId }) => {
                   <Divider />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
-                    id="zip"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    required
-                    error={!!formState.errors.zip?.message}
-                    helperText={t(formState.errors.zip?.message || '')}
-                    variant="filled"
-                    label={t('zip')}
-                    onBlur={ev => {
-                      zipOnBlur(ev)
-                      ev.target.value !== '' &&
-                        searchZip.mutateAsync(ev.target.value, {
-                          onSuccess: res => {
-                            clearErrors('zip')
-                            if (res) {
-                              setValue('state', res.uf, { shouldDirty: true })
-                              setValue('city', res.localidade, { shouldDirty: true })
-                              setValue('address', res.logradouro, { shouldDirty: true })
-                            }
-                          },
-                          onError: () => {
-                            setError('zip', { message: 'invalid_zip' })
-                            setValue('state', '', { shouldDirty: true })
-                            setValue('city', '', { shouldDirty: true })
-                            setValue('address', '', { shouldDirty: true })
-                          }
-                        })
-                    }}
-                    inputRef={zipRef}
-                    {...zip}
+                  <Controller
+                    name="zip"
+                    control={control}
+                    render={({ field: { onBlur, ...fieldProps } }) => (
+                      <NumberFormat
+                        id="zip"
+                        size={'small' as any}
+                        fullWidth
+                        required
+                        error={!!formState.errors.zip?.message}
+                        helperText={t(formState.errors.zip?.message || '')}
+                        label={t('zip')}
+                        variant="filled"
+                        customInput={TextField}
+                        type="tel"
+                        format="#####-###"
+                        mask="_"
+                        getInputRef={fieldProps.ref}
+                        onBlur={ev => {
+                          onBlur()
+                          unmaskNumber(ev.target.value) !== '' &&
+                            searchZip.mutateAsync(unmaskNumber(ev.target.value), {
+                              onSuccess: res => {
+                                clearErrors('zip')
+                                if (res) {
+                                  setValue('state', res.uf, { shouldDirty: true })
+                                  setValue('city', res.localidade, { shouldDirty: true })
+                                  setValue('address', res.logradouro, { shouldDirty: true })
+                                }
+                              },
+                              onError: () => {
+                                setError('zip', { message: 'invalid_zip' })
+                                setValue('state', '', { shouldDirty: true })
+                                setValue('city', '', { shouldDirty: true })
+                                setValue('address', '', { shouldDirty: true })
+                              }
+                            })
+                        }}
+                        {...fieldProps}
+                      />
+                    )}
                   />
                 </Grid>
                 {(formState.dirtyFields.zip && searchZip.isSuccess) || !searchZip.isError ? (

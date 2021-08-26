@@ -79,30 +79,28 @@ const AddPropertyButtonDialog: React.FC = () => {
         >
           <DialogTitle id="dialog-title">{t('new_property')}</DialogTitle>
           <form
-            onSubmit={handleSubmit(
-              ({ ie: ieMasked, cnpj: cnpjMasked, cpf: cpfMasked, zip: zipMasked, ...values }) => {
-                addProperty.mutate(
-                  {
-                    ie: unmaskNumber(ieMasked),
-                    cnpj: unmaskNumber(cnpjMasked),
-                    zip: unmaskNumber(zipMasked),
-                    cpf: unmaskNumber(cpfMasked),
-                    ...values
+            onSubmit={handleSubmit(values => {
+              addProperty.mutate(
+                Object.entries(values).reduce(
+                  (prev, [key, value]) => ({
+                    ...prev,
+                    [key]: ['ie', 'cnpj', 'cpf', 'zip'].includes(key) ? unmaskNumber(value) : value
+                  }),
+                  {} as typeof values
+                ),
+                {
+                  onSuccess: () => {
+                    setOpen(false)
                   },
-                  {
-                    onSuccess: () => {
-                      setOpen(false)
-                    },
-                    onError: e => {
-                      const apiErrors = e?.response?.data.errors || []
-                      for (const apiError of apiErrors) {
-                        setError(apiError.param, { message: apiError.msg })
-                      }
+                  onError: e => {
+                    const apiErrors = e?.response?.data.errors || []
+                    for (const apiError of apiErrors) {
+                      setError(apiError.param, { message: apiError.msg })
                     }
                   }
-                )
-              }
-            )}
+                }
+              )
+            })}
           >
             <DialogContent>
               <Grid container spacing={2}>

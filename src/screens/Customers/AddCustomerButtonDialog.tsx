@@ -23,6 +23,8 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
 import useAddCustomer from 'hooks/useAddCustomer'
 import useZipSearch from 'hooks/useZipSearch'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 const FORM_DEFAULT_VALUES = {
   name: '',
@@ -67,7 +69,6 @@ const AddCustomerButtonDialog: React.FC = () => {
 
   const { ref: nameRef, ...name } = register('name')
   const { ref: nicknameRef, ...nickname } = register('nickname')
-  const { ref: zipRef, onBlur: zipOnBlur, ...zip } = register('zip')
   const { ref: addressRef, ...address } = register('address')
   const { ref: cityRef, ...city } = register('city')
   const { ref: stateRef, ...state } = register('state')
@@ -89,7 +90,16 @@ const AddCustomerButtonDialog: React.FC = () => {
           <DialogTitle id="dialog-title">{t('add_new_customer')}</DialogTitle>
           <form
             onSubmit={handleSubmit(values => {
-              return addNewCustomer.mutate(values, {
+              const reqBody = {
+                ...values,
+                zip: unmaskNumber(values.zip),
+                phoneNumbers: values.phoneNumbers.map(pn => ({
+                  ...pn,
+                  number: unmaskNumber(pn.number)
+                }))
+              }
+
+              return addNewCustomer.mutate(reqBody, {
                 onSuccess: () => {
                   setOpen(false)
                 },
@@ -143,37 +153,47 @@ const AddCustomerButtonDialog: React.FC = () => {
                   <Divider />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField
-                    id="zip"
-                    type="text"
-                    size="small"
-                    fullWidth
-                    error={!!formState.errors.zip?.message}
-                    helperText={t(formState.errors.zip?.message || '')}
-                    variant="filled"
-                    label={t('zip')}
-                    onBlur={ev => {
-                      zipOnBlur(ev)
-                      ev.target.value !== '' &&
-                        searchZip.mutateAsync(ev.target.value, {
-                          onSuccess: res => {
-                            clearErrors('zip')
-                            if (res) {
-                              setValue('state', res.uf, { shouldDirty: true })
-                              setValue('city', res.localidade, { shouldDirty: true })
-                              setValue('address', res.logradouro, { shouldDirty: true })
-                            }
-                          },
-                          onError: () => {
-                            setError('zip', { message: 'invalid_zip' })
-                            setValue('state', '', { shouldDirty: true })
-                            setValue('city', '', { shouldDirty: true })
-                            setValue('address', '', { shouldDirty: true })
-                          }
-                        })
-                    }}
-                    inputRef={zipRef}
-                    {...zip}
+                  <Controller
+                    name="zip"
+                    control={control}
+                    render={({ field: { onBlur, ...fieldProps } }) => (
+                      <NumberFormat
+                        id="zip"
+                        size={'small' as any}
+                        fullWidth
+                        required
+                        error={!!formState.errors.zip?.message}
+                        helperText={t(formState.errors.zip?.message || '')}
+                        label={t('zip')}
+                        variant="filled"
+                        customInput={TextField}
+                        type="tel"
+                        format="#####-###"
+                        mask="_"
+                        getInputRef={fieldProps.ref}
+                        onBlur={ev => {
+                          onBlur()
+                          unmaskNumber(ev.target.value) !== '' &&
+                            searchZip.mutateAsync(unmaskNumber(ev.target.value), {
+                              onSuccess: res => {
+                                clearErrors('zip')
+                                if (res) {
+                                  setValue('state', res.uf, { shouldDirty: true })
+                                  setValue('city', res.localidade, { shouldDirty: true })
+                                  setValue('address', res.logradouro, { shouldDirty: true })
+                                }
+                              },
+                              onError: () => {
+                                setError('zip', { message: 'invalid_zip' })
+                                setValue('state', '', { shouldDirty: true })
+                                setValue('city', '', { shouldDirty: true })
+                                setValue('address', '', { shouldDirty: true })
+                              }
+                            })
+                        }}
+                        {...fieldProps}
+                      />
+                    )}
                   />
                 </Grid>
                 {searchZip.isSuccess ? (
@@ -254,14 +274,17 @@ const AddCustomerButtonDialog: React.FC = () => {
                             name={`phoneNumbers.${index}.number` as const}
                             defaultValue={field.number}
                             render={({ field }) => (
-                              <TextField
+                              <NumberFormat
                                 id={`phoneNumbers.${index}.number`}
-                                type="text"
-                                size="small"
+                                size={'small' as any}
                                 fullWidth
                                 required
                                 variant="filled"
                                 label={t('phoneNumber')}
+                                customInput={TextField}
+                                type="tel"
+                                format="(##) #########"
+                                getInputRef={field.ref}
                                 {...field}
                               />
                             )}

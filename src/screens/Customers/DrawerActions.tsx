@@ -1,12 +1,13 @@
 import { IconButton, Popover, List } from '@material-ui/core'
 import { MoreVert as MoreIcon } from '@material-ui/icons'
 import React from 'react'
+import { Customer } from 'types/customer'
 import AddPropertyButtonDialog from './AddPropertyButtonDialog'
 import EditCustomerButtonDialog from './EditCustomerButtonDialog'
 
-type Props = { customerId: number }
+type Props = { customer: Customer }
 
-const DrawerActions: React.FC<Props> = ({ customerId }) => {
+const DrawerActions: React.FC<Props> = ({ customer }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,8 +36,8 @@ const DrawerActions: React.FC<Props> = ({ customerId }) => {
         onClose={handleClose}
       >
         <List>
-          <AddPropertyButtonDialog customerId={customerId} onClick={handleClose} />
-          <EditCustomerButtonDialog customerId={customerId} onClick={handleClose} />
+          <AddPropertyButtonDialog customer={customer} onClick={handleClose} />
+          <EditCustomerButtonDialog customer={customer} onClick={handleClose} />
         </List>
       </Popover>
     </>

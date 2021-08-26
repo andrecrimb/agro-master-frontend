@@ -7,6 +7,7 @@ import { Box, Divider, Grid, Typography } from '@material-ui/core'
 import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
 import PropertiesTable from './PropertiesTable'
 import DrawerActions from './DrawerActions'
+import NumberFormat from 'react-number-format'
 
 type Props = { id: number }
 
@@ -23,7 +24,7 @@ const CustomerDetails: React.FC<Props> = ({ id }) => {
         highlightTitle: `${customer.name} ${
           customer.nickname !== '' ? `(${customer.nickname})` : ''
         }`,
-        RightActions: <DrawerActions customerId={id} />
+        RightActions: <DrawerActions customer={customer} />
       }}
       tabs={[
         {
@@ -44,6 +45,16 @@ const CustomerDetails: React.FC<Props> = ({ id }) => {
                         t('name'),
                         `${customer.name} ${customer.nickname ? '(' + customer.nickname + ')' : ''}`
                       ],
+                      [t('address'), `${customer.address}, ${customer.city}-${customer.state}`],
+                      [
+                        t('cep'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'zip-' + customer.zip}
+                          value={customer.zip}
+                          format="#####-###"
+                        />
+                      ],
                       [
                         t('active'),
                         customer.active ? (
@@ -61,12 +72,18 @@ const CustomerDetails: React.FC<Props> = ({ id }) => {
                   </Typography>
                   <Divider />
                 </Grid>
+
                 {customer.phoneNumbers?.length ? (
                   <Grid item xs={12}>
                     <InfoTable
                       entries={customer.phoneNumbers.map(phoneNumber => [
                         phoneNumber.label,
-                        phoneNumber.number
+                        <NumberFormat
+                          displayType="text"
+                          key={'phone-' + phoneNumber.number}
+                          value={phoneNumber.number}
+                          format="(##) #########"
+                        />
                       ])}
                     />
                   </Grid>

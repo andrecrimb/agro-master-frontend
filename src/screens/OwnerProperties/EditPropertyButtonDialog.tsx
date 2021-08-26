@@ -96,7 +96,7 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
         </DialogTitle>
         <form
           onSubmit={handleSubmit(values => {
-            const dataToEdit = Object.keys(formState.dirtyFields).reduce(
+            const reqBody = Object.keys(formState.dirtyFields).reduce(
               (prev, next) => ({
                 ...prev,
                 [next]: ['ie', 'cnpj', 'zip', 'cpf'].includes(next)
@@ -107,7 +107,7 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
             )
 
             editProperty.mutate(
-              { id: ownerProperty.id, data: dataToEdit },
+              { id: ownerProperty.id, data: reqBody },
               {
                 onSuccess: () => {
                   setOpen(false)

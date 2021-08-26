@@ -29,6 +29,7 @@ import {
   SeedlingBenchOrderItem
 } from 'types/orders'
 import { Rootstock } from 'types/rootstock'
+import NumberFormat from 'react-number-format'
 
 //#region Users
 export const usersName: Column<User> = {
@@ -151,9 +152,42 @@ export const customerPropertyGeneral: Column<CustomerProperty> = {
           i18n.t('address'),
           `${data.property.address}, ${data.property.city}-${data.property.state}`
         ],
-        [i18n.t('cep'), data.property.zip],
-        [i18n.t('cnpj'), data.property.cnpj],
-        [i18n.t('cpf'), data.property.cpf],
+        [
+          i18n.t('cep'),
+          <NumberFormat
+            displayType="text"
+            key={'zip-' + data.property.zip}
+            value={data.property.zip}
+            format="#####-###"
+          />
+        ],
+        [
+          i18n.t('cnpj'),
+          <NumberFormat
+            displayType="text"
+            key={'cnpj-' + data.property.cnpj}
+            value={data.property.cnpj}
+            format="##.###.###/####-##"
+          />
+        ],
+        [
+          i18n.t('ie'),
+          <NumberFormat
+            displayType="text"
+            key={'ie-' + data.property.ie}
+            value={data.property.ie}
+            format="###.###.###.###"
+          />
+        ],
+        [
+          i18n.t('cpf'),
+          <NumberFormat
+            displayType="text"
+            key={'cpf-' + data.property.cpf}
+            value={data.property.cpf}
+            format="###.###.###-##"
+          />
+        ],
         [i18n.t('producer'), data.property.producerName]
       ]}
     />
