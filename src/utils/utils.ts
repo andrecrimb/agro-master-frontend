@@ -31,6 +31,7 @@ export const addURLSearch = (
   return withPathName ? `${window.location.pathname}?${urlParams.toString()}` : urlParams.toString()
 }
 
+//TODO add optional prop responsible to keep or not dots (eg. 1.22 , 11222,00)
 export const unmaskNumber = (num: string) => {
-  return num.replace(/[^0-9.]/g, '')
+  return num.replace(/[^0-9]/g, '')
 }

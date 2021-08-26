@@ -5,6 +5,7 @@ import EditPropertyButtonDialog from './EditPropertyButtonDialog'
 import { useTranslation } from 'react-i18next'
 import { Box, Divider, Grid, Typography } from '@material-ui/core'
 import useOwnerProperty from 'hooks/useOwnerProperty'
+import NumberFormat from 'react-number-format'
 
 type Props = { id: number }
 
@@ -41,9 +42,42 @@ const OwnerPropertyDetails: React.FC<Props> = ({ id }) => {
                         t('address'),
                         `${data.property.address}, ${data.property.city}-${data.property.state}`
                       ],
-                      [t('cep'), data.property.zip],
-                      [t('cnpj'), data.property.cnpj],
-                      [t('cpf'), data.property.cpf],
+                      [
+                        t('cep'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'zip-' + data.property.zip}
+                          value={data.property.zip}
+                          format="#####-###"
+                        />
+                      ],
+                      [
+                        t('cnpj'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'cnpj-' + data.property.cnpj}
+                          value={data.property.cnpj}
+                          format="##.###.###/####-##"
+                        />
+                      ],
+                      [
+                        t('ie'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'ie-' + data.property.ie}
+                          value={data.property.ie}
+                          format="###.###.###.###"
+                        />
+                      ],
+                      [
+                        t('cpf'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'cpf-' + data.property.cpf}
+                          value={data.property.cpf}
+                          format="###.###.###-##"
+                        />
+                      ],
                       [t('producer'), data.property.producerName]
                     ]}
                   />
