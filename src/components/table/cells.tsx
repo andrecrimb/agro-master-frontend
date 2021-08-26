@@ -336,57 +336,132 @@ export const orderCustomer: Column<Order> = {
 }
 export const fruitOrderBoxQtd: Column<Order> = {
   Header: i18n.t('box_quantity') + '',
-  accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+  accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity, 0),
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 export const fruitOrderValue: Column<Order> = {
   Header: i18n.t('order_value') + '',
-  accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity * next.boxPrice, 0)
+  accessor: r => r.fruitOrderItems.reduce((prev, next) => prev + next.quantity * next.boxPrice, 0),
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 
 export const seedlingOrderValue: Column<Order> = {
   Header: i18n.t('order_value') + '',
   accessor: r =>
-    r.seedlingBenchOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0)
+    r.seedlingBenchOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0),
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const seedlingOrderQtd: Column<Order> = {
   Header: i18n.t('seedling_quantity') + '',
-  accessor: r => r.seedlingBenchOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+  accessor: r => r.seedlingBenchOrderItems.reduce((prev, next) => prev + next.quantity, 0),
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 
 export const borbulhaOrderValue: Column<Order> = {
   Header: i18n.t('order_value') + '',
   accessor: r =>
-    r.borbulhaOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0)
+    r.borbulhaOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0),
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const borbulhaOrderQtd: Column<Order> = {
   Header: i18n.t('borbulha_quantity') + '',
-  accessor: r => r.borbulhaOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+  accessor: r => r.borbulhaOrderItems.reduce((prev, next) => prev + next.quantity, 0),
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 
 export const seedOrderValue: Column<Order> = {
   Header: i18n.t('order_value') + '',
-  accessor: r => r.seedOrderItems.reduce((prev, next) => prev + next.quantity * next.kgPrice, 0)
+  accessor: r => r.seedOrderItems.reduce((prev, next) => prev + next.quantity * next.kgPrice, 0),
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const seedOrderQtd: Column<Order> = {
   Header: i18n.t('seed_quantity') + '',
-  accessor: r => r.seedOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+  accessor: r => r.seedOrderItems.reduce((prev, next) => prev + next.quantity, 0),
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 
 export const rootstockOrderValue: Column<Order> = {
   Header: i18n.t('order_value') + '',
   accessor: r =>
-    r.rootstockOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0)
+    r.rootstockOrderItems.reduce((prev, next) => prev + next.quantity * next.unityPrice, 0),
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const rootstockOrderQtd: Column<Order> = {
   Header: i18n.t('rootstock_quantity') + '',
-  accessor: r => r.rootstockOrderItems.reduce((prev, next) => prev + next.quantity, 0)
+  accessor: r => r.rootstockOrderItems.reduce((prev, next) => prev + next.quantity, 0),
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 //#endregion
 
 //#region Payments
 export const paymentsAmount: Column<Payment> = {
   Header: i18n.t('amount') + '',
-  accessor: 'amount'
+  accessor: 'amount',
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const paymentsMethod: Column<Payment> = {
   Header: i18n.t('payment_method') + '',
@@ -421,11 +496,24 @@ export const fruitsOrderItemsName: Column<FruitOrderItem> = {
 }
 export const fruitsOrderItemsQuantity: Column<FruitOrderItem> = {
   Header: i18n.t('box_quantity') + '',
-  accessor: 'quantity'
+  accessor: 'quantity',
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 export const fruitsOrderItemsBoxPrice: Column<FruitOrderItem> = {
   Header: i18n.t('box_price') + '',
-  accessor: 'boxPrice'
+  accessor: 'boxPrice',
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const fruitsOrderItemsAction: Column<FruitOrderItem> = {
   Header: ' ',
@@ -445,11 +533,24 @@ export const seedsOrderItemsName: Column<SeedOrderItem> = {
 }
 export const seedsOrderItemsQuantity: Column<SeedOrderItem> = {
   Header: i18n.t('seed_quantity') + '',
-  accessor: 'quantity'
+  accessor: 'quantity',
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 export const seedsOrderItemsKgPrice: Column<SeedOrderItem> = {
   Header: i18n.t('kg_price') + '',
-  accessor: 'kgPrice'
+  accessor: 'kgPrice',
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const seedsOrderItemsAction: Column<SeedOrderItem> = {
   Header: ' ',
@@ -470,11 +571,24 @@ export const rootstocksOrderItemsName: Column<RootstockOrderItem> = {
 }
 export const rootstocksOrderItemsQuantity: Column<RootstockOrderItem> = {
   Header: i18n.t('rootstock_quantity') + '',
-  accessor: 'quantity'
+  accessor: 'quantity',
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 export const rootstocksOrderItemsKgPrice: Column<RootstockOrderItem> = {
   Header: i18n.t('unity_price') + '',
-  accessor: 'unityPrice'
+  accessor: 'unityPrice',
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const rootstocksOrderItemsAction: Column<RootstockOrderItem> = {
   Header: ' ',
@@ -494,11 +608,24 @@ export const borbulhasOrderItemsName: Column<BorbulhaOrderItem> = {
 }
 export const borbulhasOrderItemsQuantity: Column<BorbulhaOrderItem> = {
   Header: i18n.t('borbulha_quantity') + '',
-  accessor: 'quantity'
+  accessor: 'quantity',
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 export const borbulhasOrderItemsKgPrice: Column<BorbulhaOrderItem> = {
   Header: i18n.t('unity_price') + '',
-  accessor: 'unityPrice'
+  accessor: 'unityPrice',
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const borbulhasOrderItemsAction: Column<BorbulhaOrderItem> = {
   Header: ' ',
@@ -524,11 +651,24 @@ export const seedlingsOrderItemsVariety: Column<SeedlingBenchOrderItem> = {
 }
 export const seedlingsOrderItemsQuantity: Column<SeedlingBenchOrderItem> = {
   Header: i18n.t('seedling_quantity') + '',
-  accessor: 'quantity'
+  accessor: 'quantity',
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 export const seedlingsOrderItemsKgPrice: Column<SeedlingBenchOrderItem> = {
   Header: i18n.t('unity_price') + '',
-  accessor: 'unityPrice'
+  accessor: 'unityPrice',
+  Cell: ({ value }) => (
+    <NumberFormat
+      displayType="text"
+      value={value}
+      prefix={'R$ '}
+      allowLeadingZeros
+      thousandSeparator="."
+      decimalSeparator=","
+    />
+  )
 }
 export const seedlingsOrderItemsAction: Column<SeedlingBenchOrderItem> = {
   Header: ' ',
