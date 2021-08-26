@@ -23,10 +23,12 @@ import DayUtils from '@date-io/dayjs'
 import { DatePicker } from '@material-ui/pickers'
 import { Greenhouse } from 'types/greenhouse'
 import { muiTheme } from 'theme'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 const FORM_DEFAULT_VALUES = {
   label: '',
-  quantity: 0,
+  quantity: '',
   lastPlantingDate: new Date().toISOString(),
   firstPaymentDate: new Date().toISOString(),
   rootstockId: '',
@@ -57,9 +59,6 @@ const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
   }, [open === false])
 
   const { ref: benchLabelRef, ...benchLabel } = register('label')
-  const { ref: benchQuantityRef, ...benchQuantity } = register('quantity', {
-    min: { value: 1, message: t('invalid_quantity') }
-  })
 
   return (
     <>
@@ -84,11 +83,16 @@ const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
               <span style={{ color: muiTheme.palette.primary.main }}>{greenhouse.label}</span>
             </DialogTitle>
             <form
-              onSubmit={handleSubmit(({ userId, rootstockId, ...other }) => {
+              onSubmit={handleSubmit(({ userId, rootstockId, quantity, ...other }) => {
                 return addBench.mutate(
                   {
                     greenhouseId: greenhouse.id,
-                    data: { userId: +userId, rootstockId: +rootstockId, ...other }
+                    data: {
+                      userId: +userId,
+                      rootstockId: +rootstockId,
+                      quantity: +unmaskNumber(quantity),
+                      ...other
+                    }
                   },
                   {
                     onSuccess: () => {
@@ -125,18 +129,28 @@ const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
                   </Grid>
 
                   <Grid item xs={6}>
-                    <TextField
-                      id="quantity"
-                      type="number"
-                      size="small"
-                      fullWidth
-                      required
-                      variant="filled"
-                      label={t('quantity')}
-                      inputRef={benchQuantityRef}
-                      error={!!formState.errors.quantity}
-                      helperText={t(formState.errors.quantity?.message || '')}
-                      {...benchQuantity}
+                    <Controller
+                      name="quantity"
+                      control={control}
+                      rules={{ min: { value: 1, message: t('invalid_quantity') } }}
+                      render={({ field }) => (
+                        <NumberFormat
+                          id="quantity"
+                          size={'small' as any}
+                          fullWidth
+                          required
+                          error={!!formState.errors.quantity}
+                          helperText={t(formState.errors.quantity?.message || '')}
+                          label={t('quantity')}
+                          variant="filled"
+                          customInput={TextField}
+                          type="tel"
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          getInputRef={field.ref}
+                          {...field}
+                        />
+                      )}
                     />
                   </Grid>
 

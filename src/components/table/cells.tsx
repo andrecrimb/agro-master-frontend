@@ -248,7 +248,10 @@ export const benchLabel: Column<SeedlingBench> = {
 }
 export const benchQuantity: Column<SeedlingBench> = {
   Header: i18n.t('quantity') + '',
-  accessor: 'quantity'
+  accessor: 'quantity',
+  Cell: ({ value }) => (
+    <NumberFormat displayType="text" value={value} thousandSeparator="." decimalSeparator="," />
+  )
 }
 export const benchLastPlantingDate: Column<SeedlingBench> = {
   Header: i18n.t('last_planting_date') + '',

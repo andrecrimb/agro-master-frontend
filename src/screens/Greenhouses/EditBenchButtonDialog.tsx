@@ -27,10 +27,12 @@ import { DatePicker } from '@material-ui/pickers'
 import { SeedlingBench } from 'types/greenhouse'
 import useDeleteBench from 'hooks/useDeleteBench'
 import useDialog from 'hooks/useDialog'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 const FORM_DEFAULT_VALUES = {
   label: '',
-  quantity: 0,
+  quantity: '',
   lastPlantingDate: new Date().toISOString(),
   firstPaymentDate: new Date().toISOString(),
   rootstockId: '',
@@ -62,7 +64,7 @@ const EditBenchButtonDialog: React.FC<Props> = ({ bench }) => {
     if (bench && open) {
       reset({
         label: bench.label,
-        quantity: bench.quantity,
+        quantity: bench.quantity + '',
         firstPaymentDate: bench.firstPaymentDate,
         lastPlantingDate: bench.lastPlantingDate,
         rootstockId: bench.rootstock.id + '',
@@ -72,9 +74,6 @@ const EditBenchButtonDialog: React.FC<Props> = ({ bench }) => {
   }, [open, bench])
 
   const { ref: benchLabelRef, ...benchLabel } = register('label')
-  const { ref: benchQuantityRef, ...benchQuantity } = register('quantity', {
-    min: { value: 1, message: t('invalid_quantity') }
-  })
 
   return (
     <>
@@ -92,12 +91,17 @@ const EditBenchButtonDialog: React.FC<Props> = ({ bench }) => {
             <DialogTitle id="dialog-title">{t('edit_bench', { bench: bench.label })}</DialogTitle>
             {bench ? (
               <form
-                onSubmit={handleSubmit(({ userId, rootstockId, ...other }) => {
+                onSubmit={handleSubmit(({ userId, rootstockId, quantity, ...other }) => {
                   return editBench.mutate(
                     {
                       greenhouseId: +bench.greenhouseId,
                       benchId: +bench.id,
-                      data: { userId: +userId, rootstockId: +rootstockId, ...other }
+                      data: {
+                        userId: +userId,
+                        rootstockId: +rootstockId,
+                        quantity: +unmaskNumber(quantity),
+                        ...other
+                      }
                     },
                     {
                       onSuccess: () => {
@@ -134,18 +138,28 @@ const EditBenchButtonDialog: React.FC<Props> = ({ bench }) => {
                     </Grid>
 
                     <Grid item xs={6}>
-                      <TextField
-                        id="quantity"
-                        type="number"
-                        size="small"
-                        fullWidth
-                        required
-                        variant="filled"
-                        label={t('quantity')}
-                        inputRef={benchQuantityRef}
-                        error={!!formState.errors.quantity}
-                        helperText={t(formState.errors.quantity?.message || '')}
-                        {...benchQuantity}
+                      <Controller
+                        name="quantity"
+                        control={control}
+                        rules={{ min: { value: 1, message: t('invalid_quantity') } }}
+                        render={({ field }) => (
+                          <NumberFormat
+                            id="quantity"
+                            size={'small' as any}
+                            fullWidth
+                            required
+                            error={!!formState.errors.quantity}
+                            helperText={t(formState.errors.quantity?.message || '')}
+                            label={t('quantity')}
+                            variant="filled"
+                            customInput={TextField}
+                            type="tel"
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            getInputRef={field.ref}
+                            {...field}
+                          />
+                        )}
                       />
                     </Grid>
 
