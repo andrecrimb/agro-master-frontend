@@ -7,16 +7,15 @@ import {
   IconButton,
   Button,
   Grid,
-  Typography,
   TextField,
-  Divider,
   MenuItem,
   FormControl,
   InputLabel,
   Select,
   Tooltip,
   FormControlLabel,
-  Switch
+  Switch,
+  InputAdornment
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import LoadingButton from 'components/LoadingButton'
@@ -29,9 +28,11 @@ import { DatePicker } from '@material-ui/pickers'
 import { EditRounded as EditIcon, Delete as DeleteIcon } from '@material-ui/icons'
 import useDialog from 'hooks/useDialog'
 import useDeletePayment from 'hooks/useDeletePayment'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 const FORM_DEFAULT_VALUES = {
-  amount: 0,
+  amount: '',
   method: 'money' as PaymentMethod,
   scheduledDate: new Date().toISOString(),
   received: false
@@ -47,16 +48,12 @@ const EditPaymentButtonDialog: React.FC<Props> = ({ payment }) => {
   const editPayment = useEditOrderPayment(payment.id, payment.orderId)
   const deletePayment = useDeletePayment(payment.id, payment.orderId)
 
-  const { handleSubmit, register, formState, reset, control, setError } = useForm<
-    typeof FORM_DEFAULT_VALUES
-  >({
-    defaultValues: FORM_DEFAULT_VALUES
-  })
-
-  const { ref: amountRef, ...amount } = register('amount')
+  const { handleSubmit, formState, reset, control, setError } = useForm<typeof FORM_DEFAULT_VALUES>(
+    { defaultValues: FORM_DEFAULT_VALUES }
+  )
 
   React.useEffect(() => {
-    reset(payment)
+    reset({ ...payment, amount: `${payment.amount}`.replace('.', ',') })
   }, [open === false])
 
   return (
@@ -69,35 +66,58 @@ const EditPaymentButtonDialog: React.FC<Props> = ({ payment }) => {
           <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="dialog-title">
             <DialogTitle id="dialog-title">{t('edit_payment')}</DialogTitle>
             <form
-              onSubmit={handleSubmit(values => {
-                editPayment.mutate(values, {
-                  onSuccess: () => {
-                    setOpen(false)
+              onSubmit={handleSubmit(({ amount, ...values }) => {
+                editPayment.mutate(
+                  {
+                    amount: +unmaskNumber(amount, {
+                      thousandSeparator: '.',
+                      decimalSeparator: ','
+                    }),
+                    ...values
                   },
-                  onError: e => {
-                    const apiErrors = e?.response?.data.errors || []
-                    for (const apiError of apiErrors) {
-                      setError(apiError.param, { message: apiError.msg })
+                  {
+                    onSuccess: () => {
+                      setOpen(false)
+                    },
+                    onError: e => {
+                      const apiErrors = e?.response?.data.errors || []
+                      for (const apiError of apiErrors) {
+                        setError(apiError.param, { message: apiError.msg })
+                      }
                     }
                   }
-                })
+                )
               })}
             >
               <DialogContent>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField
-                      id="name"
-                      type="number"
-                      size="small"
-                      autoFocus
-                      fullWidth
-                      required
-                      inputProps={{ step: 0.01 }}
-                      variant="filled"
-                      label={t('amount')}
-                      inputRef={amountRef}
-                      {...amount}
+                    <Controller
+                      name="amount"
+                      control={control}
+                      rules={{ min: { value: 1, message: t('invalid_amount') } }}
+                      render={({ field }) => (
+                        <NumberFormat
+                          id="amount"
+                          size={'small' as any}
+                          fullWidth
+                          required
+                          autoFocus
+                          error={!!formState.errors.amount}
+                          helperText={t(formState.errors.amount?.message || '')}
+                          label={t('amount')}
+                          variant="filled"
+                          InputProps={{
+                            startAdornment: <InputAdornment position="start">R$</InputAdornment>
+                          }}
+                          customInput={TextField}
+                          type="tel"
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          getInputRef={field.ref}
+                          {...field}
+                        />
+                      )}
                     />
                   </Grid>
                   <Grid item xs={6}>

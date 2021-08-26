@@ -13,7 +13,8 @@ import {
   FormControlLabel,
   Switch,
   IconButton,
-  FormLabel
+  FormLabel,
+  InputAdornment
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import LoadingButton from 'components/LoadingButton'
@@ -24,11 +25,13 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DayUtils from '@date-io/dayjs'
 import { DatePicker } from '@material-ui/pickers'
 import { LocalAtmRounded as PaymentIcon, ClearRounded as ClearIcon } from '@material-ui/icons'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 const FORM_DEFAULT_VALUES = {
   payments: [
     {
-      amount: 0,
+      amount: '',
       method: 'money' as PaymentMethod,
       scheduledDate: new Date().toISOString(),
       received: false
@@ -64,17 +67,23 @@ const AddPaymentButtonDialog: React.FC<Props> = ({ orderId, onClose }) => {
         <DialogTitle id="dialog-title">{t('add_payments_to_order')}</DialogTitle>
         <form
           onSubmit={handleSubmit(values => {
-            addPayment.mutate(values.payments, {
-              onSuccess: () => {
-                onClose()
-              },
-              onError: e => {
-                const apiErrors = e?.response?.data.errors || []
-                for (const apiError of apiErrors) {
-                  setError(apiError.param, { message: apiError.msg })
+            addPayment.mutate(
+              values.payments.map(p => ({
+                ...p,
+                amount: +unmaskNumber(p.amount, { thousandSeparator: '.', decimalSeparator: ',' })
+              })),
+              {
+                onSuccess: () => {
+                  onClose()
+                },
+                onError: e => {
+                  const apiErrors = e?.response?.data.errors || []
+                  for (const apiError of apiErrors) {
+                    setError(apiError.param, { message: apiError.msg })
+                  }
                 }
               }
-            })
+            )
           })}
         >
           <DialogContent>
@@ -86,7 +95,7 @@ const AddPaymentButtonDialog: React.FC<Props> = ({ orderId, onClose }) => {
                       control={control}
                       name={`payments.${index}.method` as const}
                       defaultValue={field.method}
-                      render={({ field, formState }) => (
+                      render={({ field }) => (
                         <FormControl component="fieldset" fullWidth>
                           <FormLabel component="legend">{t('payment_method')}</FormLabel>
                           <RadioGroup
@@ -114,18 +123,27 @@ const AddPaymentButtonDialog: React.FC<Props> = ({ orderId, onClose }) => {
 
                   <Grid item xs={3}>
                     <Controller
-                      control={control}
                       name={`payments.${index}.amount` as const}
-                      defaultValue={field.amount}
+                      control={control}
+                      rules={{ min: { value: 1, message: t('invalid_amount') } }}
                       render={({ field }) => (
-                        <TextField
-                          id={`payments.${index}.amount`}
-                          type="text"
-                          size="small"
+                        <NumberFormat
+                          id={`payments.${index}.amount` as const}
+                          size={'small' as any}
                           fullWidth
                           required
-                          variant="filled"
+                          error={!!formState.errors.payments?.[index]?.amount}
+                          helperText={t(formState.errors.payments?.[index]?.amount?.message || '')}
                           label={t('amount')}
+                          variant="filled"
+                          InputProps={{
+                            startAdornment: <InputAdornment position="start">R$</InputAdornment>
+                          }}
+                          customInput={TextField}
+                          type="tel"
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          getInputRef={field.ref}
                           {...field}
                         />
                       )}
@@ -189,7 +207,7 @@ const AddPaymentButtonDialog: React.FC<Props> = ({ orderId, onClose }) => {
                   startIcon={<PaymentIcon />}
                   onClick={() =>
                     appendPayment({
-                      amount: 0,
+                      amount: '',
                       method: 'cheque',
                       scheduledDate: new Date().toISOString(),
                       received: true
