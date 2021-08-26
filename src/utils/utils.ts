@@ -31,7 +31,15 @@ export const addURLSearch = (
   return withPathName ? `${window.location.pathname}?${urlParams.toString()}` : urlParams.toString()
 }
 
-//TODO add optional prop responsible to keep or not dots (eg. 1.22 , 11222,00)
-export const unmaskNumber = (num: string) => {
+type UnmaskProps = {
+  thousandSeparator?: '.' | ','
+  decimalSeparator?: ',' | ','
+}
+export const unmaskNumber = (num: string, props: UnmaskProps = {}) => {
+  if (props.thousandSeparator && props.decimalSeparator) {
+    return num.replaceAll(props.thousandSeparator, '').replaceAll(props.decimalSeparator, '.')
+  }
+
+  //* If we are using to unmask Phone numbers, IE, CPF, CNPJ and etc..
   return num.replace(/[^0-9]/g, '')
 }

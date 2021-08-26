@@ -8,6 +8,7 @@ import FruitOrderItemsTable from './FruitsOrderItemsTable'
 import useOrder from 'hooks/useOrder'
 import { formatDate } from 'utils/utils'
 import DrawerActions from './DrawerActions'
+import NumberFormat from 'react-number-format'
 
 type Props = { id: number }
 
@@ -69,13 +70,46 @@ const FruitsOrderDetails: React.FC<Props> = ({ id }) => {
                       ],
                       [t('property'), order.customerProperty.property.name],
                       [t('producer'), order.customerProperty.property.producerName],
-                      [t('cnpj'), order.customerProperty.property.cnpj],
-                      [t('ie'), order.customerProperty.property.ie],
+                      [
+                        t('cnpj'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'cnpj-' + order.customerProperty.property.cnpj}
+                          value={order.customerProperty.property.cnpj}
+                          format="##.###.###/####-##"
+                        />
+                      ],
+                      [
+                        t('cpf'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'cpf-' + order.customerProperty.property.cpf}
+                          value={order.customerProperty.property.cpf}
+                          format="###.###.###-##"
+                        />
+                      ],
+                      [
+                        t('ie'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'ie-' + order.customerProperty.property.ie}
+                          value={order.customerProperty.property.ie}
+                          format="###.###.###.###"
+                        />
+                      ],
                       [
                         t('address'),
                         `${order.customerProperty.property.address}, 
-                        ${order.customerProperty.property.city} - ${order.customerProperty.property.state} 
-                        ${order.customerProperty.property.zip}`
+                        ${order.customerProperty.property.city} - ${order.customerProperty.property.state}`
+                      ],
+                      [
+                        t('cep'),
+                        <NumberFormat
+                          displayType="text"
+                          key={'zip-' + order.customerProperty.property.zip}
+                          value={order.customerProperty.property.zip}
+                          format="#####-###"
+                        />
                       ]
                     ]}
                   />
