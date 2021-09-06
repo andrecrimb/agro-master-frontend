@@ -8,7 +8,8 @@ import {
   Grid,
   TextField,
   IconButton,
-  Typography
+  Typography,
+  InputAdornment
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
@@ -18,6 +19,8 @@ import _ from 'utils/lodash'
 import { PostAddRounded as OrderItemIcon, ClearRounded as ClearIcon } from '@material-ui/icons'
 import styled from 'styledComponents'
 import { muiTheme } from 'theme'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 //#region Styles
 const TotalValueBox = styled.div`
@@ -44,8 +47,8 @@ const FORM_DEFAULT_VALUES = {
   fruitOrderItems: [
     {
       name: '',
-      quantity: 0,
-      boxPrice: 0
+      quantity: '',
+      boxPrice: ''
     }
   ]
 }
@@ -56,7 +59,7 @@ const AddFruitsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
   const { t } = useTranslation()
   const addFruitOrderItems = useAddFruitOrderItems(orderId)
 
-  const [orderSum, setOrderSum] = React.useState('0,00')
+  const [orderSum, setOrderSum] = React.useState(0)
 
   const { handleSubmit, control, formState, setError, getValues } = useForm<
     typeof FORM_DEFAULT_VALUES
@@ -75,10 +78,14 @@ const AddFruitsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
 
   const calculateSum = () => {
     const orderItems = getValues('fruitOrderItems')
-    const total: string = orderItems
-      .reduce((prev, next) => prev + next.boxPrice * next.quantity, 0)
-      .toFixed(2)
-    setOrderSum(total.replace('.', ','))
+    const total = orderItems.reduce(
+      (prev, next) =>
+        prev +
+        Number(unmaskNumber(next.boxPrice, { thousandSeparator: '.', decimalSeparator: ',' })) *
+          Number(unmaskNumber(next.quantity)),
+      0
+    )
+    setOrderSum(total)
   }
 
   return (
@@ -86,12 +93,25 @@ const AddFruitsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
       <DialogTitle id="dialog-title">{t('add_order_items')}</DialogTitle>
       <TotalValueBox>
         <Typography variant="subtitle1">
-          {t('total_value')}: <span>R${orderSum}</span>
+          {t('total_value')}:{' '}
+          <NumberFormat
+            displayType="text"
+            value={orderSum}
+            prefix={'R$ '}
+            allowLeadingZeros
+            thousandSeparator="."
+            decimalSeparator=","
+          />
         </Typography>
       </TotalValueBox>
       <form
-        onSubmit={handleSubmit(values => {
-          return addFruitOrderItems.mutate(values.fruitOrderItems, {
+        onSubmit={handleSubmit(({ fruitOrderItems }) => {
+          const reqBody = fruitOrderItems.map(i => ({
+            ...i,
+            quantity: +unmaskNumber(i.quantity),
+            boxPrice: +unmaskNumber(i.boxPrice, { thousandSeparator: '.', decimalSeparator: ',' })
+          }))
+          return addFruitOrderItems.mutate(reqBody, {
             onSuccess: () => {
               onClose()
             },
@@ -132,16 +152,25 @@ const AddFruitsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
                   <Controller
                     control={control}
                     name={`fruitOrderItems.${index}.quantity` as const}
+                    rules={{ min: { value: 1, message: t('invalid_quantity') } }}
                     defaultValue={field.quantity}
                     render={({ field }) => (
-                      <TextField
+                      <NumberFormat
                         id={`fruitOrderItems.${index}.quantity`}
-                        type="number"
-                        size="small"
+                        size={'small' as any}
                         fullWidth
                         required
+                        error={!!formState.errors.fruitOrderItems?.[index]?.quantity}
+                        helperText={t(
+                          formState.errors.fruitOrderItems?.[index]?.quantity?.message || ''
+                        )}
+                        label={t('quantity')}
                         variant="filled"
-                        label={t('box_quantity')}
+                        customInput={TextField}
+                        type="tel"
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        getInputRef={field.ref}
                         {...field}
                       />
                     )}
@@ -154,14 +183,25 @@ const AddFruitsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
                     name={`fruitOrderItems.${index}.boxPrice` as const}
                     defaultValue={field.boxPrice}
                     render={({ field }) => (
-                      <TextField
+                      <NumberFormat
                         id={`fruitOrderItems.${index}.boxPrice`}
-                        type="number"
-                        size="small"
+                        size={'small' as any}
                         fullWidth
                         required
+                        error={!!formState.errors.fruitOrderItems?.[index]?.boxPrice}
+                        helperText={t(
+                          formState.errors.fruitOrderItems?.[index]?.boxPrice?.message || ''
+                        )}
+                        label={t('unity_price')}
                         variant="filled"
-                        label={t('box_price')}
+                        InputProps={{
+                          startAdornment: <InputAdornment position="start">R$</InputAdornment>
+                        }}
+                        customInput={TextField}
+                        type="tel"
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        getInputRef={field.ref}
                         {...field}
                       />
                     )}
@@ -187,8 +227,8 @@ const AddFruitsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
                 onClick={() =>
                   appendOrderItem({
                     name: '',
-                    quantity: 0,
-                    boxPrice: 0
+                    quantity: '',
+                    boxPrice: ''
                   })
                 }
               >

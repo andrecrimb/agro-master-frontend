@@ -80,7 +80,7 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
     )
   }, [order.seedlingBenchOrderItems.length > 0])
 
-  const [orderSum, setOrderSum] = React.useState('0,00')
+  const [orderSum, setOrderSum] = React.useState(0)
   const [propertySelected, setPropertySelect] = React.useState(() =>
     propertyIdFromOrder > -1 ? propertyIdFromOrder : 0
   )
@@ -114,16 +114,14 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
 
   const calculateSum = () => {
     const orderItems = getValues('seedlingsOrderItems')
-    const total: string = orderItems
-      .reduce(
-        (prev, next) =>
-          prev +
-          Number(unmaskNumber(next.unityPrice, { thousandSeparator: '.', decimalSeparator: ',' })) *
-            Number(unmaskNumber(next.quantity)),
-        0
-      )
-      .toFixed(2)
-    setOrderSum(total.replace('.', ','))
+    const total = orderItems.reduce(
+      (prev, next) =>
+        prev +
+        Number(unmaskNumber(next.unityPrice, { thousandSeparator: '.', decimalSeparator: ',' })) *
+          Number(unmaskNumber(next.quantity)),
+      0
+    )
+    setOrderSum(total)
   }
 
   return (

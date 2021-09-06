@@ -92,9 +92,6 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
           Number(unmaskNumber(next.quantity)),
       0
     )
-
-    console.log(total)
-
     setOrderSum(total)
   }
 
