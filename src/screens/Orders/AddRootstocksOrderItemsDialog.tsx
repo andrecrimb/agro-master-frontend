@@ -12,7 +12,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  InputAdornment
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
@@ -23,6 +24,8 @@ import { PostAddRounded as OrderItemIcon, ClearRounded as ClearIcon } from '@mat
 import styled from 'styledComponents'
 import { muiTheme } from 'theme'
 import useRootstocks from 'hooks/useRootstocks'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 //#region Styles
 const TotalValueBox = styled.div`
@@ -48,8 +51,8 @@ const TotalValueBox = styled.div`
 const FORM_DEFAULT_VALUES = {
   rootstocksOrderItems: [
     {
-      quantity: 0,
-      unityPrice: 0,
+      quantity: '',
+      unityPrice: '',
       rootstockId: 0
     }
   ]
@@ -63,7 +66,7 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
 
   const addRootstocksOrderItems = useAddRootstocksOrderItems(orderId)
 
-  const [orderSum, setOrderSum] = React.useState('0,00')
+  const [orderSum, setOrderSum] = React.useState(0)
 
   const { handleSubmit, control, formState, setError, getValues } = useForm<
     typeof FORM_DEFAULT_VALUES
@@ -82,10 +85,17 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
 
   const calculateSum = () => {
     const orderItems = getValues('rootstocksOrderItems')
-    const total: string = orderItems
-      .reduce((prev, next) => prev + next.unityPrice * next.quantity, 0)
-      .toFixed(2)
-    setOrderSum(total.replace('.', ','))
+    const total = orderItems.reduce(
+      (prev, next) =>
+        prev +
+        Number(unmaskNumber(next.unityPrice, { thousandSeparator: '.', decimalSeparator: ',' })) *
+          Number(unmaskNumber(next.quantity)),
+      0
+    )
+
+    console.log(total)
+
+    setOrderSum(total)
   }
 
   return (
@@ -93,12 +103,28 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
       <DialogTitle id="dialog-title">{t('add_order_items')}</DialogTitle>
       <TotalValueBox>
         <Typography variant="subtitle1">
-          {t('total_value')}: <span>R${orderSum}</span>
+          {t('total_value')}:{' '}
+          <NumberFormat
+            displayType="text"
+            value={orderSum}
+            prefix={'R$ '}
+            allowLeadingZeros
+            thousandSeparator="."
+            decimalSeparator=","
+          />
         </Typography>
       </TotalValueBox>
       <form
-        onSubmit={handleSubmit(values => {
-          return addRootstocksOrderItems.mutate(values.rootstocksOrderItems, {
+        onSubmit={handleSubmit(({ rootstocksOrderItems }) => {
+          const reqBody = rootstocksOrderItems.map(i => ({
+            ...i,
+            quantity: +unmaskNumber(i.quantity),
+            unityPrice: +unmaskNumber(i.unityPrice, {
+              thousandSeparator: '.',
+              decimalSeparator: ','
+            })
+          }))
+          return addRootstocksOrderItems.mutate(reqBody, {
             onSuccess: () => {
               onClose()
             },
@@ -148,16 +174,25 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
                   <Controller
                     control={control}
                     name={`rootstocksOrderItems.${index}.quantity` as const}
+                    rules={{ min: { value: 1, message: t('invalid_quantity') } }}
                     defaultValue={field.quantity}
                     render={({ field }) => (
-                      <TextField
+                      <NumberFormat
                         id={`rootstocksOrderItems.${index}.quantity`}
-                        type="number"
-                        size="small"
+                        size={'small' as any}
                         fullWidth
                         required
-                        variant="filled"
+                        error={!!formState.errors.rootstocksOrderItems?.[index]?.quantity}
+                        helperText={t(
+                          formState.errors.rootstocksOrderItems?.[index]?.quantity?.message || ''
+                        )}
                         label={t('quantity')}
+                        variant="filled"
+                        customInput={TextField}
+                        type="tel"
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        getInputRef={field.ref}
                         {...field}
                       />
                     )}
@@ -170,14 +205,25 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
                     name={`rootstocksOrderItems.${index}.unityPrice` as const}
                     defaultValue={field.unityPrice}
                     render={({ field }) => (
-                      <TextField
+                      <NumberFormat
                         id={`rootstocksOrderItems.${index}.unityPrice`}
-                        type="number"
-                        size="small"
+                        size={'small' as any}
                         fullWidth
                         required
-                        variant="filled"
+                        error={!!formState.errors.rootstocksOrderItems?.[index]?.unityPrice}
+                        helperText={t(
+                          formState.errors.rootstocksOrderItems?.[index]?.unityPrice?.message || ''
+                        )}
                         label={t('unity_price')}
+                        variant="filled"
+                        InputProps={{
+                          startAdornment: <InputAdornment position="start">R$</InputAdornment>
+                        }}
+                        customInput={TextField}
+                        type="tel"
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        getInputRef={field.ref}
                         {...field}
                       />
                     )}
@@ -202,8 +248,8 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
                 startIcon={<OrderItemIcon />}
                 onClick={() =>
                   appendOrderItem({
-                    quantity: 0,
-                    unityPrice: 0,
+                    quantity: '',
+                    unityPrice: '',
                     rootstockId: 0
                   })
                 }
