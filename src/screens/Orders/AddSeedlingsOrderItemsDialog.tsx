@@ -12,7 +12,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  InputAdornment
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
@@ -26,6 +27,8 @@ import useGreenhouses from 'hooks/useGreenhouses'
 import { SeedlingBench } from 'types/greenhouse'
 import useOwnerProperties from 'hooks/useOwnerProperties'
 import { Order } from 'types/orders'
+import NumberFormat from 'react-number-format'
+import { unmaskNumber } from 'utils/utils'
 
 //#region Styles
 const TotalValueBox = styled.div`
@@ -51,8 +54,8 @@ const TotalValueBox = styled.div`
 const FORM_DEFAULT_VALUES = {
   seedlingsOrderItems: [
     {
-      quantity: 0,
-      unityPrice: 0,
+      quantity: '',
+      unityPrice: '',
       seedlingBenchId: 0
     }
   ]
@@ -112,7 +115,13 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
   const calculateSum = () => {
     const orderItems = getValues('seedlingsOrderItems')
     const total: string = orderItems
-      .reduce((prev, next) => prev + next.unityPrice * next.quantity, 0)
+      .reduce(
+        (prev, next) =>
+          prev +
+          Number(unmaskNumber(next.unityPrice, { thousandSeparator: '.', decimalSeparator: ',' })) *
+            Number(unmaskNumber(next.quantity)),
+        0
+      )
       .toFixed(2)
     setOrderSum(total.replace('.', ','))
   }
@@ -122,12 +131,28 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
       <DialogTitle id="dialog-title">{t('add_order_items')}</DialogTitle>
       <TotalValueBox>
         <Typography variant="subtitle1">
-          {t('total_value')}: <span>R${orderSum}</span>
+          {t('total_value')}:{' '}
+          <NumberFormat
+            displayType="text"
+            value={orderSum}
+            prefix={'R$ '}
+            allowLeadingZeros
+            thousandSeparator="."
+            decimalSeparator=","
+          />
         </Typography>
       </TotalValueBox>
       <form
-        onSubmit={handleSubmit(values => {
-          return addSeedlingsOrderItems.mutate(values.seedlingsOrderItems, {
+        onSubmit={handleSubmit(({ seedlingsOrderItems }) => {
+          const reqBody = seedlingsOrderItems.map(i => ({
+            ...i,
+            quantity: +unmaskNumber(i.quantity),
+            unityPrice: +unmaskNumber(i.unityPrice, {
+              thousandSeparator: '.',
+              decimalSeparator: ','
+            })
+          }))
+          return addSeedlingsOrderItems.mutate(reqBody, {
             onSuccess: () => {
               onClose()
             },
@@ -225,20 +250,25 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
                       <Controller
                         control={control}
                         name={`seedlingsOrderItems.${index}.quantity` as const}
+                        rules={{ min: { value: 1, message: t('invalid_quantity') } }}
                         defaultValue={field.quantity}
                         render={({ field }) => (
-                          <TextField
+                          <NumberFormat
                             id={`seedlingsOrderItems.${index}.quantity`}
-                            type="number"
-                            size="small"
+                            size={'small' as any}
+                            fullWidth
+                            required
                             error={!!formState.errors.seedlingsOrderItems?.[index]?.quantity}
                             helperText={t(
                               formState.errors.seedlingsOrderItems?.[index]?.quantity?.message || ''
                             )}
-                            fullWidth
-                            required
-                            variant="filled"
                             label={t('quantity')}
+                            variant="filled"
+                            customInput={TextField}
+                            type="tel"
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            getInputRef={field.ref}
                             {...field}
                           />
                         )}
@@ -251,14 +281,26 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
                         name={`seedlingsOrderItems.${index}.unityPrice` as const}
                         defaultValue={field.unityPrice}
                         render={({ field }) => (
-                          <TextField
+                          <NumberFormat
                             id={`seedlingsOrderItems.${index}.unityPrice`}
-                            type="number"
-                            size="small"
+                            size={'small' as any}
                             fullWidth
                             required
-                            variant="filled"
+                            error={!!formState.errors.seedlingsOrderItems?.[index]?.unityPrice}
+                            helperText={t(
+                              formState.errors.seedlingsOrderItems?.[index]?.unityPrice?.message ||
+                                ''
+                            )}
                             label={t('unity_price')}
+                            variant="filled"
+                            InputProps={{
+                              startAdornment: <InputAdornment position="start">R$</InputAdornment>
+                            }}
+                            customInput={TextField}
+                            type="tel"
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            getInputRef={field.ref}
                             {...field}
                           />
                         )}
@@ -286,8 +328,8 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
                 startIcon={<OrderItemIcon />}
                 onClick={() =>
                   appendOrderItem({
-                    quantity: 0,
-                    unityPrice: 0,
+                    quantity: '',
+                    unityPrice: '',
                     seedlingBenchId: 0
                   })
                 }
