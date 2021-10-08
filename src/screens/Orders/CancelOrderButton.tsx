@@ -1,25 +1,25 @@
 import React from 'react'
 import useDialog from 'hooks/useDialog'
-import { MenuItem } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import useCancelOrder from 'hooks/useCancelOrder'
 import useUrlSearch from 'hooks/useUrlSearch'
 
 type Props = {
   orderId: number
-  onClick: () => void
 }
 
-const CancelOrderMenuItem: React.FC<Props> = ({ onClick, orderId }) => {
+const CancelOrderButton: React.FC<Props> = ({ orderId }) => {
   const { t } = useTranslation()
   const { setParams } = useUrlSearch({ params: [] })
-
   const { newDialog } = useDialog()
   const deleteGreenhouse = useCancelOrder(orderId)
 
   return (
-    <MenuItem
-      onClick={() => {
+    <Button
+      variant="contained"
+      color="inherit"
+      onClick={() =>
         newDialog({
           title: t('warning') + '!',
           message: t('cancel_order_question'),
@@ -31,12 +31,11 @@ const CancelOrderMenuItem: React.FC<Props> = ({ onClick, orderId }) => {
               })
           }
         })
-        onClick()
-      }}
+      }
     >
       {t('cancel_order')}
-    </MenuItem>
+    </Button>
   )
 }
 
-export default CancelOrderMenuItem
+export default CancelOrderButton

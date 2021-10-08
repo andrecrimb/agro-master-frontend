@@ -7,7 +7,6 @@ const CustomerDrawer = React.lazy(() => import('../screens/Customers/CustomerDet
 const OwnerPropertyDrawer = React.lazy(
   () => import('../screens/OwnerProperties/OwnerPropertyDetails')
 )
-
 const FruitsOrderDrawer = React.lazy(() => import('../screens/Orders/fruits/FruitsOrderDetails'))
 const SeedsOrderDrawer = React.lazy(() => import('../screens/Orders/seeds/SeedsOrderDetails'))
 const SeedlingsOrderDrawer = React.lazy(

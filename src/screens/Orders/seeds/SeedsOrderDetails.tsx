@@ -11,6 +11,8 @@ import NumberFormat from 'react-number-format'
 import CleanAccordion from 'components/CleanAccordion'
 import EditOrderButtonDialog from 'screens/Orders/EditOrderButtonDialog'
 import AddPaymentButtonDialog from 'screens/Orders/AddPaymentButtonDialog'
+import AddSeedsOrderItemsButtonDialog from 'screens/Orders/seeds/AddSeedsOrderItemsButtonDialog'
+import CancelOrderButton from 'screens/Orders/CancelOrderButton'
 
 type Props = { id: number }
 
@@ -27,7 +29,8 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
         highlightTitle: `${order.customerProperty.customer.name} (${formatDate(
           order.orderDate,
           'DD/MM/YYYY'
-        )})`
+        )})`,
+        RightActions: <CancelOrderButton orderId={id} />
       }}
       tabs={[
         {
@@ -106,7 +109,12 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
                   ]}
                 />
               </CleanAccordion>
-              <CleanAccordion id="order_items" header={t('order_items')} childrenPadding={false}>
+              <CleanAccordion
+                id="order_items"
+                header={t('order_items')}
+                childrenPadding={false}
+                actions={<AddSeedsOrderItemsButtonDialog orderId={id} />}
+              >
                 <SeedsOrderItemsTable orderItems={order.seedOrderItems} />
               </CleanAccordion>
               <CleanAccordion
