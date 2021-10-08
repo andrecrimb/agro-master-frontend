@@ -3,7 +3,7 @@ import { MoreVert as MoreIcon } from '@material-ui/icons'
 import React from 'react'
 import { OwnerProperty } from 'types/property'
 import EditPropertyButtonDialog from './EditPropertyButtonDialog'
-import AddGreenhouseButtonDialog from './Greenhouses/AddGreenhouseButtonDialog'
+import AddGreenhouseButtonDialog from './greenhouses/AddGreenhouseButtonDialog'
 
 type Props = { ownerProperty: OwnerProperty }
 

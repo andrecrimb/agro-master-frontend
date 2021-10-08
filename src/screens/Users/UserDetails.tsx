@@ -4,9 +4,9 @@ import useUser from 'hooks/useUser'
 import React from 'react'
 import EditUserButtonDialog from './EditUserButtonDialog'
 import { useTranslation } from 'react-i18next'
-import { Box, Divider, Grid, Typography } from '@material-ui/core'
 import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
 import NumberFormat from 'react-number-format'
+import CleanAccordion from 'components/CleanAccordion'
 
 type Props = { id: number }
 
@@ -27,57 +27,39 @@ const UserDetails: React.FC<Props> = ({ id }) => {
         {
           label: t('general'),
           component: (
-            <Box padding="16px">
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography color="textSecondary" display="block" variant="subtitle1">
-                    {t('generalData')}
-                  </Typography>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <InfoTable
-                    entries={[
-                      [t('name'), user.name],
-                      [t('email'), user.email],
-                      [
-                        t('superUser'),
-                        user.isSuperuser ? (
-                          <CheckIcon color="primary" />
-                        ) : (
-                          <CloseIcon color="error" />
-                        )
-                      ],
-                      [
-                        t('active'),
-                        user.active ? <CheckIcon color="primary" /> : <CloseIcon color="error" />
-                      ]
-                    ]}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography color="textSecondary" display="block" variant="subtitle1">
-                    {t('contact')}
-                  </Typography>
-                  <Divider />
-                </Grid>
+            <>
+              <CleanAccordion id="general_data" header={t('generalData')}>
+                <InfoTable
+                  entries={[
+                    [t('name'), user.name],
+                    [t('email'), user.email],
+                    [
+                      t('superUser'),
+                      user.isSuperuser ? <CheckIcon color="primary" /> : <CloseIcon color="error" />
+                    ],
+                    [
+                      t('active'),
+                      user.active ? <CheckIcon color="primary" /> : <CloseIcon color="error" />
+                    ]
+                  ]}
+                />
+              </CleanAccordion>
+              <CleanAccordion id="contact" header={t('contact')}>
                 {user.phoneNumbers?.length ? (
-                  <Grid item xs={12}>
-                    <InfoTable
-                      entries={user.phoneNumbers.map(phoneNumber => [
-                        phoneNumber.label,
-                        <NumberFormat
-                          displayType="text"
-                          key={'phone-' + phoneNumber.number}
-                          value={phoneNumber.number}
-                          format="(##) #########"
-                        />
-                      ])}
-                    />
-                  </Grid>
+                  <InfoTable
+                    entries={user.phoneNumbers.map(phoneNumber => [
+                      phoneNumber.label,
+                      <NumberFormat
+                        displayType="text"
+                        key={'phone-' + phoneNumber.number}
+                        value={phoneNumber.number}
+                        format="(##) #########"
+                      />
+                    ])}
+                  />
                 ) : null}
-              </Grid>
-            </Box>
+              </CleanAccordion>
+            </>
           )
         }
       ]}
