@@ -300,6 +300,16 @@ const muiTheme = createMuiTheme({
       contained: {
         fontWeight: 400,
         boxShadow: 'none'
+      },
+      label: {
+        fontWeight: 500
+      },
+      colorInherit: {
+        color: '#2E2E2E',
+        backgroundColor: '#E2EFE6',
+        '&:hover': {
+          backgroundColor: '#E2EFE6'
+        }
       }
     },
     MuiSnackbar: {

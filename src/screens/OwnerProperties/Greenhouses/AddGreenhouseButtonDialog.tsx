@@ -11,8 +11,7 @@ import {
   FormControl,
   FormLabel,
   Radio,
-  RadioGroup,
-  MenuItem
+  RadioGroup
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller } from 'react-hook-form'
@@ -27,9 +26,9 @@ const FORM_DEFAULT_VALUES = {
   type: 'seedling' as GreenhouseType
 }
 
-type Props = { ownerProperty: OwnerProperty; onClick: () => void }
+type Props = { ownerProperty: OwnerProperty }
 
-const AddGreenhouseButtonDialog: React.FC<Props> = ({ ownerProperty, onClick }) => {
+const AddGreenhouseButtonDialog: React.FC<Props> = ({ ownerProperty }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
 
@@ -47,21 +46,16 @@ const AddGreenhouseButtonDialog: React.FC<Props> = ({ ownerProperty, onClick }) 
 
   return (
     <>
-      <MenuItem
-        onClick={() => {
-          setOpen(true)
-          onClick()
-        }}
-      >
-        {t('add_new_greenhouse')}
-      </MenuItem>
+      <Button variant="contained" color="inherit" onClick={() => setOpen(true)}>
+        {t('new_greenhouse')}
+      </Button>
       {open ? (
         <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="dialog-title">
           <DialogTitle id="dialog-title">
             <span style={{ color: muiTheme.palette.primary.main }}>
               {ownerProperty.property.name}
             </span>{' '}
-            | {t('add_new_greenhouse')}
+            | {t('new_greenhouse')}
           </DialogTitle>
           <form
             style={{ width: '400px' }}

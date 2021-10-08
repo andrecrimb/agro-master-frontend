@@ -9,7 +9,8 @@ import useGreenhouses from 'hooks/useGreenhouses'
 import BenchesTable from 'screens/OwnerProperties/greenhouses/BenchesTable'
 import EditGreenhouseButtonDialog from 'screens/OwnerProperties/greenhouses/EditGreenhouseButtonDialog'
 import AddBenchButtonDialog from 'screens/OwnerProperties/greenhouses/AddBenchButtonDialog'
-import DrawerActions from 'screens/OwnerProperties/DrawerActions'
+import EditPropertyButtonDialog from 'screens/OwnerProperties/EditPropertyButtonDialog'
+import AddGreenhouseButtonDialog from 'screens/OwnerProperties/greenhouses/AddGreenhouseButtonDialog'
 
 type Props = { id: number }
 
@@ -57,13 +58,17 @@ const OwnerPropertyDetails: React.FC<Props> = ({ id }) => {
       header={{
         title: t('property') + ' | ',
         highlightTitle: data.property.name,
-        RightActions: <DrawerActions ownerProperty={data} />
+        RightActions: <AddGreenhouseButtonDialog ownerProperty={data} />
       }}
       tabs={[
         {
           label: t('general'),
           component: (
-            <CleanAccordion id="generalData" header={t('generalData')}>
+            <CleanAccordion
+              id="generalData"
+              header={t('generalData')}
+              actions={<EditPropertyButtonDialog ownerProperty={data} />}
+            >
               <InfoTable
                 entries={[
                   [t('name'), data.property.name],

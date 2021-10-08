@@ -10,8 +10,7 @@ import {
   Tooltip,
   TextField,
   Divider,
-  IconButton,
-  MenuItem
+  IconButton
 } from '@material-ui/core'
 import { Delete as DeleteIcon } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
@@ -39,9 +38,9 @@ const FORM_DEFAULT_VALUES = {
   state: ''
 }
 
-type Props = { ownerProperty: OwnerProperty; onClick: () => void }
+type Props = { ownerProperty: OwnerProperty }
 
-const EditPropertyDialog: React.FC<Props> = ({ ownerProperty, onClick }) => {
+const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { newDialog } = useDialog()
@@ -78,14 +77,9 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerProperty, onClick }) => {
 
   return (
     <>
-      <MenuItem
-        onClick={() => {
-          setOpen(true)
-          onClick()
-        }}
-      >
+      <Button variant="contained" onClick={() => setOpen(true)}>
         {t('edit_property')}
-      </MenuItem>
+      </Button>
       <Dialog
         disableBackdropClick
         open={open}
