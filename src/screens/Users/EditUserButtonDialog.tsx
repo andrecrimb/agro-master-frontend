@@ -48,9 +48,7 @@ const EditUserButtonDialog: React.FC<Props> = ({ user }) => {
 
   const { handleSubmit, control, register, formState, setError, reset } = useForm<
     typeof FORM_DEFAULT_VALUES
-  >({
-    defaultValues: FORM_DEFAULT_VALUES
-  })
+  >({ defaultValues: FORM_DEFAULT_VALUES })
 
   const { fields, append, remove } = useFieldArray({
     name: 'phoneNumbers',
@@ -70,11 +68,9 @@ const EditUserButtonDialog: React.FC<Props> = ({ user }) => {
 
   return (
     <>
-      <Tooltip arrow title={t('edit') + ''}>
-        <IconButton onClick={() => setOpen(true)}>
-          <EditIcon />
-        </IconButton>
-      </Tooltip>
+      <Button variant="contained" color="inherit" onClick={() => setOpen(true)}>
+        {t('edit')}
+      </Button>
       <Dialog
         open={open}
         fullWidth

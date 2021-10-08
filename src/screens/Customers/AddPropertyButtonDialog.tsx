@@ -33,9 +33,9 @@ const FORM_DEFAULT_VALUES = {
   state: ''
 }
 
-type Props = { customer: Customer; onClick: () => void }
+type Props = { customer: Customer }
 
-const AddPropertyButtonDialog: React.FC<Props> = ({ customer, onClick }) => {
+const AddPropertyButtonDialog: React.FC<Props> = ({ customer }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
 
@@ -68,14 +68,9 @@ const AddPropertyButtonDialog: React.FC<Props> = ({ customer, onClick }) => {
 
   return (
     <>
-      <MenuItem
-        onClick={() => {
-          setOpen(true)
-          onClick()
-        }}
-      >
+      <Button variant="contained" onClick={() => setOpen(true)}>
         {t('add_property')}
-      </MenuItem>
+      </Button>
       {open ? (
         <Dialog
           disableBackdropClick

@@ -3,13 +3,14 @@ import InfoTable from 'components/InfoTable'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Chip } from '@material-ui/core'
-import PaymentsTable from './PaymentsTable'
+import PaymentsTable from '../PaymentsTable'
 import BorbulhasOrderItemsTable from './BorbulhasOrderItemsTable'
 import useOrder from 'hooks/useOrder'
 import { formatDate } from 'utils/utils'
-import DrawerActions from './DrawerActions'
 import NumberFormat from 'react-number-format'
 import CleanAccordion from 'components/CleanAccordion'
+import EditOrderButtonDialog from 'screens/Orders/EditOrderButtonDialog'
+import AddPaymentButtonDialog from 'screens/Orders/AddPaymentButtonDialog'
 
 type Props = { id: number }
 
@@ -26,15 +27,18 @@ const BorbulhasOrderDetails: React.FC<Props> = ({ id }) => {
         highlightTitle: `${order.customerProperty.customer.name} (${formatDate(
           order.orderDate,
           'DD/MM/YYYY'
-        )})`,
-        RightActions: order.status === 'issued' ? <DrawerActions order={order} /> : null
+        )})`
       }}
       tabs={[
         {
           label: t('general'),
           component: (
             <>
-              <CleanAccordion id="general_data" header={t('generalData')}>
+              <CleanAccordion
+                id="general_data"
+                header={t('generalData')}
+                actions={order.status === 'issued' ? <EditOrderButtonDialog orderId={id} /> : null}
+              >
                 <InfoTable
                   entries={[
                     [t('order_date'), formatDate(order.orderDate)],
@@ -109,6 +113,7 @@ const BorbulhasOrderDetails: React.FC<Props> = ({ id }) => {
                 childrenPadding={false}
                 id="payment_plural"
                 header={t('payment_plural')}
+                actions={<AddPaymentButtonDialog orderId={id} />}
               >
                 <PaymentsTable payments={order.payments} />
               </CleanAccordion>

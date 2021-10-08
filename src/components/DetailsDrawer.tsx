@@ -8,11 +8,17 @@ const OwnerPropertyDrawer = React.lazy(
   () => import('../screens/OwnerProperties/OwnerPropertyDetails')
 )
 
-const FruitsOrderDrawer = React.lazy(() => import('../screens/Orders/FruitsOrderDetails'))
-const SeedsOrderDrawer = React.lazy(() => import('../screens/Orders/SeedsOrderDetails'))
-const SeedlingsOrderDrawer = React.lazy(() => import('../screens/Orders/SeedlingsOrderDetails'))
-const BorbulhasOrderDrawer = React.lazy(() => import('../screens/Orders/BorbulhasOrderDetails'))
-const RootstocksOrderDrawer = React.lazy(() => import('../screens/Orders/RootstocksOrderDetails'))
+const FruitsOrderDrawer = React.lazy(() => import('../screens/Orders/fruits/FruitsOrderDetails'))
+const SeedsOrderDrawer = React.lazy(() => import('../screens/Orders/seeds/SeedsOrderDetails'))
+const SeedlingsOrderDrawer = React.lazy(
+  () => import('../screens/Orders/seedlings/SeedlingsOrderDetails')
+)
+const BorbulhasOrderDrawer = React.lazy(
+  () => import('../screens/Orders/borbulhas/BorbulhasOrderDetails')
+)
+const RootstocksOrderDrawer = React.lazy(
+  () => import('../screens/Orders/rootstocks/RootstocksOrderDetails')
+)
 
 type DrawerType =
   | undefined

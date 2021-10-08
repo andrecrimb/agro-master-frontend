@@ -224,6 +224,12 @@ const muiTheme = createMuiTheme({
       },
       expanded: {}
     },
+    MuiAccordionActions: {
+      root: {
+        position: 'sticky',
+        bottom: 0
+      }
+    },
     MuiTablePagination: {
       select: {
         display: 'flex',

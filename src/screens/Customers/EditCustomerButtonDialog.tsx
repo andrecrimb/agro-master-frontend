@@ -12,7 +12,6 @@ import {
   FormControlLabel,
   TextField,
   Divider,
-  MenuItem,
   Tooltip
 } from '@material-ui/core'
 import {
@@ -43,9 +42,9 @@ const FORM_DEFAULT_VALUES = {
   phoneNumbers: [{ label: '', number: '' }]
 }
 
-type Props = { customer: Customer; onClick: () => void }
+type Props = { customer: Customer }
 
-const EditCustomerButtonDialog: React.FC<Props> = ({ customer, onClick }) => {
+const EditCustomerButtonDialog: React.FC<Props> = ({ customer }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { newDialog } = useDialog()
@@ -88,14 +87,9 @@ const EditCustomerButtonDialog: React.FC<Props> = ({ customer, onClick }) => {
 
   return (
     <>
-      <MenuItem
-        onClick={() => {
-          setOpen(true)
-          onClick()
-        }}
-      >
+      <Button variant="contained" onClick={() => setOpen(true)}>
         {t('edit_customer')}
-      </MenuItem>
+      </Button>
       <Dialog open={open} fullWidth maxWidth="sm" onClose={onClose} aria-labelledby="dialog-title">
         <DialogTitle id="dialog-title">
           {t('edit_customer')} |{' '}

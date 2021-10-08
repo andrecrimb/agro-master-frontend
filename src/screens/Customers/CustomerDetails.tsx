@@ -5,9 +5,10 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
 import PropertiesTable from './PropertiesTable'
-import DrawerActions from './DrawerActions'
 import NumberFormat from 'react-number-format'
 import CleanAccordion from 'components/CleanAccordion'
+import AddPropertyButtonDialog from 'screens/Customers/AddPropertyButtonDialog'
+import EditCustomerButtonDialog from 'screens/Customers/EditCustomerButtonDialog'
 
 type Props = { id: number }
 
@@ -23,15 +24,18 @@ const CustomerDetails: React.FC<Props> = ({ id }) => {
         title: t('customer') + ' | ',
         highlightTitle: `${customer.name} ${
           customer.nickname !== '' ? `(${customer.nickname})` : ''
-        }`,
-        RightActions: <DrawerActions customer={customer} />
+        }`
       }}
       tabs={[
         {
           label: '',
           component: (
             <>
-              <CleanAccordion id="generalData" header={t('generalData')}>
+              <CleanAccordion
+                id="generalData"
+                header={t('generalData')}
+                actions={<EditCustomerButtonDialog customer={customer} />}
+              >
                 <InfoTable
                   entries={[
                     [
@@ -74,6 +78,7 @@ const CustomerDetails: React.FC<Props> = ({ id }) => {
                 childrenPadding={false}
                 id="property_plural"
                 header={t('property_plural')}
+                actions={<AddPropertyButtonDialog customer={customer} />}
               >
                 <PropertiesTable customerId={id} />
               </CleanAccordion>

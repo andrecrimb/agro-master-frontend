@@ -14,11 +14,11 @@ import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
 import { SeedlingBench } from 'types/greenhouse'
 import EditBenchButtonDialog from 'screens/OwnerProperties/greenhouses/EditBenchButtonDialog'
 import EditPaymentButtonDialog from 'screens/Orders/EditPaymentButtonDialog'
-import DeleteFruitsOrderItemButton from 'screens/Orders/DeleteFruitsOrderItemButton'
-import DeleteSeedlingsOrderItemButton from 'screens/Orders/DeleteSeedlingsOrderItemButton'
-import DeleteSeedsOrderItemButton from 'screens/Orders/DeleteSeedsOrderItemButton'
-import DeleteRootstocksOrderItemButton from 'screens/Orders/DeleteRootstocksOrderItemButton'
-import DeleteBorbulhasOrderItemButton from 'screens/Orders/DeleteBorbulhasOrderItemButton'
+import DeleteFruitsOrderItemButton from 'screens/Orders/fruits/DeleteFruitsOrderItemButton'
+import DeleteSeedlingsOrderItemButton from 'screens/Orders/seedlings/DeleteSeedlingsOrderItemButton'
+import DeleteSeedsOrderItemButton from 'screens/Orders/seeds/DeleteSeedsOrderItemButton'
+import DeleteRootstocksOrderItemButton from 'screens/Orders/rootstocks/DeleteRootstocksOrderItemButton'
+import DeleteBorbulhasOrderItemButton from 'screens/Orders/borbulhas/DeleteBorbulhasOrderItemButton'
 import {
   Payment,
   FruitOrderItem,

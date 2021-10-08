@@ -3,17 +3,18 @@ import InfoTable from 'components/InfoTable'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Chip } from '@material-ui/core'
-import PaymentsTable from './PaymentsTable'
-import SeedsOrderItemsTable from './SeedsOrderItemsTable'
+import PaymentsTable from '../PaymentsTable'
+import SeedlingsOrderItemsTable from './SeedlingsOrderItemsTable'
 import useOrder from 'hooks/useOrder'
 import { formatDate } from 'utils/utils'
-import DrawerActions from './DrawerActions'
 import NumberFormat from 'react-number-format'
 import CleanAccordion from 'components/CleanAccordion'
+import EditOrderButtonDialog from 'screens/Orders/EditOrderButtonDialog'
+import AddPaymentButtonDialog from 'screens/Orders/AddPaymentButtonDialog'
 
 type Props = { id: number }
 
-const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
+const SeedlingsOrderDetails: React.FC<Props> = ({ id }) => {
   const { t } = useTranslation()
   const { data: order } = useOrder(id)
 
@@ -22,19 +23,22 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
   return (
     <DetailsDrawerWrapper
       header={{
-        title: t('seeds_order') + ' | ',
+        title: t('seedlings_order') + ' | ',
         highlightTitle: `${order.customerProperty.customer.name} (${formatDate(
           order.orderDate,
           'DD/MM/YYYY'
-        )})`,
-        RightActions: order.status === 'issued' ? <DrawerActions order={order} /> : null
+        )})`
       }}
       tabs={[
         {
-          label: t('generalData'),
+          label: t('general'),
           component: (
             <>
-              <CleanAccordion id="general_data" header={t('generalData')}>
+              <CleanAccordion
+                id="general_data"
+                header={t('generalData')}
+                actions={order.status === 'issued' ? <EditOrderButtonDialog orderId={id} /> : null}
+              >
                 <InfoTable
                   entries={[
                     [t('order_date'), formatDate(order.orderDate)],
@@ -102,13 +106,14 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
                   ]}
                 />
               </CleanAccordion>
-              <CleanAccordion id="order_items" header={t('order_items')} childrenPadding={false}>
-                <SeedsOrderItemsTable orderItems={order.seedOrderItems} />
+              <CleanAccordion childrenPadding={false} id="order_items" header={t('order_items')}>
+                <SeedlingsOrderItemsTable orderItems={order.seedlingBenchOrderItems} />
               </CleanAccordion>
               <CleanAccordion
-                id="payment_plural"
-                header={t('payment_plural')}
                 childrenPadding={false}
+                id="general_data"
+                header={t('payment_plural')}
+                actions={<AddPaymentButtonDialog orderId={id} />}
               >
                 <PaymentsTable payments={order.payments} />
               </CleanAccordion>
@@ -120,4 +125,4 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
   )
 }
 
-export default SeedsOrderDetails
+export default SeedlingsOrderDetails
