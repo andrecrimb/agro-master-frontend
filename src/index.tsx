@@ -23,8 +23,6 @@ const Customers = React.lazy(() => import('screens/Customers'))
 const Orders = React.lazy(() => import('screens/Orders'))
 const Rootstocks = React.lazy(() => import('screens/Rootstocks'))
 
-//TODO change Route "component" prop to "render" or children
-
 const App: React.FC = () => {
   return (
     <BrowserRouter>
@@ -35,12 +33,24 @@ const App: React.FC = () => {
         <PageContentGridArea>
           <React.Suspense fallback={<PageLoading />}>
             <Switch>
-              <Route path={routes.users} component={Users} />
-              <Route path={routes.properties} component={Properties} />
-              <Route path={routes.customers} component={Customers} />
-              <Route path={routes.orders} component={Orders} />
-              <Route path={routes.rootstocks} component={Rootstocks} />
-              <Route component={PageNotFoundPlaceholder} />
+              <Route path={routes.users}>
+                <Users />
+              </Route>
+              <Route path={routes.properties}>
+                <Properties />
+              </Route>
+              <Route path={routes.customers}>
+                <Customers />
+              </Route>
+              <Route path={routes.orders}>
+                <Orders />
+              </Route>
+              <Route path={routes.rootstocks}>
+                <Rootstocks />
+              </Route>
+              <Route>
+                <PageNotFoundPlaceholder />
+              </Route>
             </Switch>
           </React.Suspense>
         </PageContentGridArea>
