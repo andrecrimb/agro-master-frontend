@@ -70,18 +70,13 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
 
   const { handleSubmit, control, formState, setError, getValues } = useForm<
     typeof FORM_DEFAULT_VALUES
-  >({
-    defaultValues: FORM_DEFAULT_VALUES
-  })
+  >({ defaultValues: FORM_DEFAULT_VALUES })
 
   const {
     fields: orderItemsFields,
     append: appendOrderItem,
     remove: removeOrderItem
-  } = useFieldArray({
-    name: 'rootstocksOrderItems',
-    control
-  })
+  } = useFieldArray({ name: 'rootstocksOrderItems', control })
 
   const calculateSum = () => {
     const orderItems = getValues('rootstocksOrderItems')
@@ -108,6 +103,7 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
             allowLeadingZeros
             thousandSeparator="."
             decimalSeparator=","
+            decimalScale={2}
           />
         </Typography>
       </TotalValueBox>
@@ -186,7 +182,8 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
                         label={t('quantity')}
                         variant="filled"
                         customInput={TextField}
-                        type="tel"
+                        type="text"
+                        inputMode="decimal"
                         thousandSeparator="."
                         decimalSeparator=","
                         getInputRef={field.ref}
@@ -217,7 +214,8 @@ const AddRootstocksOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) =>
                           startAdornment: <InputAdornment position="start">R$</InputAdornment>
                         }}
                         customInput={TextField}
-                        type="tel"
+                        type="text"
+                        inputMode="decimal"
                         thousandSeparator="."
                         decimalSeparator=","
                         getInputRef={field.ref}

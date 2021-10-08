@@ -101,6 +101,7 @@ const AddFruitsOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
             allowLeadingZeros
             thousandSeparator="."
             decimalSeparator=","
+            decimalScale={2}
           />
         </Typography>
       </TotalValueBox>
