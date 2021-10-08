@@ -25,10 +25,9 @@ const useEditGreenhouse = () => {
       return data
     },
     {
-      onSuccess: (_, vars) => {
+      onSuccess: () => {
         enqueueSnackbar(t('edit_greenhouse_success'), { variant: 'success' })
         client.invalidateQueries('greenhouses')
-        client.invalidateQueries(['greenhouse', vars.id])
       },
       onError: () => {
         enqueueSnackbar(t('edit_greenhouse_error'), { variant: 'error' })

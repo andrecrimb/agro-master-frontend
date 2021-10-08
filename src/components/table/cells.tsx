@@ -11,7 +11,7 @@ import { Customer, CustomerProperty } from 'types/customer'
 import { addURLSearch, formatDate } from 'utils/utils'
 import InfoTable from 'components/InfoTable'
 import EditPropertyDialog from 'screens/Customers/EditPropertyButtonDialog'
-import { Greenhouse, SeedlingBench } from 'types/greenhouse'
+import { SeedlingBench } from 'types/greenhouse'
 import EditBenchButtonDialog from 'screens/OwnerProperties/Greenhouses/EditBenchButtonDialog'
 import EditPaymentButtonDialog from 'screens/Orders/EditPaymentButtonDialog'
 import DeleteFruitsOrderItemButton from 'screens/Orders/DeleteFruitsOrderItemButton'
@@ -203,42 +203,6 @@ export const customerPropertyEdit: Column<CustomerProperty> = {
   }) => <EditPropertyDialog property={data.property} customerId={data.customerId} />
 }
 
-//#endregion
-
-//#region Greenhouses
-export const greenhouseLabel: Column<Greenhouse> = {
-  Header: i18n.t('name') + '',
-  accessor: 'label',
-  Cell: ({
-    value,
-    cell: {
-      row: { original }
-    }
-  }) => {
-    return (
-      <CellLink to={addURLSearch({ drawer: 'greenhouse', id: original.id + '' })}>{value}</CellLink>
-    )
-  }
-}
-export const greenhouseType: Column<Greenhouse> = {
-  Header: i18n.t('greenhouse_type') + '',
-  accessor: 'type',
-  Cell: ({ value }) => {
-    return <Chip label={i18n.t(value)} />
-  }
-}
-export const greenhouseProperty: Column<Greenhouse> = {
-  Header: i18n.t('property') + '',
-  accessor: (r: Greenhouse) => r.ownerProperty.property.name,
-  Cell: ({
-    value,
-    cell: {
-      row: { original }
-    }
-  }) => {
-    return <CellLink to={addURLSearch({ drawer: 'greenhouse', id: original.id })}>{value}</CellLink>
-  }
-}
 //#endregion
 
 //#region Benches

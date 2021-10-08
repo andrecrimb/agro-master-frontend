@@ -31,9 +31,9 @@ const useAddBench = () => {
       return data
     },
     {
-      onSuccess: (_, vars) => {
+      onSuccess: () => {
         enqueueSnackbar(t('add_bench_success'), { variant: 'success' })
-        client.invalidateQueries(['greenhouse', vars.greenhouseId])
+        client.invalidateQueries('greenhouses')
       },
       onError: () => {
         enqueueSnackbar(t('add_bench_error'), { variant: 'error' })
