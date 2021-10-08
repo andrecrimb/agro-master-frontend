@@ -203,10 +203,26 @@ const muiTheme = createMuiTheme({
         borderCollapse: 'separate'
       }
     },
-    MuiAccordionSummary: {
+    MuiAccordion: {
       root: {
-        minHeight: '40px'
-      }
+        backgroundColor: 'transparent',
+        borderBottom: '1px solid rgba(0, 0, 0, .125)',
+        borderTop: '1px solid rgba(0, 0, 0, .125)',
+        boxShadow: 'none',
+        '&:first-child': {
+          border: 'none'
+        },
+        '&:not(:last-child)': {
+          borderBottom: 0
+        },
+        '&:before': {
+          display: 'none'
+        },
+        '&$expanded': {
+          margin: 'auto'
+        }
+      },
+      expanded: {}
     },
     MuiTablePagination: {
       select: {
@@ -248,7 +264,7 @@ const muiTheme = createMuiTheme({
       head: {
         textTransform: 'uppercase',
         padding: '0px 14px 0px 14px !important',
-        fontSize: '0.62rem',
+        fontSize: '0.65rem',
         borderBottom: 'none',
         color: '#757575',
         whiteSpace: 'nowrap'
@@ -301,7 +317,7 @@ const muiTheme = createMuiTheme({
         paddingRight: '10px'
       },
       root: {
-        fontSize: '0.62rem',
+        fontSize: '0.65rem',
         height: '26px'
       },
       avatar: {

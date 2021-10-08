@@ -3,12 +3,11 @@ import InfoTable from 'components/InfoTable'
 import useCustomer from 'hooks/useCustomer'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, Divider, Grid, Typography } from '@material-ui/core'
 import { Check as CheckIcon, Close as CloseIcon } from '@material-ui/icons'
 import PropertiesTable from './PropertiesTable'
 import DrawerActions from './DrawerActions'
 import NumberFormat from 'react-number-format'
-
+import CleanAccordion from 'components/CleanAccordion'
 type Props = { id: number }
 
 const CustomerDetails: React.FC<Props> = ({ id }) => {
@@ -28,73 +27,57 @@ const CustomerDetails: React.FC<Props> = ({ id }) => {
       }}
       tabs={[
         {
-          label: t('general'),
+          label: '',
           component: (
-            <Box padding="16px">
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography color="textSecondary" display="block" variant="subtitle1">
-                    {t('generalData')}
-                  </Typography>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
-                  <InfoTable
-                    entries={[
-                      [
-                        t('name'),
-                        `${customer.name} ${customer.nickname ? '(' + customer.nickname + ')' : ''}`
-                      ],
-                      [t('address'), `${customer.address}, ${customer.city}-${customer.state}`],
-                      [
-                        t('cep'),
-                        <NumberFormat
-                          displayType="text"
-                          key={'zip-' + customer.zip}
-                          value={customer.zip}
-                          format="#####-###"
-                        />
-                      ],
-                      [
-                        t('active'),
-                        customer.active ? (
-                          <CheckIcon color="primary" />
-                        ) : (
-                          <CloseIcon color="error" />
-                        )
-                      ]
-                    ]}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography color="textSecondary" display="block" variant="subtitle1">
-                    {t('contact')}
-                  </Typography>
-                  <Divider />
-                </Grid>
-
+            <>
+              <CleanAccordion id="generalData" header={t('generalData')}>
+                <InfoTable
+                  entries={[
+                    [
+                      t('name'),
+                      `${customer.name} ${customer.nickname ? '(' + customer.nickname + ')' : ''}`
+                    ],
+                    [t('address'), `${customer.address}, ${customer.city}-${customer.state}`],
+                    [
+                      t('cep'),
+                      <NumberFormat
+                        displayType="text"
+                        key={'zip-' + customer.zip}
+                        value={customer.zip}
+                        format="#####-###"
+                      />
+                    ],
+                    [
+                      t('active'),
+                      customer.active ? <CheckIcon color="primary" /> : <CloseIcon color="error" />
+                    ]
+                  ]}
+                />
+              </CleanAccordion>
+              <CleanAccordion id="contact" header={t('contact')}>
                 {customer.phoneNumbers?.length ? (
-                  <Grid item xs={12}>
-                    <InfoTable
-                      entries={customer.phoneNumbers.map(phoneNumber => [
-                        phoneNumber.label,
-                        <NumberFormat
-                          displayType="text"
-                          key={'phone-' + phoneNumber.number}
-                          value={phoneNumber.number}
-                          format="(##) #########"
-                        />
-                      ])}
-                    />
-                  </Grid>
+                  <InfoTable
+                    entries={customer.phoneNumbers.map(phoneNumber => [
+                      phoneNumber.label,
+                      <NumberFormat
+                        displayType="text"
+                        key={'phone-' + phoneNumber.number}
+                        value={phoneNumber.number}
+                        format="(##) #########"
+                      />
+                    ])}
+                  />
                 ) : null}
-              </Grid>
-            </Box>
+              </CleanAccordion>
+              <CleanAccordion
+                childrenPadding={false}
+                id="property_plural"
+                header={t('property_plural')}
+              >
+                <PropertiesTable customerId={id} />
+              </CleanAccordion>
+            </>
           )
-        },
-        {
-          label: t('property_plural'),
-          component: <PropertiesTable customerId={id} />
         }
       ]}
     />

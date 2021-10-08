@@ -24,7 +24,7 @@ const PropertiesTable: React.FC<Props> = ({ customerId }) => {
         </div>
       )}
       {noData ? (
-        <ScreenPlaceholder description={t('no_properties')} />
+        <ScreenPlaceholder withAbsoluteWrapper={false} description={t('no_properties')} />
       ) : (
         <Table
           columns={columns}

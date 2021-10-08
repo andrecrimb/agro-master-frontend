@@ -41,6 +41,7 @@ const TableWrapper = styled.div`
   flex-direction: column;
   align-items: stretch;
   height: inherit;
+  width: 100%;
 `
 
 const StickyPagination = styled.div`
