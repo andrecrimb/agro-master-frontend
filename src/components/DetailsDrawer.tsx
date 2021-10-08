@@ -3,7 +3,6 @@ import React, { PropsWithChildren } from 'react'
 import SplitterLayout from 'react-splitter-layout'
 
 const UserDrawer = React.lazy(() => import('../screens/Users/UserDetails'))
-const GreenhouseDrawer = React.lazy(() => import('../screens/Greenhouses/GreenhouseDetails'))
 const CustomerDrawer = React.lazy(() => import('../screens/Customers/CustomerDetails'))
 const OwnerPropertyDrawer = React.lazy(
   () => import('../screens/OwnerProperties/OwnerPropertyDetails')
@@ -20,7 +19,6 @@ type DrawerType =
   | 'user'
   | 'property'
   | 'customer'
-  | 'greenhouse'
   | 'fruitOrder'
   | 'seedOrder'
   | 'seedlingOrder'
@@ -36,9 +34,6 @@ const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const DrawerComponent = React.useCallback(() => {
     let content: null | React.ReactElement = null
     switch (drawerType) {
-      case 'greenhouse':
-        content = <GreenhouseDrawer id={+id} />
-        break
       case 'property':
         content = <OwnerPropertyDrawer id={+id} />
         break

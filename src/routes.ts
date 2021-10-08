@@ -4,7 +4,6 @@ const routes = {
   properties: '/properties',
   users: '/users',
   orders: '/orders',
-  rootstocks: '/rootstocks',
-  greenhouses: '/greenhouses'
+  rootstocks: '/rootstocks'
 }
 export default routes

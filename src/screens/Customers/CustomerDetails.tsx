@@ -8,6 +8,7 @@ import PropertiesTable from './PropertiesTable'
 import DrawerActions from './DrawerActions'
 import NumberFormat from 'react-number-format'
 import CleanAccordion from 'components/CleanAccordion'
+
 type Props = { id: number }
 
 const CustomerDetails: React.FC<Props> = ({ id }) => {

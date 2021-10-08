@@ -63,7 +63,7 @@ type Props = { onClose: () => void; orderId: number }
 
 const AddBorbulhasOrderItemsDialog: React.FC<Props> = ({ onClose, orderId }) => {
   const { t } = useTranslation()
-  const { data: greenhouses = [] } = useGreenhouses({
+  const { data: greenhouses = [] } = useGreenhouses(undefined, {
     select: d =>
       d
         .filter(gh => gh.type === 'borbulha')

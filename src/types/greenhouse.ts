@@ -24,3 +24,5 @@ export type Greenhouse = {
   }
   seedlingBenches: SeedlingBench[]
 }
+
+export type ApiFilters = { ownerPropertyId?: number }

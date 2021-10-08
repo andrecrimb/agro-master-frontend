@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogTitle,
   DialogActions,
-  IconButton,
   Button,
   Grid,
   FormControlLabel,
@@ -13,56 +12,70 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  MenuItem,
-  Select,
-  InputLabel
+  IconButton,
+  Tooltip
 } from '@material-ui/core'
-import { AddRounded as AddIcon } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
-import useAddGreenhouse from 'hooks/useAddGreenhouse'
-import { GreenhouseType } from 'types/greenhouse'
-import useOwnerProperties from 'hooks/useOwnerProperties'
+import useEditGreenhouse from 'hooks/useEditGreenhouse'
+import useDeleteGreenhouse from 'hooks/useDeleteGreenhouse'
+import { Greenhouse, GreenhouseType } from 'types/greenhouse'
+import { muiTheme } from 'theme'
+import useDialog from 'hooks/useDialog'
+import { Delete as DeleteIcon } from '@material-ui/icons'
 
 const FORM_DEFAULT_VALUES = {
   label: '',
-  type: 'seedling' as GreenhouseType,
-  ownerPropertyId: ''
+  type: 'seedling' as GreenhouseType
 }
 
-const AddGreenhouseButtonDialog: React.FC = () => {
+type Props = { greenhouse: Greenhouse; ownerPropertyId: number }
+
+const EditGreenhouseButtonDialog: React.FC<Props> = ({ greenhouse, ownerPropertyId }) => {
   const { t } = useTranslation()
+  const { newDialog } = useDialog()
   const [open, setOpen] = React.useState(false)
 
-  const { data: ownerProperties = [] } = useOwnerProperties()
-  const addNewGreenhouse = useAddGreenhouse()
+  const deleteGreenhouse = useDeleteGreenhouse()
+  const editGreenhouse = useEditGreenhouse()
 
   const { handleSubmit, control, register, formState, setError, reset } = useForm<
     typeof FORM_DEFAULT_VALUES
-  >({
-    defaultValues: FORM_DEFAULT_VALUES
-  })
+  >({ defaultValues: FORM_DEFAULT_VALUES })
+
+  const onClose = () => setOpen(false)
 
   React.useEffect(() => {
-    reset(FORM_DEFAULT_VALUES)
-  }, [open === false])
+    if (greenhouse && open) {
+      reset({
+        label: greenhouse.label,
+        type: greenhouse.type
+      })
+    }
+  }, [open, greenhouse === undefined])
 
   const { ref: greenhouseLabelRef, ...greenhouseLabel } = register('label')
 
   return (
     <>
-      <IconButton color="inherit" onClick={() => setOpen(true)}>
-        <AddIcon />
-      </IconButton>
-      {open ? (
-        <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="dialog-title">
-          <DialogTitle id="dialog-title">{t('add_new_greenhouse')}</DialogTitle>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        {t('edit_greenhouse')}
+      </Button>
+      <Dialog open={open} onClose={onClose} aria-labelledby="dialog-title">
+        <DialogTitle id="dialog-title">
+          {t('edit_greenhouse')} |{' '}
+          <span style={{ color: muiTheme.palette.primary.main }}>{greenhouse?.label}</span>
+        </DialogTitle>
+        {greenhouse ? (
           <form
             style={{ width: '400px' }}
-            onSubmit={handleSubmit(({ ownerPropertyId, ...other }) => {
-              return addNewGreenhouse.mutate(
-                { ...other, ownerPropertyId: +ownerPropertyId },
+            onSubmit={handleSubmit(values => {
+              return editGreenhouse.mutate(
+                {
+                  id: greenhouse.id,
+                  data: { ...values, ownerPropertyId }
+                },
                 {
                   onSuccess: () => {
                     setOpen(false)
@@ -87,8 +100,6 @@ const AddGreenhouseButtonDialog: React.FC = () => {
                     size="small"
                     fullWidth
                     required
-                    error={!!formState.errors.label}
-                    helperText={t(formState.errors.label?.message || '')}
                     placeholder={t('estufa1')}
                     variant="filled"
                     label={t('name')}
@@ -100,35 +111,13 @@ const AddGreenhouseButtonDialog: React.FC = () => {
                 <Grid item xs={12}>
                   <Controller
                     control={control}
-                    name="ownerPropertyId"
-                    render={({ field }) => (
-                      <FormControl fullWidth variant="filled" required>
-                        <InputLabel id="property-select-label">{t('property')}</InputLabel>
-                        <Select
-                          value={field.value}
-                          onBlur={() => field.onBlur()}
-                          onChange={ev => field.onChange(ev.target.value)}
-                          labelId="property-select-label"
-                          id="property-select"
-                        >
-                          <MenuItem value={''}>{t('select')}</MenuItem>
-                          {ownerProperties.map(p => (
-                            <MenuItem key={p.id} value={p.id}>
-                              {p.property.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    )}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Controller
-                    control={control}
                     name="type"
                     render={({ field }) => (
-                      <FormControl component="fieldset" required>
+                      <FormControl
+                        component="fieldset"
+                        required
+                        disabled={!!greenhouse.seedlingBenches.length}
+                      >
                         <FormLabel component="legend">{t('greenhouse_type')}</FormLabel>
                         <RadioGroup
                           row
@@ -154,6 +143,28 @@ const AddGreenhouseButtonDialog: React.FC = () => {
               </Grid>
             </DialogContent>
             <DialogActions>
+              <Tooltip title={t('delete_greenhouse') + ''} arrow placement="left">
+                <IconButton
+                  onClick={() => {
+                    newDialog({
+                      title: t('warning') + '!',
+                      message: t('delete_question', {
+                        item: greenhouse?.label
+                      }),
+                      confirmationButton: {
+                        text: t('delete'),
+                        onClick: () =>
+                          deleteGreenhouse.mutateAsync(
+                            { greenhouseId: greenhouse.id },
+                            { onSuccess: () => setOpen(false) }
+                          )
+                      }
+                    })
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
               <Button
                 variant="outlined"
                 color="primary"
@@ -169,19 +180,19 @@ const AddGreenhouseButtonDialog: React.FC = () => {
                 disabled={
                   !formState.isDirty ||
                   !!Object.keys(formState.errors).length ||
-                  addNewGreenhouse.isLoading
+                  editGreenhouse.isLoading
                 }
                 type="submit"
-                isLoading={addNewGreenhouse.isLoading}
+                isLoading={editGreenhouse.isLoading}
               >
                 {t('save')}
               </LoadingButton>
             </DialogActions>
           </form>
-        </Dialog>
-      ) : null}
+        ) : null}
+      </Dialog>
     </>
   )
 }
 
-export default AddGreenhouseButtonDialog
+export default EditGreenhouseButtonDialog

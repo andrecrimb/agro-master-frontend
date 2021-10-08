@@ -87,7 +87,7 @@ const AddSeedlingsOrderItemsDialog: React.FC<Props> = ({ onClose, order }) => {
   const [benches, setBenches] = React.useState<SeedlingBench[]>([])
 
   const { data: properties = [] } = useOwnerProperties()
-  const { data: greenhouses = [] } = useGreenhouses({
+  const { data: greenhouses = [] } = useGreenhouses(undefined, {
     select: d => d.filter(gh => gh.type === 'seedling')
   })
   const greenhousesFiltered = React.useMemo(

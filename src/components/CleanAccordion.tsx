@@ -5,15 +5,18 @@ import {
   Accordion,
   AccordionSummary as MUIAccordionSummary,
   AccordionDetails,
-  withStyles
+  withStyles,
+  AccordionActions
 } from '@material-ui/core'
 import { ExpandMoreRounded as ExpandMoreIcon } from '@material-ui/icons'
 import { muiTheme } from 'theme'
+
 type Props = {
   id: string
   header: React.ReactNode
   childrenPadding?: boolean
   defaultExpanded?: boolean
+  actions?: React.ReactNode
 }
 
 const Header = styled(Typography)`
@@ -46,7 +49,8 @@ const CleanAccordion: React.FC<PropsWithChildren<Props>> = ({
   id,
   children,
   childrenPadding = true,
-  defaultExpanded = true
+  defaultExpanded = true,
+  actions
 }) => {
   return (
     <Accordion square defaultExpanded={defaultExpanded}>
@@ -57,7 +61,10 @@ const CleanAccordion: React.FC<PropsWithChildren<Props>> = ({
       >
         <Header variant="h1">{header}</Header>
       </AccordionSummary>
-      <AccordionDetails style={{ padding: !childrenPadding ? 0 : '' }}>{children}</AccordionDetails>
+      <AccordionDetails style={{ padding: !childrenPadding ? 0 : '', overflow: 'auto' }}>
+        {children}
+      </AccordionDetails>
+      {actions ? <AccordionActions>{actions}</AccordionActions> : null}
     </Accordion>
   )
 }

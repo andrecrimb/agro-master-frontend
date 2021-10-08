@@ -10,9 +10,10 @@ import {
   Tooltip,
   TextField,
   Divider,
-  IconButton
+  IconButton,
+  MenuItem
 } from '@material-ui/core'
-import { Delete as DeleteIcon, EditRounded as EditIcon } from '@material-ui/icons'
+import { Delete as DeleteIcon } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
 import LoadingButton from 'components/LoadingButton'
 import { useForm, Controller } from 'react-hook-form'
@@ -24,6 +25,7 @@ import useDialog from 'hooks/useDialog'
 import { OwnerProperty } from 'types/property'
 import NumberFormat from 'react-number-format'
 import { unmaskNumber } from 'utils/utils'
+import useUrlSearch from 'hooks/useUrlSearch'
 
 const FORM_DEFAULT_VALUES = {
   producerName: '',
@@ -37,12 +39,13 @@ const FORM_DEFAULT_VALUES = {
   state: ''
 }
 
-type Props = { ownerProperty: OwnerProperty }
+type Props = { ownerProperty: OwnerProperty; onClick: () => void }
 
-const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
+const EditPropertyDialog: React.FC<Props> = ({ ownerProperty, onClick }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { newDialog } = useDialog()
+  const { setParams } = useUrlSearch({ params: [] })
 
   const editProperty = useEditOwnerProperty()
   const searchZip = useZipSearch()
@@ -75,11 +78,14 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
 
   return (
     <>
-      <Tooltip arrow title={t('edit') + ''}>
-        <IconButton onClick={() => setOpen(true)}>
-          <EditIcon />
-        </IconButton>
-      </Tooltip>
+      <MenuItem
+        onClick={() => {
+          setOpen(true)
+          onClick()
+        }}
+      >
+        {t('edit_property')}
+      </MenuItem>
       <Dialog
         disableBackdropClick
         open={open}
@@ -339,7 +345,12 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
                       onClick: () =>
                         deleteProperty.mutateAsync(
                           { ownerPropertyId: ownerProperty.id },
-                          { onSuccess: () => setOpen(false) }
+                          {
+                            onSuccess: () => {
+                              setOpen(false)
+                              setParams({ drawer: null, drawerTab: null, id: null })
+                            }
+                          }
                         )
                     }
                   })

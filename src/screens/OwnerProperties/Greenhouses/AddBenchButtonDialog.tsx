@@ -35,12 +35,9 @@ const FORM_DEFAULT_VALUES = {
   userId: ''
 }
 
-type Props = {
-  greenhouse: Greenhouse
-  onClick: () => void
-}
+type Props = { greenhouse: Greenhouse }
 
-const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
+const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
 
@@ -50,9 +47,7 @@ const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
 
   const { handleSubmit, control, register, formState, setError, reset } = useForm<
     typeof FORM_DEFAULT_VALUES
-  >({
-    defaultValues: FORM_DEFAULT_VALUES
-  })
+  >({ defaultValues: FORM_DEFAULT_VALUES })
 
   React.useEffect(() => {
     reset(FORM_DEFAULT_VALUES)
@@ -62,14 +57,9 @@ const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
 
   return (
     <>
-      <MenuItem
-        onClick={() => {
-          setOpen(true)
-          onClick()
-        }}
-      >
-        {t('add_new_bench')}
-      </MenuItem>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        {t('new_bench')}
+      </Button>
       {open ? (
         <MuiPickersUtilsProvider utils={DayUtils}>
           <Dialog
@@ -79,7 +69,7 @@ const AddBenchButtonDialog: React.FC<Props> = ({ greenhouse, onClick }) => {
             aria-labelledby="dialog-title"
           >
             <DialogTitle id="dialog-title">
-              {t('add_new_bench')} |{' '}
+              {t('new_bench')} |{' '}
               <span style={{ color: muiTheme.palette.primary.main }}>{greenhouse.label}</span>
             </DialogTitle>
             <form
