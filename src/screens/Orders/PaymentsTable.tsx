@@ -29,7 +29,7 @@ const PaymentsTable: React.FC<Props> = ({ payments }) => {
   return (
     <>
       {noData ? (
-        <ScreenPlaceholder description={t('no_payments')} />
+        <ScreenPlaceholder withAbsoluteWrapper={false} description={t('no_payments')} />
       ) : (
         <Table
           columns={columns}

@@ -24,7 +24,7 @@ const BorbulhasOrderItemsTable: React.FC<Props> = ({ orderItems }) => {
   const { t } = useTranslation()
 
   if (!orderItems.length) {
-    return <ScreenPlaceholder description={t('no_items')} />
+    return <ScreenPlaceholder withAbsoluteWrapper={false} description={t('no_items')} />
   }
 
   return (
