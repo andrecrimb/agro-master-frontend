@@ -9,7 +9,7 @@ import { AppBarDrawerGrid, PageContentGridArea } from 'components/GridLayout'
 import AppBar from 'components/AppBar'
 import AppDrawer from 'components/AppDrawer'
 import PageLoading from 'components/PageLoading'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import routes from 'routes'
 import PageNotFoundPlaceholder from 'components/PageNotFoundPlaceholder'
 import 'dayjs/locale/pt-br'
@@ -33,6 +33,7 @@ const App: React.FC = () => {
         <PageContentGridArea>
           <React.Suspense fallback={<PageLoading />}>
             <Switch>
+              <Redirect from="/:url*(/+)" to={window.location.pathname.slice(0, -1)} />
               <Route path={routes.users}>
                 <Users />
               </Route>

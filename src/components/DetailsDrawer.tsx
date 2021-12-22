@@ -1,6 +1,7 @@
-import useUrlSearch from 'hooks/useUrlSearch'
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
+import useDetailsDrawerState from 'hooks/useDetailsDrawerState'
 import SplitterLayout from 'react-splitter-layout'
+import PageLoading from 'components/PageLoading'
 
 const UserDrawer = React.lazy(() => import('../screens/Users/UserDetails'))
 const CustomerDrawer = React.lazy(() => import('../screens/Customers/CustomerDetails'))
@@ -19,63 +20,44 @@ const RootstocksOrderDrawer = React.lazy(
   () => import('../screens/Orders/rootstocks/RootstocksOrderDetails')
 )
 
-type DrawerType =
-  | undefined
-  | 'user'
-  | 'property'
-  | 'customer'
-  | 'fruitOrder'
-  | 'seedOrder'
-  | 'seedlingOrder'
-  | 'rootstockOrder'
-  | 'borbulhaOrder'
+const SelectedDrawer = () => {
+  const { type, id } = useDetailsDrawerState()
 
-const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  const {
-    params: { drawer, id }
-  } = useUrlSearch({ params: ['drawer', 'id'] })
-
-  const drawerType = drawer as DrawerType
-  const DrawerComponent = React.useCallback(() => {
-    let content: null | React.ReactElement = null
-    switch (drawerType) {
+  if (type && id) {
+    switch (type) {
       case 'property':
-        content = <OwnerPropertyDrawer id={+id} />
-        break
+        return <OwnerPropertyDrawer id={id} />
       case 'user':
-        content = <UserDrawer id={+id} />
-        break
+        return <UserDrawer id={id} />
       case 'customer':
-        content = <CustomerDrawer id={+id} />
-        break
+        return <CustomerDrawer id={id} />
       case 'fruitOrder':
-        content = <FruitsOrderDrawer id={+id} />
-        break
+        return <FruitsOrderDrawer id={id} />
       case 'seedOrder':
-        content = <SeedsOrderDrawer id={+id} />
-        break
+        return <SeedsOrderDrawer id={id} />
       case 'rootstockOrder':
-        content = <RootstocksOrderDrawer id={+id} />
-        break
+        return <RootstocksOrderDrawer id={id} />
       case 'seedlingOrder':
-        content = <SeedlingsOrderDrawer id={+id} />
-        break
+        return <SeedlingsOrderDrawer id={id} />
       case 'borbulhaOrder':
-        content = <BorbulhasOrderDrawer id={+id} />
-        break
+        return <BorbulhasOrderDrawer id={id} />
       default:
-        content = null
-        break
+        return null
     }
-    return content
-  }, [drawerType, id])
+  }
+
+  return null
+}
+
+const DetailsDrawer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+  const { open } = useDetailsDrawerState()
 
   return (
     <SplitterLayout percentage secondaryInitialSize={45}>
       {children}
-      {drawer ? (
-        <React.Suspense fallback={<div />}>
-          <DrawerComponent />
+      {open ? (
+        <React.Suspense fallback={<PageLoading />}>
+          <SelectedDrawer />
         </React.Suspense>
       ) : null}
     </SplitterLayout>
