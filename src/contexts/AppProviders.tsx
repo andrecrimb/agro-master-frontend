@@ -11,9 +11,7 @@ import GlobalStyles from 'components/GlobalStyles'
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      notifyOnChangePropsExclusions: ['isStale']
-    }
+    queries: { notifyOnChangeProps: 'tracked' }
   }
 })
 
