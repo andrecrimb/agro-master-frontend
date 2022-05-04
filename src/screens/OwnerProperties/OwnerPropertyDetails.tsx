@@ -6,11 +6,11 @@ import useOwnerProperty from 'hooks/useOwnerProperty'
 import NumberFormat from 'react-number-format'
 import CleanAccordion from 'components/CleanAccordion'
 import useGreenhouses from 'hooks/useGreenhouses'
-import BenchesTable from 'screens/OwnerProperties/greenhouses/BenchesTable'
-import EditGreenhouseButtonDialog from 'screens/OwnerProperties/greenhouses/EditGreenhouseButtonDialog'
-import AddBenchButtonDialog from 'screens/OwnerProperties/greenhouses/AddBenchButtonDialog'
+import BenchesTable from 'screens/OwnerProperties/Greenhouses/BenchesTable'
+import EditGreenhouseButtonDialog from 'screens/OwnerProperties/Greenhouses/EditGreenhouseButtonDialog'
+import AddBenchButtonDialog from 'screens/OwnerProperties/Greenhouses/AddBenchButtonDialog'
 import EditPropertyButtonDialog from 'screens/OwnerProperties/EditPropertyButtonDialog'
-import AddGreenhouseButtonDialog from 'screens/OwnerProperties/greenhouses/AddGreenhouseButtonDialog'
+import AddGreenhouseButtonDialog from 'screens/OwnerProperties/Greenhouses/AddGreenhouseButtonDialog'
 
 type Props = { id: number }
 
