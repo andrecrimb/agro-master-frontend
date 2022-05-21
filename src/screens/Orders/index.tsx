@@ -13,10 +13,12 @@ import BorbulhasOrdersTable from './borbulhas/BorbulhaOrdersTable'
 import SeedsOrdersTable from './seeds/SeedsOrdersTable'
 import RootstocksOrdersTable from './rootstocks/RootstockOrdersTable'
 import { OrderType } from 'types/orders'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 const Orders: React.FC = () => {
   const { t } = useTranslation()
-  const [ordersType, setOrdersType] = React.useState<OrderType>('seedling')
+  const [ordersTypeParam, setOrdersType] = useQueryParam('ordersType', StringParam)
+  const ordersType = ordersTypeParam as OrderType | null | undefined
 
   const tabs: TabProps[] = React.useMemo(
     () => [
