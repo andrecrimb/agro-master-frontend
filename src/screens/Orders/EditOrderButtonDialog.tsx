@@ -78,7 +78,7 @@ const EditOrderButtonDialog: React.FC<Props> = ({ orderId }) => {
         {t('edit_order')}
       </Button>
       <MuiPickersUtilsProvider utils={DayUtils}>
-        <Dialog open={open} aria-labelledby="dialog-title" onClick={() => setOpen(true)}>
+        <Dialog open={open} aria-labelledby="dialog-title">
           <DialogTitle id="dialog-title">{t('edit_order')}</DialogTitle>
           <form
             onSubmit={handleSubmit(values => {
