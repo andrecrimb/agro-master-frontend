@@ -18,14 +18,14 @@ import { useForm, Controller } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
 import useEditOrder from 'hooks/useEditOrder'
 import useCustomers from 'hooks/useCustomers'
-import _ from 'utils/lodash'
+import lodash from 'utils/lodash'
 import { DatePicker } from '@material-ui/pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DayUtils from '@date-io/dayjs'
 import useCustomer from 'hooks/useCustomer'
 import { OrderRequest } from 'types/orders'
-import useUrlSearch from 'hooks/useUrlSearch'
 import useOrder from 'hooks/useOrder'
+import { NumberParam, StringParam, useQueryParams } from 'use-query-params'
 
 const FORM_DEFAULT_VALUES: OrderRequest = {
   id: -1,
@@ -42,14 +42,17 @@ const EditOrderButtonDialog: React.FC<Props> = ({ orderId }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
 
-  const { setParams } = useUrlSearch({ params: [] })
+  const [_, setQueryParams] = useQueryParams({
+    id: NumberParam,
+    drawer: StringParam
+  })
   const editOrder = useEditOrder(orderId)
   const { data: order } = useOrder(orderId)
 
   const [selectedCustomer, setSelectedCustomers] = React.useState(
     () => order?.customerProperty.customer.id || 0
   )
-  const { data: customers = {} } = useCustomers({ select: d => _.mapKeys(d, 'id') })
+  const { data: customers = {} } = useCustomers({ select: d => lodash.mapKeys(d, 'id') })
   const { data: customer } = useCustomer(selectedCustomer, { enabled: selectedCustomer > 0 })
 
   const { handleSubmit, control, register, formState, setValue, setError } = useForm<
@@ -81,7 +84,10 @@ const EditOrderButtonDialog: React.FC<Props> = ({ orderId }) => {
             onSubmit={handleSubmit(values => {
               return editOrder.mutate(values, {
                 onSuccess: response => {
-                  setParams({ drawer: values.type + 'Order', drawerTab: null, id: response.id })
+                  setQueryParams({
+                    drawer: values.type + 'Order',
+                    id: response.id
+                  })
                   setOpen(false)
                 },
                 onError: e => {

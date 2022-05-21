@@ -3,7 +3,7 @@ import useDialog from 'hooks/useDialog'
 import { Button } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import useCancelOrder from 'hooks/useCancelOrder'
-import useUrlSearch from 'hooks/useUrlSearch'
+import { useSearchParams } from 'react-router-dom'
 
 type Props = {
   orderId: number
@@ -11,7 +11,7 @@ type Props = {
 
 const CancelOrderButton: React.FC<Props> = ({ orderId }) => {
   const { t } = useTranslation()
-  const { setParams } = useUrlSearch({ params: [] })
+  const [_, setSearchParams] = useSearchParams()
   const { newDialog } = useDialog()
   const deleteGreenhouse = useCancelOrder(orderId)
 
@@ -27,7 +27,7 @@ const CancelOrderButton: React.FC<Props> = ({ orderId }) => {
             text: t('cancel'),
             onClick: () =>
               deleteGreenhouse.mutateAsync(undefined, {
-                onSuccess: () => setParams({ drawer: null, drawerTab: null, id: null })
+                onSuccess: () => setSearchParams({})
               })
           }
         })

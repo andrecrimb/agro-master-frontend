@@ -3,8 +3,8 @@ import useDialog from 'hooks/useDialog'
 import { MenuItem } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import useDeleteGreenhouse from 'hooks/useDeleteGreenhouse'
-import useUrlSearch from 'hooks/useUrlSearch'
 import { Greenhouse } from 'types/greenhouse'
+import { useSearchParams } from 'react-router-dom'
 
 type Props = {
   greenhouse: Greenhouse
@@ -13,7 +13,7 @@ type Props = {
 
 const DeleteButton: React.FC<Props> = ({ onClick, greenhouse }) => {
   const { t } = useTranslation()
-  const { setParams } = useUrlSearch({ params: [] })
+  const [_, setSearchParams] = useSearchParams()
 
   const { newDialog } = useDialog()
   const deleteGreenhouse = useDeleteGreenhouse()
@@ -31,7 +31,7 @@ const DeleteButton: React.FC<Props> = ({ onClick, greenhouse }) => {
             onClick: () =>
               deleteGreenhouse.mutateAsync(
                 { greenhouseId: greenhouse.id },
-                { onSuccess: () => setParams({ drawer: null, drawerTab: null, id: null }) }
+                { onSuccess: () => setSearchParams({}) }
               )
           }
         })

@@ -1,6 +1,6 @@
-import useUrlSearch from 'hooks/useUrlSearch'
 import React, { PropsWithChildren } from 'react'
 import SplitterLayout from 'react-splitter-layout'
+import { useQueryParams, NumberParam, StringParam } from 'use-query-params'
 
 const UserDrawer = React.lazy(() => import('../screens/Users/UserDetails'))
 const CustomerDrawer = React.lazy(() => import('../screens/Customers/CustomerDetails'))
@@ -31,49 +31,52 @@ type DrawerType =
   | 'borbulhaOrder'
 
 const DetailsDrawer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  const {
-    params: { drawer, id }
-  } = useUrlSearch({ params: ['drawer', 'id'] })
+  const [search] = useQueryParams({
+    id: NumberParam,
+    drawer: StringParam
+  })
 
-  const drawerType = drawer as DrawerType
   const DrawerComponent = React.useCallback(() => {
     let content: null | React.ReactElement = null
-    switch (drawerType) {
+
+    if (!search.id || !search.drawer) return null
+
+    switch (search.drawer as DrawerType) {
       case 'property':
-        content = <OwnerPropertyDrawer id={+id} />
+        content = <OwnerPropertyDrawer id={search.id} />
         break
       case 'user':
-        content = <UserDrawer id={+id} />
+        content = <UserDrawer id={search.id} />
         break
       case 'customer':
-        content = <CustomerDrawer id={+id} />
+        content = <CustomerDrawer id={search.id} />
         break
       case 'fruitOrder':
-        content = <FruitsOrderDrawer id={+id} />
+        content = <FruitsOrderDrawer id={search.id} />
         break
       case 'seedOrder':
-        content = <SeedsOrderDrawer id={+id} />
+        content = <SeedsOrderDrawer id={search.id} />
         break
       case 'rootstockOrder':
-        content = <RootstocksOrderDrawer id={+id} />
+        content = <RootstocksOrderDrawer id={search.id} />
         break
       case 'seedlingOrder':
-        content = <SeedlingsOrderDrawer id={+id} />
+        content = <SeedlingsOrderDrawer id={search.id} />
         break
       case 'borbulhaOrder':
-        content = <BorbulhasOrderDrawer id={+id} />
+        content = <BorbulhasOrderDrawer id={search.id} />
         break
       default:
         content = null
         break
     }
     return content
-  }, [drawerType, id])
+  }, [search])
 
   return (
     <SplitterLayout percentage secondaryInitialSize={45}>
       {children}
-      {drawer ? (
+      {search.drawer ? (
         <React.Suspense fallback={<div />}>
           <DrawerComponent />
         </React.Suspense>

@@ -211,5 +211,6 @@
   "greenhouse_already_exists": "Essa estufa já existe nesta propriedade",
   "variety": "Variedade",
   "quantity_requested_above_current_store": "Quantidade acima do disponível",
-  "invalid_amount": "Valor inválido"
+  "invalid_amount": "Valor inválido",
+  "page_under_construction": "Página em construção"
 }

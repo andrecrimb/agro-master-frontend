@@ -8,10 +8,10 @@ import {
   DetailsDrawerWrapperGrid
 } from 'components/GridLayout'
 import HeaderTabs from 'components/HeaderTabs'
-import useUrlSearch from 'hooks/useUrlSearch'
 import { TabItem } from 'types/common'
 import styled from 'styledComponents'
 import { CloseRounded as CloseIcon } from '@material-ui/icons'
+import { useQueryParams, NumberParam, StringParam } from 'use-query-params'
 
 const HeaderTitle = styled(Typography)`
   && {
@@ -49,26 +49,21 @@ const DetailsDrawerWrapper: React.FC<Props> = ({
   tabs,
   header: { title, highlightTitle, RightActions }
 }) => {
-  const { params, setParams } = useUrlSearch(
-    {
-      params: ['drawerTab'],
-      formatValues: { drawerTab: v => (v && v < tabs.length ? v : 0) }
-    },
-    [tabs]
-  )
+  const [search, setSearch] = useQueryParams({
+    drawerTab: NumberParam,
+    id: NumberParam,
+    drawer: StringParam
+  })
+
+  const drawerTab = search.drawerTab && +search.drawerTab < tabs.length ? search.drawerTab : 0
 
   const tabsIndexLabel = React.useMemo(
     () => tabs.map((item, index) => ({ label: item.label, value: index })),
     [tabs]
   )
 
-  const onClose = () => {
-    setParams({ drawerTab: null, drawer: null, id: null })
-  }
-
-  const onTabChange = value => {
-    setParams({ drawerTab: value })
-  }
+  const onClose = () => setSearch({ drawerTab: undefined, drawer: undefined, id: undefined })
+  const onTabChange = value => setSearch({ drawerTab: value })
 
   return (
     <Fade in>
@@ -95,14 +90,14 @@ const DetailsDrawerWrapper: React.FC<Props> = ({
           <DetailsDrawerTabsGridArea>
             <HeaderTabs
               orientation="vertical"
-              value={params.drawerTab}
+              value={drawerTab}
               tabs={tabsIndexLabel}
               onChange={onTabChange}
             />
           </DetailsDrawerTabsGridArea>
         ) : null}
         <DetailsDrawerContentGridArea>
-          {tabs[params.drawerTab] && tabs[params.drawerTab].component}
+          {tabs[drawerTab] && tabs[drawerTab].component}
         </DetailsDrawerContentGridArea>
       </DetailsDrawerWrapperGrid>
     </Fade>

@@ -9,11 +9,15 @@ import { AppBarDrawerGrid, PageContentGridArea } from 'components/GridLayout'
 import AppBar from 'components/AppBar'
 import AppDrawer from 'components/AppDrawer'
 import PageLoading from 'components/PageLoading'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import routes from 'routes'
 import PageNotFoundPlaceholder from 'components/PageNotFoundPlaceholder'
 import 'dayjs/locale/pt-br'
 import dayjs from 'dayjs'
+import { QueryParamProvider } from 'use-query-params'
+import ScreenPlaceholder from 'components/ScreenPlaceholder'
+import BuildIcon from '@material-ui/icons/BuildRounded'
+import i18n from './i18n'
 
 dayjs.locale('pt-br')
 
@@ -23,38 +27,57 @@ const Customers = React.lazy(() => import('screens/Customers'))
 const Orders = React.lazy(() => import('screens/Orders'))
 const Rootstocks = React.lazy(() => import('screens/Rootstocks'))
 
+const RouteAdapter = ({ children }) => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const adaptedHistory = React.useMemo(
+    () => ({
+      replace(location) {
+        navigate(location, { replace: true, state: location.state })
+      },
+      push(location) {
+        navigate(location, { replace: false, state: location.state })
+      }
+    }),
+    [navigate]
+  )
+  return children({ history: adaptedHistory, location })
+}
+
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <Dialogs />
-      <AppBarDrawerGrid>
-        <AppBar />
-        <AppDrawer />
-        <PageContentGridArea>
-          <React.Suspense fallback={<PageLoading />}>
-            <Switch>
-              <Route path={routes.users}>
-                <Users />
-              </Route>
-              <Route path={routes.properties}>
-                <Properties />
-              </Route>
-              <Route path={routes.customers}>
-                <Customers />
-              </Route>
-              <Route path={routes.orders}>
-                <Orders />
-              </Route>
-              <Route path={routes.rootstocks}>
-                <Rootstocks />
-              </Route>
-              <Route>
-                <PageNotFoundPlaceholder />
-              </Route>
-            </Switch>
-          </React.Suspense>
-        </PageContentGridArea>
-      </AppBarDrawerGrid>
+      <QueryParamProvider ReactRouterRoute={RouteAdapter as any}>
+        <>
+          <Dialogs />
+          <AppBarDrawerGrid>
+            <AppBar />
+            <AppDrawer />
+            <PageContentGridArea>
+              <React.Suspense fallback={<PageLoading />}>
+                <Routes>
+                  <Route
+                    path={routes.dashboard}
+                    element={
+                      <ScreenPlaceholder
+                        Icon={BuildIcon}
+                        title={i18n.t('page_under_construction')}
+                      />
+                    }
+                  />
+                  <Route path={routes.users} element={<Users />} />
+                  <Route path={routes.properties} element={<Properties />} />
+                  <Route path={routes.customers} element={<Customers />} />
+                  <Route path={routes.orders} element={<Orders />} />
+                  <Route path={routes.rootstocks + '/*'} element={<Rootstocks />} />
+                  <Route path="*" element={<PageNotFoundPlaceholder />} />
+                </Routes>
+              </React.Suspense>
+            </PageContentGridArea>
+          </AppBarDrawerGrid>
+        </>
+      </QueryParamProvider>
     </BrowserRouter>
   )
 }

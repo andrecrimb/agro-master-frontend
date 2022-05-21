@@ -24,7 +24,7 @@ import useDialog from 'hooks/useDialog'
 import { OwnerProperty } from 'types/property'
 import NumberFormat from 'react-number-format'
 import { unmaskNumber } from 'utils/utils'
-import useUrlSearch from 'hooks/useUrlSearch'
+import { useSearchParams } from 'react-router-dom'
 
 const FORM_DEFAULT_VALUES = {
   producerName: '',
@@ -44,7 +44,7 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { newDialog } = useDialog()
-  const { setParams } = useUrlSearch({ params: [] })
+  const [_, setSearchParams] = useSearchParams()
 
   const editProperty = useEditOwnerProperty()
   const searchZip = useZipSearch()
@@ -342,7 +342,7 @@ const EditPropertyDialog: React.FC<Props> = ({ ownerProperty }) => {
                           {
                             onSuccess: () => {
                               setOpen(false)
-                              setParams({ drawer: null, drawerTab: null, id: null })
+                              setSearchParams({})
                             }
                           }
                         )

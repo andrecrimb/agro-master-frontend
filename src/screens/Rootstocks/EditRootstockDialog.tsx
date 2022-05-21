@@ -14,7 +14,6 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
-import { useHistory } from 'react-router-dom'
 import { muiTheme } from 'theme'
 import routes from 'routes'
 import useRootstocks from 'hooks/useRootstocks'
@@ -22,15 +21,18 @@ import useEditRootstock from 'hooks/useEditRootstock'
 import useDeleteRootstock from 'hooks/useDeleteRootstock'
 import { Delete as DeleteIcon } from '@material-ui/icons'
 import useDialog from 'hooks/useDialog'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const FORM_DEFAULT_VALUES = { name: '' }
 
 const EditUserDialog: React.FC = () => {
   const { t } = useTranslation()
-  const history = useHistory()
+  const params = useParams<'rootstockId'>()
+  const rootstockId = Number(params.rootstockId)
+
+  const navigate = useNavigate()
   const { newDialog } = useDialog()
 
-  const rootstockId = +history.location.pathname.replace(`${routes.rootstocks}/`, '')
   const { data: rootstockSelected } = useRootstocks({
     select: d => d.find(rootstock => rootstock.id === rootstockId)
   })
@@ -46,7 +48,7 @@ const EditUserDialog: React.FC = () => {
 
   const { ref: nameRef, ...name } = register('name')
 
-  const onClose = () => history.push(routes.rootstocks)
+  const onClose = () => navigate(routes.rootstocks)
 
   React.useEffect(() => {
     if (rootstockSelected) {

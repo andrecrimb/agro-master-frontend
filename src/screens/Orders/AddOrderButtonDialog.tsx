@@ -19,14 +19,14 @@ import { useForm, Controller } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
 import useAddOrder from 'hooks/useAddOrder'
 import useCustomers from 'hooks/useCustomers'
-import _ from 'utils/lodash'
+import lodash from 'utils/lodash'
 import { DatePicker } from '@material-ui/pickers'
 import { AddRounded as AddIcon } from '@material-ui/icons'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DayUtils from '@date-io/dayjs'
 import useCustomer from 'hooks/useCustomer'
 import { OrderRequest } from 'types/orders'
-import useUrlSearch from 'hooks/useUrlSearch'
+import { NumberParam, StringParam, useQueryParams } from 'use-query-params'
 
 const FORM_DEFAULT_VALUES: OrderRequest = {
   type: 'seedling',
@@ -38,12 +38,15 @@ const FORM_DEFAULT_VALUES: OrderRequest = {
 
 const AddOrderButtonDialog: React.FC = () => {
   const { t } = useTranslation()
-  const { setParams } = useUrlSearch({ params: [] })
+  const [_, setQueryParams] = useQueryParams({
+    id: NumberParam,
+    drawer: StringParam
+  })
   const [open, setOpen] = React.useState(false)
   const addOrder = useAddOrder()
 
   const [selectedCustomer, setSelectedCustomers] = React.useState(0)
-  const { data: customers = {} } = useCustomers({ select: d => _.mapKeys(d, 'id') })
+  const { data: customers = {} } = useCustomers({ select: d => lodash.mapKeys(d, 'id') })
   const { data: customer } = useCustomer(selectedCustomer, { enabled: selectedCustomer > 0 })
 
   const { handleSubmit, control, register, formState, setValue, setError, reset } = useForm<
@@ -71,7 +74,7 @@ const AddOrderButtonDialog: React.FC = () => {
                 return addOrder.mutate(values, {
                   onSuccess: response => {
                     setOpen(false)
-                    setParams({ drawer: values.type + 'Order', drawerTab: null, id: response.id })
+                    setQueryParams({ drawer: values.type + 'Order', id: response.id })
                   },
                   onError: e => {
                     const apiErrors = e?.response?.data.errors || []

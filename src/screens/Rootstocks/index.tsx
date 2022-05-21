@@ -6,8 +6,7 @@ import { useTranslation } from 'react-i18next'
 import RootstocksTable from './RootstocksTable'
 import AddRootstockButtonDialog from './AddRootstockButtonDialog'
 import EditRootstockDialog from './EditRootstockDialog'
-import { Route } from 'react-router-dom'
-import routes from 'routes'
+import { Route, Routes } from 'react-router-dom'
 
 const Rootstocks: React.FC = () => {
   const { t } = useTranslation()
@@ -24,9 +23,9 @@ const Rootstocks: React.FC = () => {
           </MainContentGridArea>
         </PageHeaderAndContentGrid>
       </Fade>
-      <Route exact path={`${routes.rootstocks}/:rootstockId`}>
-        <EditRootstockDialog />
-      </Route>
+      <Routes>
+        <Route path=":rootstockId" element={<EditRootstockDialog />} />
+      </Routes>
     </>
   )
 }
