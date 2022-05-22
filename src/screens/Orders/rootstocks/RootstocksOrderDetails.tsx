@@ -22,6 +22,9 @@ const RootstocksOrderDetails: React.FC<Props> = ({ id }) => {
 
   if (!order) return null
 
+  const editingAllowed = order.status !== 'canceled'
+  const cancellationAllowed = order.status !== 'canceled'
+
   return (
     <DetailsDrawerWrapper
       header={{
@@ -30,7 +33,7 @@ const RootstocksOrderDetails: React.FC<Props> = ({ id }) => {
           order.orderDate,
           'DD/MM/YYYY'
         )})`,
-        RightActions: <CancelOrderButton orderId={id} />
+        RightActions: cancellationAllowed && <CancelOrderButton orderId={id} />
       }}
       tabs={[
         {
@@ -113,17 +116,20 @@ const RootstocksOrderDetails: React.FC<Props> = ({ id }) => {
                 childrenPadding={false}
                 id="order_items"
                 header={t('order_items')}
-                actions={<AddRootstocksOrderItemsButtonDialog orderId={id} />}
+                actions={editingAllowed && <AddRootstocksOrderItemsButtonDialog orderId={id} />}
               >
-                <RootstocksOrderItemsTable orderItems={order.rootstockOrderItems} />
+                <RootstocksOrderItemsTable
+                  editingAllowed={editingAllowed}
+                  orderItems={order.rootstockOrderItems}
+                />
               </CleanAccordion>
               <CleanAccordion
                 childrenPadding={false}
                 id="payment_plural"
                 header={t('payment_plural')}
-                actions={<AddPaymentButtonDialog orderId={id} />}
+                actions={editingAllowed && <AddPaymentButtonDialog orderId={id} />}
               >
-                <PaymentsTable payments={order.payments} />
+                <PaymentsTable editingAllowed={editingAllowed} payments={order.payments} />
               </CleanAccordion>
             </>
           )

@@ -27,26 +27,7 @@ import useRootstocks from 'hooks/useRootstocks'
 import NumberFormat from 'react-number-format'
 import { unmaskNumber } from 'utils/utils'
 
-//#region Styles
-const TotalValueBox = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  border-radius: 4px;
-  background: ${muiTheme.palette.grey[200]};
-  padding: 10px 40px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  h6 {
-    font-weight: 500;
-    color: ${muiTheme.palette.grey[600]};
-    span {
-      color: ${muiTheme.palette.text.primary};
-    }
-  }
-`
-//#endregion
+type Props = { orderId: number }
 
 const FORM_DEFAULT_VALUES = {
   rootstocksOrderItems: [
@@ -57,8 +38,6 @@ const FORM_DEFAULT_VALUES = {
     }
   ]
 }
-
-type Props = { orderId: number }
 
 const AddRootstocksOrderItemsButtonDialog: React.FC<Props> = ({ orderId }) => {
   const { t } = useTranslation()
@@ -294,5 +273,26 @@ const AddRootstocksOrderItemsButtonDialog: React.FC<Props> = ({ orderId }) => {
     </>
   )
 }
+
+//#region Styles
+const TotalValueBox = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  border-radius: 4px;
+  background: ${muiTheme.palette.grey[200]};
+  padding: 10px 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  h6 {
+    font-weight: 500;
+    color: ${muiTheme.palette.grey[600]};
+    span {
+      color: ${muiTheme.palette.text.primary};
+    }
+  }
+`
+//#endregion
 
 export default AddRootstocksOrderItemsButtonDialog

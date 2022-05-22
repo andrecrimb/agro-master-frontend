@@ -13,7 +13,7 @@ import {
   orderStatus
 } from 'components/table/cells'
 import useOrders from 'hooks/useOrders'
-import { LinearProgress } from '@material-ui/core'
+import LineLoading from 'components/LineLoading'
 
 const columns = [
   orderNfNumber,
@@ -38,11 +38,7 @@ const SeedlingsOrdersTable: React.FC = () => {
 
   return (
     <>
-      {isLoading ? (
-        <div style={{ position: 'absolute', zIndex: 3, left: 0, right: 0, top: 0 }}>
-          <LinearProgress color="secondary" />
-        </div>
-      ) : null}
+      {isLoading && <LineLoading />}
       {!data.length ? (
         <ScreenPlaceholder description={t('no_orders')} />
       ) : (

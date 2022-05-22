@@ -22,6 +22,9 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
 
   if (!order) return null
 
+  const editingAllowed = order.status !== 'canceled'
+  const cancellationAllowed = order.status !== 'canceled'
+
   return (
     <DetailsDrawerWrapper
       header={{
@@ -30,7 +33,7 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
           order.orderDate,
           'DD/MM/YYYY'
         )})`,
-        RightActions: <CancelOrderButton orderId={id} />
+        RightActions: cancellationAllowed && <CancelOrderButton orderId={id} />
       }}
       tabs={[
         {
@@ -40,7 +43,7 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
               <CleanAccordion
                 id="general_data"
                 header={t('generalData')}
-                actions={order.status === 'issued' ? <EditOrderButtonDialog orderId={id} /> : null}
+                actions={editingAllowed && <EditOrderButtonDialog orderId={id} />}
               >
                 <InfoTable
                   entries={[
@@ -113,17 +116,20 @@ const SeedsOrderDetails: React.FC<Props> = ({ id }) => {
                 id="order_items"
                 header={t('order_items')}
                 childrenPadding={false}
-                actions={<AddSeedsOrderItemsButtonDialog orderId={id} />}
+                actions={editingAllowed && <AddSeedsOrderItemsButtonDialog orderId={id} />}
               >
-                <SeedsOrderItemsTable orderItems={order.seedOrderItems} />
+                <SeedsOrderItemsTable
+                  editingAllowed={editingAllowed}
+                  orderItems={order.seedOrderItems}
+                />
               </CleanAccordion>
               <CleanAccordion
                 id="payment_plural"
                 header={t('payment_plural')}
                 childrenPadding={false}
-                actions={<AddPaymentButtonDialog orderId={id} />}
+                actions={editingAllowed && <AddPaymentButtonDialog orderId={id} />}
               >
-                <PaymentsTable payments={order.payments} />
+                <PaymentsTable editingAllowed={editingAllowed} payments={order.payments} />
               </CleanAccordion>
             </>
           )

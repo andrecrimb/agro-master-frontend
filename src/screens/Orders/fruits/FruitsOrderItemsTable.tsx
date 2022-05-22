@@ -11,26 +11,26 @@ import { FruitOrderItem } from 'types/orders'
 import { useTranslation } from 'react-i18next'
 import ScreenPlaceholder from 'components/ScreenPlaceholder'
 
-type Props = { orderItems: FruitOrderItem[] }
+type Props = { orderItems: FruitOrderItem[]; editingAllowed: boolean }
 
-const columns = [
-  fruitsOrderItemsName,
-  fruitsOrderItemsQuantity,
-  fruitsOrderItemsBoxPrice,
-  fruitsOrderItemsAction
-]
+const columns = [fruitsOrderItemsName, fruitsOrderItemsQuantity, fruitsOrderItemsBoxPrice]
 
-const FruitsOrderItemsTable: React.FC<Props> = ({ orderItems }) => {
+const FruitsOrderItemsTable: React.FC<Props> = props => {
   const { t } = useTranslation()
 
-  if (!orderItems.length) {
+  const tableColumns = React.useMemo(() => {
+    if (props.editingAllowed) return [...columns, fruitsOrderItemsAction]
+    return columns
+  }, [props.editingAllowed])
+
+  if (!props.orderItems.length) {
     return <ScreenPlaceholder withAbsoluteWrapper={false} description={t('no_items')} />
   }
 
   return (
     <Table
-      columns={columns}
-      data={orderItems}
+      columns={tableColumns}
+      data={props.orderItems}
       plugins={[useSortBy, usePagination]}
       options={{
         disableSortRemove: true,

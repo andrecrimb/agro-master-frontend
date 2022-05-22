@@ -12,19 +12,18 @@ import {
 import { useTranslation } from 'react-i18next'
 import { Payment } from 'types/orders'
 
-type Props = { payments: Payment[] }
+type Props = { payments: Payment[]; editingAllowed: boolean }
 
-const columns = [
-  paymentsAmount,
-  paymentsMethod,
-  paymentsScheduledDate,
-  paymentsReceived,
-  paymentsAction
-]
+const columns = [paymentsAmount, paymentsMethod, paymentsScheduledDate, paymentsReceived]
 
-const PaymentsTable: React.FC<Props> = ({ payments }) => {
+const PaymentsTable: React.FC<Props> = props => {
   const { t } = useTranslation()
-  const noData = !payments.length
+  const noData = !props.payments.length
+
+  const tableColumns = React.useMemo(() => {
+    if (props.editingAllowed) return [...columns, paymentsAction]
+    return columns
+  }, [props.editingAllowed])
 
   return (
     <>
@@ -32,8 +31,8 @@ const PaymentsTable: React.FC<Props> = ({ payments }) => {
         <ScreenPlaceholder withAbsoluteWrapper={false} description={t('no_payments')} />
       ) : (
         <Table
-          columns={columns}
-          data={payments}
+          columns={tableColumns}
+          data={props.payments}
           plugins={[useSortBy, usePagination]}
           options={{
             disableSortRemove: true,
