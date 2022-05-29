@@ -11,14 +11,9 @@ import {
   Typography,
   FormControlLabel,
   TextField,
-  Divider,
-  Tooltip
+  Divider
 } from '@material-ui/core'
-import {
-  PhoneRounded as PhoneIcon,
-  ClearRounded as ClearIcon,
-  EditRounded as EditIcon
-} from '@material-ui/icons'
+import { PhoneRounded as PhoneIcon, ClearRounded as ClearIcon } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import LoadingButton from 'components/LoadingButton'
