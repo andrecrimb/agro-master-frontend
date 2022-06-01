@@ -223,6 +223,7 @@ const AddSeedlingsOrderItemsButtonDialog: React.FC<Props> = ({ order }) => {
                         <Controller
                           control={control}
                           name={`seedlingsOrderItems.${index}.seedlingBenchId` as const}
+                          rules={{ min: 1 }}
                           defaultValue={field.seedlingBenchId}
                           render={({ field }) => (
                             <FormControl innerRef={field.ref} fullWidth variant="filled" required>
@@ -282,6 +283,7 @@ const AddSeedlingsOrderItemsButtonDialog: React.FC<Props> = ({ order }) => {
                         <Controller
                           control={control}
                           name={`seedlingsOrderItems.${index}.unityPrice` as const}
+                          rules={{ min: { value: 1, message: t('invalid_quantity') } }}
                           defaultValue={field.unityPrice}
                           render={({ field }) => (
                             <NumberFormat
